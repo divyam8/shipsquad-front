@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { GradientText } from "@/components/ui/GradientText";
 import { GlowButton } from "@/components/ui/GlowButton";
 import { PRICING } from "@/lib/constants";
 
@@ -11,70 +10,75 @@ export function Pricing() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} className="bg-bg-primary px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
-          <GradientText
-            as="h2"
-            className="text-[clamp(2rem,3vw+0.5rem,3rem)] font-semibold"
-          >
-            Simple Pricing
-          </GradientText>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-text-secondary">
-            One plan. Full squad. No surprises.
-          </p>
-        </motion.div>
+    <section ref={ref} className="relative px-4 py-20 sm:px-6 lg:px-8">
+      {/* Background glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="h-[500px] w-[500px] rounded-full bg-purple-500/[0.05] blur-[150px]" />
+      </div>
 
-        {/* Pricing Card */}
+      <div className="relative mx-auto max-w-6xl">
+        {/* Section label */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center text-xs font-medium uppercase tracking-[0.2em] text-white/20"
+        >
+          Pricing
+        </motion.p>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mt-4 text-center text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+        >
+          One plan. Full squad. No surprises.
+        </motion.h2>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="mx-auto mt-12 max-w-lg"
         >
-          <div className="relative rounded-2xl border border-white/[0.1] bg-white/[0.03] p-8 shadow-lg shadow-accent-blue/5">
-            {/* Subtle border glow */}
-            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-b from-accent-blue/10 via-transparent to-accent-purple/10 opacity-50" />
+          {/* Animated gradient border wrapper */}
+          <div
+            className="relative rounded-2xl p-[1px]"
+            style={{
+              background: "linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #3B82F6)",
+              backgroundSize: "300% 300%",
+              animation: "gradient-shift 6s ease infinite",
+            }}
+          >
+            {/* Popular badge */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span className="rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-4 py-1 text-xs font-semibold text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+                Most Popular
+              </span>
+            </div>
 
-            <div className="relative">
-              <p className="text-sm font-medium uppercase tracking-wider text-text-muted">
+            <div className="rounded-2xl bg-[#06060B] p-8 pt-10">
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/30">
                 {PRICING.planName}
               </p>
 
               <div className="mt-4 flex items-baseline gap-1">
-                <GradientText
-                  as="span"
-                  className="text-5xl font-bold tracking-tight"
-                >
+                <span className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-6xl font-bold tracking-tight text-transparent">
                   {PRICING.price}
-                </GradientText>
-                <span className="text-lg text-text-secondary">
+                </span>
+                <span className="text-lg text-white/40">
                   {PRICING.period}
                 </span>
               </div>
 
-              <ul className="mt-8 space-y-3">
+              <ul className="mt-8 space-y-4">
                 {PRICING.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
-                    <svg
-                      className="mt-0.5 h-5 w-5 shrink-0 text-accent-cyan"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 12.75l6 6 9-13.5"
-                      />
-                    </svg>
-                    <span className="text-sm text-text-secondary">
+                    <span className="mt-1.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+                      <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
+                    </span>
+                    <span className="text-sm text-white/50">
                       {feature}
                     </span>
                   </li>
@@ -96,63 +100,10 @@ export function Pricing() {
               </div>
             </div>
           </div>
-        </motion.div>
 
-        {/* Trust badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-text-muted"
-        >
-          <span className="flex items-center gap-1.5">
-            <svg
-              className="h-3.5 w-3.5 text-success"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+          <p className="mt-4 text-center text-sm text-white/20">
             No credit card required
-          </span>
-          <span className="flex items-center gap-1.5">
-            <svg
-              className="h-3.5 w-3.5 text-success"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
-            Cancel anytime
-          </span>
-          <span className="flex items-center gap-1.5">
-            <svg
-              className="h-3.5 w-3.5 text-success"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
-            NDA protected
-          </span>
+          </p>
         </motion.div>
       </div>
     </section>
