@@ -50,6 +50,11 @@ export const metadata: Metadata = {
     "max-snippet": -1,
     "max-video-preview": -1,
   },
+  verification: {
+    other: {
+      "msvalidate.01": "1023BEB2A3E7768DC098C1FF356FBFB6",
+    },
+  },
 };
 
 const jsonLd = [
