@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const INDEXNOW_KEY = "shipsquad-indexnow-key";
+const INDEXNOW_KEY = "2c0e0aa7560e4a7f9b937a5f6c717dc2";
 const SITE_HOST = "shipsquad.ai";
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
 
