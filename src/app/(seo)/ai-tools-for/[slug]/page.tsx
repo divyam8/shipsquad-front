@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { roles } from "@/data/roles";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,6 +32,7 @@ export default async function AIToolsForPage({ params }: Props) {
   if (!role) notFound();
 
   const relatedRoles = roles.filter((r) => r.slug !== slug).slice(0, 6).map((r) => ({ title: r.title, href: `/ai-tools-for/${r.slug}` }));
+  const learnLinks = getLearnPillarLinks("development");
 
   return (
     <SEOPageLayout
@@ -40,6 +42,7 @@ export default async function AIToolsForPage({ params }: Props) {
         { label: role.title },
       ]}
       relatedPages={relatedRoles}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: "Overview", level: 2 },
         { id: "tools", title: "Recommended Tools", level: 2 },
@@ -53,9 +56,16 @@ export default async function AIToolsForPage({ params }: Props) {
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">AI Tools Every {role.name} Needs in 2026</h2>
-        <p className="text-text-secondary">
+        <p className="text-text-secondary mb-4">
           The {role.name.toLowerCase()} role is being augmented (not replaced) by AI. The right AI tools can save you 10-20 hours per week, improve output quality, and let you focus on high-value strategic work.
         </p>
+        {role.longDescription && (
+          <div className="text-text-secondary leading-relaxed space-y-4 mt-4">
+            {role.longDescription.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="tools" className="mb-10">

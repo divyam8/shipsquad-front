@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { comparisons } from "@/data/comparisons";
+import { tools } from "@/data/tools";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ComparisonTable } from "@/components/seo/ComparisonTable";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getToolPillarLink } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slugs: string }>;
@@ -26,6 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${comparison.toolA} vs ${comparison.toolB} (2026)`,
       description: `Head-to-head comparison of ${comparison.toolA} and ${comparison.toolB}.`,
+      type: "article",
+      url: `https://shipsquad.ai/compare/${slugs}`,
+    },
+    other: {
+      "article:modified_time": new Date().toISOString(),
+      "article:section": comparison.category,
+      "article:author": "https://shipsquad.ai/about",
     },
   };
 }
@@ -45,6 +54,21 @@ export default async function ComparePage({ params }: Props) {
       href: c.isVsTraditional ? `/vs/${c.slug}` : `/compare/${c.slug}`,
       category: c.category,
     }));
+
+  const toolA = tools.find((t) => t.slug === comparison.toolASlug);
+  const toolB = tools.find((t) => t.slug === comparison.toolBSlug);
+
+  const pillarLinkA = getToolPillarLink(comparison.toolASlug);
+  const pillarLinkB = getToolPillarLink(comparison.toolBSlug);
+  const furtherReading = [
+    ...(pillarLinkA ? [pillarLinkA] : []),
+    ...(pillarLinkB && pillarLinkB.href !== pillarLinkA?.href ? [pillarLinkB] : []),
+    ...(toolA?.hasReviewPage ? [{ title: `${comparison.toolA} Review 2026`, href: `/review/${comparison.toolASlug}`, description: `In-depth analysis of ${comparison.toolA}` }] : []),
+    ...(toolB?.hasReviewPage ? [{ title: `${comparison.toolB} Review 2026`, href: `/review/${comparison.toolBSlug}`, description: `In-depth analysis of ${comparison.toolB}` }] : []),
+    ...(toolA?.hasAlternativePage ? [{ title: `Best ${comparison.toolA} Alternatives`, href: `/alternative/${comparison.toolASlug}`, description: `Top alternatives to ${comparison.toolA}` }] : []),
+    ...(toolA?.hasPricingPage ? [{ title: `${comparison.toolA} Pricing Breakdown`, href: `/pricing/${comparison.toolASlug}`, description: `Complete pricing guide` }] : []),
+    ...(toolB?.hasPricingPage ? [{ title: `${comparison.toolB} Pricing Breakdown`, href: `/pricing/${comparison.toolBSlug}`, description: `Complete pricing guide` }] : []),
+  ].slice(0, 6);
 
   const faq = [
     { question: `Is ${comparison.toolA} better than ${comparison.toolB}?`, answer: comparison.verdict },
@@ -69,9 +93,12 @@ export default async function ComparePage({ params }: Props) {
         { label: `${comparison.toolA} vs ${comparison.toolB}` },
       ]}
       relatedPages={relatedComparisons}
+      furtherReading={furtherReading}
       tocItems={[
         { id: "overview", title: "Quick Verdict", level: 2 },
+        ...(comparison.detailedVerdict ? [{ id: "detailed-analysis", title: "Detailed Analysis", level: 2 }] : []),
         { id: "comparison", title: "Feature Comparison", level: 2 },
+        ...(comparison.useCaseRecommendations?.length ? [{ id: "recommendation", title: "Our Recommendation", level: 2 }] : []),
         { id: "toolA", title: comparison.toolA, level: 2 },
         { id: "toolB", title: comparison.toolB, level: 2 },
         { id: "shipsquad", title: "The ShipSquad Alternative", level: 2 },
@@ -108,6 +135,25 @@ export default async function ComparePage({ params }: Props) {
         </div>
       </section>
 
+      {comparison.detailedVerdict && (
+        <section id="detailed-analysis" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">
+            {comparison.toolA} vs {comparison.toolB}: Detailed Analysis
+          </h2>
+          <div className="text-text-secondary leading-relaxed space-y-4">
+            {comparison.detailedVerdict.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+          {comparison.winnerSummary && (
+            <div className="mt-6 rounded-xl border border-accent-blue/20 bg-accent-blue/5 p-5">
+              <p className="text-sm font-semibold text-accent-blue mb-1">Bottom Line</p>
+              <p className="text-text-primary">{comparison.winnerSummary}</p>
+            </div>
+          )}
+        </section>
+      )}
+
       <section id="comparison" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Feature-by-Feature Comparison</h2>
         <ComparisonTable
@@ -116,6 +162,20 @@ export default async function ComparePage({ params }: Props) {
           features={comparison.features}
         />
       </section>
+
+      {comparison.useCaseRecommendations && comparison.useCaseRecommendations.length > 0 && (
+        <section id="recommendation" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">Our Recommendation: Which Should You Choose?</h2>
+          <div className="space-y-3">
+            {comparison.useCaseRecommendations.map((rec, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-white/[0.05] bg-white/[0.02] p-4">
+                <span className="text-accent-blue mt-0.5 shrink-0">&#8594;</span>
+                <p className="text-text-secondary text-sm">{rec}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section id="toolA" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">

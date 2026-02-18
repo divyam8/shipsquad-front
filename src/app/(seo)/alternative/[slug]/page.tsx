@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { tools } from "@/data/tools";
+import { comparisons } from "@/data/comparisons";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getToolPillarLink } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -27,6 +29,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: `Compare the best ${tool.name} alternatives and competitors.`,
       url: `https://shipsquad.ai/alternative/${slug}`,
     },
+    other: {
+      "article:modified_time": new Date().toISOString(),
+      "article:section": tool.category,
+      "article:author": "https://shipsquad.ai/about",
+    },
   };
 }
 
@@ -47,6 +54,24 @@ export default async function AlternativePage({ params }: Props) {
     category: t!.category,
   }));
 
+  // Cross-link to comparison pages involving this tool
+  const toolComparisons = comparisons
+    .filter((c) => !c.isVsTraditional && (c.toolASlug === slug || c.toolBSlug === slug))
+    .slice(0, 3)
+    .map((c) => ({
+      title: `${c.toolA} vs ${c.toolB}`,
+      href: `/compare/${c.slug}`,
+      description: c.verdict.slice(0, 80) + "...",
+    }));
+
+  const pillarLink = getToolPillarLink(slug);
+  const furtherReading = [
+    ...(pillarLink ? [pillarLink] : []),
+    { title: `${tool.name} Review 2026`, href: `/review/${slug}`, description: `In-depth review and analysis` },
+    { title: `${tool.name} Pricing`, href: `/pricing/${slug}`, description: `Complete pricing breakdown` },
+    ...toolComparisons,
+  ];
+
   const faq = [
     { question: `What is the best alternative to ${tool.name}?`, answer: `The best ${tool.name} alternatives include ${alternativeTools.slice(0, 3).map(t => t!.name).join(", ")}. The right choice depends on your specific needs, budget, and use case.` },
     { question: `Is ${tool.name} worth the price?`, answer: `${tool.name} pricing starts at ${tool.pricingDetail}. Whether it's worth it depends on your needs. ${alternativeTools[0]?.name || "Other tools"} may offer better value for certain use cases.` },
@@ -54,16 +79,36 @@ export default async function AlternativePage({ params }: Props) {
     { question: "How does ShipSquad compare?", answer: `ShipSquad takes a different approach — instead of a single tool, you get a full AI squad of 10 specialized agents working together on your mission for $99/mo.` },
   ];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: tool.name,
-    description: tool.description,
-    aggregateRating: { "@type": "AggregateRating", ratingValue: tool.rating, bestRating: 5, ratingCount: Math.floor(Math.random() * 500) + 100 },
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: tool.name,
+      description: tool.description,
+      aggregateRating: { "@type": "AggregateRating", ratingValue: tool.rating, bestRating: 5, ratingCount: Math.floor(tool.rating * 100) + 50 },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: `Best ${tool.name} Alternatives`,
+      numberOfItems: alternativeTools.length,
+      itemListElement: alternativeTools.map((alt, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Product",
+          name: alt!.name,
+          description: alt!.description,
+          url: `https://shipsquad.ai/review/${alt!.slug}`,
+        },
+      })),
+    },
+  ];
 
   const tocItems = [
-    { id: "overview", title: `Why Look for ${tool.name} Alternatives?`, level: 2 },
+    { id: "overview", title: `Why Consider Switching from ${tool.name}?`, level: 2 },
+    ...(tool.bestFor?.length ? [{ id: "best-for", title: "Best Alternative by Use Case", level: 2 }] : []),
+    ...(tool.expertVerdict ? [{ id: "expert-verdict", title: "Expert Verdict", level: 2 }] : []),
     { id: "alternatives", title: `Top ${tool.name} Alternatives`, level: 2 },
     ...alternativeTools.map((t) => ({ id: t!.slug, title: t!.name, level: 3 })),
     { id: "comparison", title: "Feature Comparison", level: 2 },
@@ -79,6 +124,7 @@ export default async function AlternativePage({ params }: Props) {
         { label: `${tool.name} Alternatives` },
       ]}
       relatedPages={relatedPages}
+      furtherReading={furtherReading}
       tocItems={tocItems}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -92,9 +138,17 @@ export default async function AlternativePage({ params }: Props) {
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">
-          Why Look for {tool.name} Alternatives?
+          Why Consider Switching from {tool.name}?
         </h2>
-        <p className="text-text-secondary mb-4">{tool.description}</p>
+        {tool.longDescription ? (
+          <div className="text-text-secondary leading-relaxed space-y-4 mb-6">
+            {tool.longDescription.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        ) : (
+          <p className="text-text-secondary mb-4">{tool.description}</p>
+        )}
         <p className="text-text-secondary mb-4">
           While {tool.name} is a strong choice in the {tool.category} space, there are several reasons you might want an alternative:
         </p>
@@ -105,6 +159,34 @@ export default async function AlternativePage({ params }: Props) {
           <li>Your specific use case may be better served by a specialized tool</li>
         </ul>
       </section>
+
+      {tool.bestFor && tool.bestFor.length > 0 && (
+        <section id="best-for" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">
+            Best Alternative by Use Case
+          </h2>
+          <p className="text-text-secondary mb-4">
+            Different alternatives to {tool.name} excel in different scenarios. Here&apos;s who each option is best for:
+          </p>
+          <div className="space-y-3">
+            {tool.bestFor.map((useCase, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-white/[0.05] bg-white/[0.02] p-4">
+                <span className="text-accent-blue mt-0.5 shrink-0">&#8594;</span>
+                <p className="text-text-secondary text-sm">{useCase}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {tool.expertVerdict && (
+        <section id="expert-verdict" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">Expert Verdict on {tool.name}</h2>
+          <div className="rounded-xl border border-accent-purple/20 bg-accent-purple/5 p-6">
+            <p className="text-text-secondary leading-relaxed">{tool.expertVerdict}</p>
+          </div>
+        </section>
+      )}
 
       <section id="alternatives" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-6">

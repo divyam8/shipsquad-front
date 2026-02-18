@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { glossaryTerms } from "@/data/glossary";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,6 +34,7 @@ export default async function GlossaryPage({ params }: Props) {
     .map((slug) => glossaryTerms.find((g) => g.slug === slug))
     .filter(Boolean)
     .map((t) => ({ title: `What is ${t!.term}?`, href: `/glossary/${t!.slug}`, category: t!.category }));
+  const learnLinks = getLearnPillarLinks(term.category);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -49,6 +51,7 @@ export default async function GlossaryPage({ params }: Props) {
         { label: term.term },
       ]}
       relatedPages={relatedTermPages}
+      furtherReading={learnLinks}
       showTOC={false}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -65,6 +68,17 @@ export default async function GlossaryPage({ params }: Props) {
       <div className="text-text-secondary leading-relaxed space-y-4 mb-10">
         <p>{term.longDescription}</p>
       </div>
+
+      {term.longDefinition && (
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">{term.term}: A Comprehensive Guide</h2>
+          <div className="text-text-secondary leading-relaxed space-y-4">
+            {term.longDefinition.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
+      )}
 
       {relatedTermPages.length > 0 && (
         <section className="mb-10">

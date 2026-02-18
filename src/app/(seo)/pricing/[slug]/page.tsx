@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { tools } from "@/data/tools";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getToolPillarLink } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,6 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${tool.name} Pricing 2026: Plans, Costs & Best Deals`,
     description: `${tool.name} pricing breakdown for 2026. Compare plans, features, and costs. Find the best ${tool.name} plan for your needs.`,
     alternates: { canonical: `/pricing/${slug}` },
+    other: {
+      "article:modified_time": new Date().toISOString(),
+      "article:section": tool.category,
+      "article:author": "https://shipsquad.ai/about",
+    },
   };
 }
 
@@ -30,10 +36,17 @@ export default async function PricingPage({ params }: Props) {
   const tool = tools.find((t) => t.slug === slug);
   if (!tool) notFound();
 
+  const pillarLink = getToolPillarLink(slug);
   const relatedPages = tools
     .filter((t) => t.slug !== slug && t.category === tool.category && t.hasPricingPage)
     .slice(0, 6)
     .map((t) => ({ title: `${t.name} Pricing`, href: `/pricing/${t.slug}`, category: t.category }));
+
+  const furtherReading = [
+    ...(pillarLink ? [pillarLink] : []),
+    { title: `${tool.name} Review 2026`, href: `/review/${slug}`, description: `In-depth review and analysis` },
+    { title: `${tool.name} Alternatives`, href: `/alternative/${slug}`, description: `Compare top alternatives` },
+  ];
 
   const faq = [
     { question: `How much does ${tool.name} cost?`, answer: `${tool.name} pricing starts at ${tool.pricingDetail}. Plans vary by features and usage limits.` },
@@ -58,8 +71,10 @@ export default async function PricingPage({ params }: Props) {
         { label: `${tool.name} Pricing` },
       ]}
       relatedPages={relatedPages}
+      furtherReading={furtherReading}
       tocItems={[
         { id: "overview", title: "Pricing Overview", level: 2 },
+        ...(tool.detailedPricing ? [{ id: "worth-it", title: `Is ${tool.name} Worth the Price?`, level: 2 }] : []),
         { id: "plans", title: "Plans & Features", level: 2 },
         { id: "comparison", title: "vs ShipSquad Pricing", level: 2 },
         { id: "faq", title: "FAQ", level: 2 },
@@ -88,6 +103,17 @@ export default async function PricingPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {tool.detailedPricing && (
+        <section id="worth-it" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">Is {tool.name} Worth the Price?</h2>
+          <div className="text-text-secondary leading-relaxed space-y-4">
+            {tool.detailedPricing.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section id="plans" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Features Included</h2>

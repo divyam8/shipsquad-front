@@ -4,6 +4,7 @@ import { comparisons } from "@/data/comparisons";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ComparisonTable } from "@/components/seo/ComparisonTable";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -32,6 +33,7 @@ export default async function VsPage({ params }: Props) {
   if (!comparison) notFound();
 
   const relatedComps = comparisons.filter((c) => c.slug !== slug && c.isVsTraditional).slice(0, 6).map((c) => ({ title: `${c.toolA} vs ${c.toolB}`, href: `/vs/${c.slug}`, category: c.category }));
+  const learnLinks = getLearnPillarLinks(comparison.category);
 
   const faq = [
     { question: `Should I choose ${comparison.toolA} or ${comparison.toolB}?`, answer: comparison.verdict },
@@ -47,6 +49,7 @@ export default async function VsPage({ params }: Props) {
         { label: `${comparison.toolA} vs ${comparison.toolB}` },
       ]}
       relatedPages={relatedComps}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "verdict", title: "Quick Verdict", level: 2 },
         { id: "comparison", title: "Detailed Comparison", level: 2 },
@@ -68,10 +71,35 @@ export default async function VsPage({ params }: Props) {
         </div>
       </section>
 
+      {comparison.detailedVerdict && (
+        <section id="detailed-analysis" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">In-Depth Analysis</h2>
+          <div className="text-text-secondary leading-relaxed space-y-4">
+            {comparison.detailedVerdict.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section id="comparison" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Detailed Comparison</h2>
         <ComparisonTable toolAName={comparison.toolA} toolBName={comparison.toolB} features={comparison.features} />
       </section>
+
+      {comparison.useCaseRecommendations && comparison.useCaseRecommendations.length > 0 && (
+        <section id="recommendation" className="mb-10">
+          <h2 className="text-2xl font-bold text-text-primary mb-4">When to Choose Which</h2>
+          <div className="space-y-3">
+            {comparison.useCaseRecommendations.map((rec, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-white/[0.05] bg-white/[0.02] p-4">
+                <span className="text-accent-blue mt-0.5 shrink-0">&#8594;</span>
+                <p className="text-text-secondary text-sm">{rec}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section id="shipsquad" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">The ShipSquad Way</h2>

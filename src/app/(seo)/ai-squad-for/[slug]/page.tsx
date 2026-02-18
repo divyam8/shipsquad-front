@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { industries } from "@/data/industries";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -35,6 +36,7 @@ export default async function AISquadForPage({ params }: Props) {
     .filter((i) => i.slug !== slug)
     .slice(0, 6)
     .map((i) => ({ title: i.title, href: `/ai-squad-for/${i.slug}`, category: "Industry" }));
+  const learnLinks = getLearnPillarLinks("agents");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -54,6 +56,7 @@ export default async function AISquadForPage({ params }: Props) {
         { label: industry.title },
       ]}
       relatedPages={relatedIndustries}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: "Overview", level: 2 },
         { id: "sub-niches", title: `${industry.name} Sub-Niches`, level: 2 },

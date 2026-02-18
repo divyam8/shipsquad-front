@@ -112,10 +112,691 @@ function featuresForCategory(cat: string, isTraditional: boolean): RawFeature[] 
   return defaultFeatures;
 }
 
+// --- Rich comparison data for top 30 highest-traffic comparison pages ---
+const richComparisonData: Record<string, { detailedVerdict: string; winnerSummary: string; useCaseRecommendations: string[] }> = {
+  "chatgpt-vs-claude": {
+    detailedVerdict: `ChatGPT and Claude are the two dominant general-purpose AI assistants, and choosing between them depends heavily on your primary use case. ChatGPT (powered by GPT-4o and GPT-4.5) has the larger ecosystem by a wide margin: the GPT Store offers thousands of specialized plugins, it supports image generation via DALL-E, voice conversations, web browsing, and file analysis all within one interface. For creative writing, brainstorming, and general-purpose chat, ChatGPT remains the more versatile option. Its free tier is also more generous, giving access to GPT-4o with reasonable rate limits.
+
+Claude (currently on Claude Opus 4 and Sonnet 4) consistently outperforms ChatGPT on complex reasoning, code generation, and analytical tasks. In independent benchmarks like SWE-bench, Claude leads in real-world software engineering. Claude's 200K context window (vs ChatGPT's 128K) makes it significantly better for analyzing long documents, codebases, and research papers. Claude also tends to produce more nuanced, less formulaic writing and is notably better at following complex multi-step instructions. However, Claude lacks image generation, has fewer integrations, and its free tier is more restrictive.
+
+Pricing is identical at $20/month for the Pro/Plus tier. OpenAI's Team plan runs $25/user/month vs Anthropic's similar enterprise offerings. For API usage, Claude Sonnet is cheaper per token than GPT-4o for comparable quality, making it the better value for developers. The real differentiator: ChatGPT is the better all-in-one consumer product, while Claude is the better thinking and coding partner.`,
+    winnerSummary: "Choose Claude for coding, analysis, and complex reasoning tasks; choose ChatGPT for its broader plugin ecosystem, image generation, and creative versatility.",
+    useCaseRecommendations: [
+      "Choose ChatGPT if you need image generation, voice chat, and a large plugin ecosystem in one app",
+      "Choose Claude if you primarily work with code, long documents, or complex analytical tasks",
+      "Choose ChatGPT if you want the most polished consumer AI experience with web browsing",
+      "Choose Claude if you need to process documents over 100K tokens or analyze entire codebases",
+      "Choose ChatGPT if creative writing, brainstorming, and idea generation are your main needs",
+      "Choose Claude if you value more nuanced, less formulaic responses and better instruction-following",
+    ],
+  },
+  "chatgpt-vs-gemini": {
+    detailedVerdict: `ChatGPT and Gemini represent the AI assistant offerings from OpenAI and Google respectively, and they've been converging in capabilities while maintaining distinct strengths. ChatGPT with GPT-4o offers a more mature product experience: better conversation memory, a massive plugin ecosystem via the GPT Store, superior image generation with DALL-E, and more consistent response quality. It's the default choice for most users who want a reliable, versatile AI assistant.
+
+Gemini (powered by Gemini 2.0 and Ultra) has Google's unfair advantage: deep integration with Search, Gmail, Google Docs, Drive, and the entire Workspace suite. For users already embedded in Google's ecosystem, Gemini is transformative — it can search your emails, summarize your documents, and pull real-time information from the web natively. Gemini also excels at multimodal understanding, particularly with video and image analysis, where Google's training data advantage shows. The Gemini Advanced plan at $20/month includes 2TB of Google storage, making it better value if you use Google services.
+
+Where ChatGPT pulls ahead is in conversation quality, creative writing, and code generation. GPT-4o produces more polished, natural responses, while Gemini can sometimes feel more robotic or overly cautious. ChatGPT's developer ecosystem is also significantly larger. However, Gemini's real-time information access and Google integration make it the better choice for research, productivity within Google Workspace, and tasks requiring current data. For API developers, Google offers a generous free tier for Gemini models that OpenAI cannot match.`,
+    winnerSummary: "Choose ChatGPT for the best overall chat experience and creative tasks; choose Gemini if you're deep in the Google ecosystem and need real-time web information.",
+    useCaseRecommendations: [
+      "Choose ChatGPT if you want the most reliable general-purpose AI assistant with the largest plugin ecosystem",
+      "Choose Gemini if you use Google Workspace heavily and want AI integrated into Gmail, Docs, and Drive",
+      "Choose ChatGPT for creative writing, code generation, and tasks requiring nuanced conversation",
+      "Choose Gemini for research tasks requiring real-time web information and Google Search integration",
+      "Choose Gemini if you want better value — $20/month includes 2TB Google storage",
+      "Choose ChatGPT if you need image generation and the most mature multimodal chat experience",
+    ],
+  },
+  "claude-vs-gemini": {
+    detailedVerdict: `Claude and Gemini target overlapping but distinct user bases. Claude (Opus 4 / Sonnet 4) is the clear leader in reasoning depth, code generation, and analytical tasks. It excels when you need an AI that can think through complex problems, maintain coherence over very long conversations, and produce high-quality code. Claude's 200K context window is the largest among major assistants, making it unmatched for analyzing lengthy documents, research papers, or entire codebases. Developers consistently rate Claude higher for software engineering tasks.
+
+Gemini's strengths lie in its multimodal capabilities and Google ecosystem integration. Gemini 2.0 handles video, images, and audio natively, and its integration with Google Search gives it real-time information access that Claude lacks. For users in Google Workspace, Gemini can interact with your Gmail, Docs, Sheets, and Drive content — a productivity advantage Claude cannot match. Gemini also offers a more generous free tier, with access to capable models without payment.
+
+The pricing comparison is straightforward: both offer $20/month pro tiers, but Gemini includes Google One storage. For API usage, Claude Sonnet offers exceptional value for reasoning-heavy tasks, while Gemini Flash is one of the cheapest capable models available. The key trade-off is clear: Claude is the better thinker, Gemini is the better information gatherer. Claude produces more carefully reasoned responses, while Gemini provides faster answers backed by real-time data. If your work involves deep analysis, writing, or coding, Claude wins. If you need a productivity assistant connected to your Google life with current information, Gemini wins.`,
+    winnerSummary: "Choose Claude for deep reasoning, coding, and long-document analysis; choose Gemini for Google Workspace integration, multimodal tasks, and real-time information.",
+    useCaseRecommendations: [
+      "Choose Claude for software engineering, code review, and technical analysis tasks",
+      "Choose Gemini if you need real-time web information or Google Workspace integration",
+      "Choose Claude for processing long documents or research papers over 100K tokens",
+      "Choose Gemini for multimodal tasks involving video understanding and image analysis",
+      "Choose Claude if you value careful, nuanced reasoning over speed",
+      "Choose Gemini if you want the most generous free tier among top AI assistants",
+    ],
+  },
+  "chatgpt-vs-perplexity": {
+    detailedVerdict: `ChatGPT and Perplexity serve fundamentally different primary use cases despite both being AI chatbots. Perplexity is an AI-powered search engine first: every response comes with inline citations, source links, and real-time web data. It's built for research, fact-finding, and getting accurate, up-to-date answers. If you're trying to understand a topic, compare products, or find current information, Perplexity is significantly better — it actually shows you where information comes from, making it trustworthy for factual queries.
+
+ChatGPT is the more versatile tool. It excels at creative writing, code generation, image creation with DALL-E, brainstorming, analysis, and general conversation. Its GPT Store offers thousands of specialized plugins, and features like voice mode and custom GPTs make it a more complete AI platform. However, ChatGPT's knowledge has a training cutoff and its web browsing feature, while improved, doesn't match Perplexity's native search integration.
+
+Pricing is comparable: Perplexity Pro at $20/month gives you 600+ Pro searches daily with access to multiple AI models (GPT-4o, Claude, Gemini). ChatGPT Plus at $20/month gives you GPT-4o access with all features. The interesting value proposition is that Perplexity Pro actually lets you choose between multiple frontier models, while ChatGPT locks you into the GPT family. For anyone who currently uses Google Search heavily, Perplexity is a genuine replacement. For anyone who needs an AI assistant for creation, coding, and multi-step tasks, ChatGPT remains the better choice. Many power users subscribe to both.`,
+    winnerSummary: "Choose Perplexity for research and factual queries with citations; choose ChatGPT for creative work, coding, and as a versatile AI assistant.",
+    useCaseRecommendations: [
+      "Choose Perplexity if your primary need is researching topics with cited, verifiable sources",
+      "Choose ChatGPT if you need creative writing, code generation, and image creation in one tool",
+      "Choose Perplexity as a Google Search replacement for faster, more synthesized answers",
+      "Choose ChatGPT if you want custom GPTs and a large plugin ecosystem for specialized workflows",
+      "Choose Perplexity Pro if you want access to multiple AI models (GPT-4o, Claude, Gemini) in one subscription",
+      "Choose ChatGPT if multi-step reasoning, file analysis, and voice conversations matter to you",
+    ],
+  },
+  "cursor-vs-github-copilot": {
+    detailedVerdict: `Cursor and GitHub Copilot represent two different philosophies for AI-assisted coding. GitHub Copilot ($10/month individual, $19/month business) works as an extension inside your existing IDE — primarily VS Code — providing inline code completions, chat, and increasingly agentic features. It's the safe, enterprise-friendly choice with GitHub's massive codebase training advantage and deep integration with GitHub workflows, pull requests, and Actions.
+
+Cursor ($20/month Pro) is a purpose-built AI-first IDE forked from VS Code. Because AI is baked into the editor itself rather than bolted on, Cursor offers a fundamentally different experience: Cmd+K inline editing, multi-file agentic edits via Composer, automatic codebase indexing for context-aware suggestions, and the ability to switch between AI models (GPT-4o, Claude Sonnet, etc.). Cursor's Composer feature, which can make coordinated changes across multiple files, is a genuine productivity leap that Copilot is still catching up to.
+
+Performance-wise, Cursor generally produces better code suggestions because it understands your full project context through codebase indexing, while Copilot primarily relies on the current file and a few open tabs. However, Copilot has been rapidly improving — Copilot Workspace and the new agentic features narrow the gap. For enterprise teams, Copilot's GitHub integration, compliance certifications, and organizational policy controls make it the safer choice. For individual developers and small teams who want the most powerful AI coding experience available today, Cursor is the better tool. The $10/month price difference matters less than the workflow difference.`,
+    winnerSummary: "Choose Cursor for the most powerful AI-first coding experience; choose GitHub Copilot for seamless GitHub integration and enterprise compliance.",
+    useCaseRecommendations: [
+      "Choose Cursor if you want multi-file agentic editing and the most advanced AI coding features",
+      "Choose GitHub Copilot if your team is deeply integrated with GitHub and needs enterprise compliance",
+      "Choose Cursor if you want to use multiple AI models (Claude, GPT-4o) within your editor",
+      "Choose GitHub Copilot if you prefer adding AI to your existing VS Code setup without switching editors",
+      "Choose Cursor if you frequently need coordinated changes across multiple files",
+      "Choose GitHub Copilot if budget is a concern — it's half the price of Cursor Pro",
+    ],
+  },
+  "cursor-vs-windsurf": {
+    detailedVerdict: `Cursor and Windsurf are both AI-first IDEs forked from VS Code, competing directly for developers who want AI deeply integrated into their coding workflow. Cursor ($20/month Pro) has a significant head start and larger community. Its standout features include Composer for multi-file agentic edits, robust codebase indexing, Cmd+K inline editing, and the ability to switch between multiple AI models. Cursor's context engine understands your entire project, producing more relevant suggestions than generic completions.
+
+Windsurf (by Codeium, $15/month Pro) differentiates with its "Cascade" feature — a flow-based agentic system that can execute multi-step coding tasks while keeping you informed of each action. Windsurf also offers a more generous free tier than Cursor, and its code completion speed is notably fast due to Codeium's optimized inference infrastructure. Windsurf's approach feels more collaborative — it explains its reasoning as it works — while Cursor feels more direct and efficient.
+
+In practice, Cursor produces slightly better code edits, especially for complex refactoring across multiple files. Its community is larger, meaning more tutorials, tips, and custom rules are available. Windsurf's advantage is pricing ($5/month cheaper), a better free tier, and smoother onboarding for developers new to AI-assisted coding. Both tools support VS Code extensions, so migration from either direction is painless. For experienced developers who want maximum power, Cursor edges ahead. For developers who want a more accessible entry point to AI-first coding at a lower price, Windsurf is an excellent alternative that's improving rapidly.`,
+    winnerSummary: "Choose Cursor for the most powerful multi-file editing and largest community; choose Windsurf for better pricing and a smoother agentic workflow experience.",
+    useCaseRecommendations: [
+      "Choose Cursor if you need the most advanced multi-file agentic editing capabilities",
+      "Choose Windsurf if you want a more affordable AI IDE with a generous free tier",
+      "Choose Cursor if access to multiple AI models (Claude, GPT-4o) in-editor matters to you",
+      "Choose Windsurf if you prefer a more explanatory, step-by-step agentic coding flow",
+      "Choose Cursor if you want the largest community and most available learning resources",
+      "Choose Windsurf if you're transitioning from traditional coding to AI-assisted development",
+    ],
+  },
+  "cursor-vs-devin": {
+    detailedVerdict: `Cursor and Devin represent fundamentally different approaches to AI-assisted software development. Cursor ($20/month) is an AI-enhanced IDE where you, the developer, remain in control — writing code with AI suggestions, using Composer for multi-file edits, and directing the AI's actions. It amplifies a skilled developer's productivity by 2-5x while keeping them in the loop for every decision.
+
+Devin ($500/month) is an autonomous AI software engineer that operates independently. You give it a task — "build a REST API with authentication" or "fix this bug from the GitHub issue" — and it plans, writes code, creates tests, debugs, and submits a pull request. Devin has its own browser, terminal, and editor within a sandboxed environment. It's designed to handle entire engineering tasks without human intervention, though it works best with clear specifications and bounded scope.
+
+The comparison isn't really apples-to-apples. Cursor is a tool for developers; Devin is meant to be a developer. In practice, Cursor produces higher-quality code because a skilled human is making architectural decisions. Devin is better for well-defined, repetitive tasks — migrating APIs, writing boilerplate, fixing straightforward bugs. Devin struggles with ambiguous requirements, novel architectures, and tasks requiring deep contextual understanding of a company's codebase conventions. At $500/month vs $20/month, Devin needs to replace significant developer time to justify its cost. Most teams find that Cursor-empowered developers outperform Devin on complex tasks, while Devin excels as a junior engineer handling ticket backlogs.`,
+    winnerSummary: "Choose Cursor if you're a developer wanting to amplify your productivity; choose Devin if you need an autonomous agent to handle well-defined engineering tasks independently.",
+    useCaseRecommendations: [
+      "Choose Cursor if you're a developer who wants AI assistance while maintaining full control",
+      "Choose Devin if you need to offload well-defined tickets to an autonomous agent",
+      "Choose Cursor for complex architectural work and novel feature development",
+      "Choose Devin for repetitive tasks like API migrations, boilerplate generation, and bug fixes",
+      "Choose Cursor if your budget is limited — it's 25x cheaper than Devin",
+      "Choose Devin if you're a non-technical founder who needs engineering work without hiring a developer",
+    ],
+  },
+  "chatgpt-vs-deepseek": {
+    detailedVerdict: `ChatGPT and DeepSeek represent the established incumbent vs the disruptive challenger in AI. ChatGPT (GPT-4o) offers the most polished consumer AI experience: a mature interface, plugins, image generation, voice mode, web browsing, file analysis, and the massive GPT Store. It's the default recommendation for users who want a reliable, feature-rich AI assistant that just works.
+
+DeepSeek (R1 and V3 models) has stunned the AI industry by delivering reasoning capabilities competitive with GPT-4o and Claude Opus at a fraction of the cost. DeepSeek R1's chain-of-thought reasoning is genuinely impressive on math, coding, and logic tasks, sometimes matching or exceeding GPT-4o. The API pricing is dramatically cheaper — roughly 90% less than OpenAI for comparable quality. For developers building AI applications, DeepSeek offers extraordinary value.
+
+The trade-offs are real, though. DeepSeek's consumer chat interface is basic compared to ChatGPT's polished product. There are no plugins, no image generation, no voice mode, and limited multimodal support. DeepSeek is a Chinese company, which raises data privacy concerns for some users and organizations — its servers are subject to Chinese data laws. Response quality is less consistent than ChatGPT; DeepSeek excels on reasoning-heavy tasks but can be weaker on creative writing, nuanced conversation, and cultural understanding of Western contexts. For cost-sensitive developers and technically-oriented users, DeepSeek is a revelation. For general consumers wanting the most complete AI experience, ChatGPT remains the better choice.`,
+    winnerSummary: "Choose ChatGPT for the most complete AI assistant experience; choose DeepSeek for impressive reasoning at dramatically lower API costs, with the caveat of data privacy considerations.",
+    useCaseRecommendations: [
+      "Choose ChatGPT for the most polished consumer experience with plugins, image generation, and voice",
+      "Choose DeepSeek if you need strong reasoning capabilities at a fraction of the API cost",
+      "Choose ChatGPT if data privacy and US-based hosting are important to your organization",
+      "Choose DeepSeek for math, coding, and logic tasks where its reasoning chain excels",
+      "Choose ChatGPT for creative writing, brainstorming, and general-purpose conversations",
+      "Choose DeepSeek if you're building AI applications and need to minimize API costs",
+    ],
+  },
+  "claude-vs-deepseek": {
+    detailedVerdict: `Claude and DeepSeek compete on reasoning quality but diverge significantly in approach, safety, and ecosystem. Claude (Opus 4 / Sonnet 4) is Anthropic's flagship, consistently ranking at or near the top of coding benchmarks (SWE-bench), reasoning evaluations, and safety assessments. Claude's 200K context window, exceptional instruction-following, and careful, nuanced responses make it the preferred choice for professional developers, researchers, and enterprises. Anthropic's focus on AI safety means Claude has robust refusal behaviors and is less likely to produce harmful content.
+
+DeepSeek R1 delivers remarkable reasoning at dramatically lower cost. On pure reasoning benchmarks (AIME, MATH, competitive coding), DeepSeek R1 often matches Claude Opus. Its chain-of-thought reasoning is transparent and impressive. The API pricing is roughly 10-20x cheaper than Claude for comparable model tiers, making it incredibly attractive for high-volume applications. DeepSeek's open-weight models can also be self-hosted, giving organizations full control over their deployment.
+
+The differences beyond benchmarks matter significantly. Claude produces more polished, professional prose and is better at understanding nuanced instructions with many constraints. Claude's safety features are stronger, and Anthropic provides clearer data handling guarantees (US/EU hosting). DeepSeek operates under Chinese data sovereignty laws, which is a dealbreaker for many enterprises. DeepSeek can also be inconsistent — brilliant on structured reasoning tasks but weaker on open-ended analysis and creative work. For professional use where quality consistency, safety, and data governance matter, Claude is the clear choice. For cost-sensitive applications where raw reasoning power is the priority, DeepSeek offers unbeatable value.`,
+    winnerSummary: "Choose Claude for professional-grade reasoning with safety and data governance; choose DeepSeek for competitive reasoning at 10-20x lower API cost if data privacy isn't a concern.",
+    useCaseRecommendations: [
+      "Choose Claude for enterprise applications requiring data governance and US/EU hosting",
+      "Choose DeepSeek if API cost is your primary concern and you need strong reasoning on a budget",
+      "Choose Claude for complex software engineering tasks where quality consistency matters",
+      "Choose DeepSeek for math, competitive coding, and structured reasoning tasks",
+      "Choose Claude if you need reliable safety features and instruction-following",
+      "Choose DeepSeek if you want to self-host open-weight models for full deployment control",
+    ],
+  },
+  "midjourney-vs-dall-e": {
+    detailedVerdict: `Midjourney and DALL-E are the two most popular AI image generators, with very different strengths. Midjourney (v6.1) produces the most aesthetically stunning images in the AI generation space. Its outputs have a distinctive artistic quality — richer lighting, more cinematic compositions, and a level of visual sophistication that makes generated images look like they were created by professional artists. Midjourney operates through Discord (and now a web interface), which feels unusual but enables a community-driven creative process. Pricing starts at $10/month for the Basic plan (200 generations) up to $60/month for Mega.
+
+DALL-E 3 (integrated into ChatGPT) wins on accessibility and prompt adherence. You can generate images directly in ChatGPT without learning Discord commands, and DALL-E is exceptionally good at following detailed, specific prompts — it does what you ask more faithfully than Midjourney, which tends to impose its own artistic interpretation. DALL-E also handles text rendering in images better than most competitors. It's included with ChatGPT Plus ($20/month), making it essentially free for existing subscribers.
+
+The quality gap has narrowed but Midjourney still leads for artistic and commercial work. Professional designers, marketers, and content creators typically prefer Midjourney for hero images, social media content, and conceptual art. DALL-E is better for quick iterations, specific compositions, and users who don't want to learn a new interface. DALL-E's API is also more accessible for developers integrating image generation into applications. Neither tool is great for precise editing — both struggle with specific modifications to existing images compared to tools like Adobe Firefly.`,
+    winnerSummary: "Choose Midjourney for the highest artistic quality and commercial-grade images; choose DALL-E for easier access, better prompt adherence, and integration with ChatGPT.",
+    useCaseRecommendations: [
+      "Choose Midjourney for marketing materials, social media content, and commercial creative work",
+      "Choose DALL-E if you already use ChatGPT and want quick image generation without learning a new tool",
+      "Choose Midjourney for artistic projects where visual quality and aesthetic sophistication matter most",
+      "Choose DALL-E for images that require specific compositions and faithful prompt adherence",
+      "Choose DALL-E if you need API access for integrating image generation into your application",
+      "Choose Midjourney if you want the most photorealistic or cinematic AI-generated images",
+    ],
+  },
+  "midjourney-vs-stable-diffusion": {
+    detailedVerdict: `Midjourney and Stable Diffusion represent the commercial vs open-source poles of AI image generation. Midjourney (v6.1, $10-60/month) is a managed service that produces stunning images with minimal effort. You type a prompt, and you get beautiful, artistic results. No setup, no GPU required, no model management. The quality floor is high — even simple prompts yield impressive results. However, you're limited to Midjourney's service, their terms of use, and their pricing.
+
+Stable Diffusion (SDXL, SD3) is completely free and open-source. You can run it locally on your own GPU (8GB+ VRAM recommended), use it through services like Civitai or RunDiffusion, or deploy it on cloud infrastructure. The ecosystem is enormous: thousands of fine-tuned models, LoRAs, ControlNets, and community tools that allow unmatched customization. You can train your own models, create consistent characters, and generate images with no restrictions on content or usage rights. The downside is complexity — getting great results requires learning prompting techniques, model selection, and often ComfyUI or Automatic1111 workflows.
+
+For professional use, the choice depends on your needs. Midjourney is better for quick, high-quality results without technical overhead — marketing teams, social media managers, and designers who need beautiful images fast. Stable Diffusion is better for volume (unlimited free generation), customization (fine-tuned models for specific styles), integration (API and local deployment), and full ownership. Game studios, product teams needing consistent character design, and developers building image features into products typically prefer Stable Diffusion. The raw quality gap has narrowed with SD3 and SDXL Turbo, but Midjourney still produces more consistently beautiful outputs with less effort.`,
+    winnerSummary: "Choose Midjourney for the best quality with zero setup; choose Stable Diffusion for unlimited free generation, full customization, and open-source flexibility.",
+    useCaseRecommendations: [
+      "Choose Midjourney if you want beautiful images from simple prompts without any technical setup",
+      "Choose Stable Diffusion if you need unlimited generation at no per-image cost",
+      "Choose Midjourney for marketing and social media content where quick, polished results matter",
+      "Choose Stable Diffusion if you need to fine-tune models for consistent character or brand styles",
+      "Choose Stable Diffusion if data privacy requires running image generation locally or on your own servers",
+      "Choose Midjourney if you're not technical and just want the best AI images with minimal learning curve",
+    ],
+  },
+  "zapier-vs-make": {
+    detailedVerdict: `Zapier and Make (formerly Integromat) are the leading no-code automation platforms, but they serve different complexity levels. Zapier ($19.99/month Starter, up to $599/month for Teams) is the simpler, more accessible option with the largest app directory — over 7,000 integrations. Its linear "trigger > action" model is intuitive for basic automations: when something happens in App A, do something in App B. For straightforward workflows like syncing CRM data, sending notifications, or connecting SaaS tools, Zapier is faster to set up and easier to maintain.
+
+Make ($9/month Core, up to $299/month for Teams) offers a visual, flowchart-style builder that handles complex branching logic, loops, error handling, and data transformation far better than Zapier. Make's pricing is significantly more favorable for high-volume automations — you pay per operation (1,000 ops/month on free tier) rather than per task like Zapier, which means complex workflows with many steps cost a fraction of Zapier's price. Make also offers built-in data stores, more powerful filters, and HTTP/webhook modules that make it genuinely programmable without code.
+
+For most small businesses with simple automations, Zapier is the right choice — it's faster to set up and has more integrations. For power users, agencies, and businesses running complex workflows with high volume, Make is dramatically better value. A workflow that costs $50/month on Zapier might cost $9/month on Make. Make's learning curve is steeper, but the visual builder actually makes complex automations easier to understand and debug once you're past the initial learning phase. The trend in the market is clear: users start with Zapier and migrate to Make as their automations grow in complexity.`,
+    winnerSummary: "Choose Zapier for simple automations with the most integrations; choose Make for complex workflows at dramatically better pricing.",
+    useCaseRecommendations: [
+      "Choose Zapier if you need simple trigger-action automations and want the fastest setup",
+      "Choose Make if you need complex branching logic, loops, and error handling in workflows",
+      "Choose Zapier if you need a specific integration — it supports over 7,000 apps",
+      "Choose Make if you run high-volume automations and want to minimize cost per operation",
+      "Choose Zapier if your team is non-technical and needs the simplest learning curve",
+      "Choose Make if you need data transformation, HTTP modules, and near-code-level control",
+    ],
+  },
+  "zapier-vs-n8n": {
+    detailedVerdict: `Zapier and n8n represent the closed-source vs open-source divide in workflow automation. Zapier ($19.99/month+) is the market leader with 7,000+ integrations, the simplest UX, and the largest community of non-technical users. It just works — connect two apps, set a trigger, and forget about it. For businesses that want automation without thinking about infrastructure, Zapier is the default choice.
+
+n8n is a fundamentally different proposition. It's open-source (source-available under a fair-use license), self-hostable, and offers unlimited workflows and executions on its self-hosted version at zero cost. n8n's visual workflow editor is more powerful than Zapier's, supporting complex branching, sub-workflows, custom JavaScript/Python code nodes, and error handling. n8n Cloud starts at $20/month, but the self-hosted version running on a $5/month VPS can handle workloads that would cost hundreds on Zapier.
+
+The trade-offs are predictable. Zapier has more pre-built integrations and requires zero technical knowledge. n8n requires some technical comfort — especially if self-hosting — and has fewer native integrations (though its HTTP/webhook nodes can connect to anything with an API). n8n's community is growing fast, especially among developers and DevOps teams who appreciate the code-level control. For startups and technical teams, n8n is the obvious choice: unlimited automations at fixed or zero cost with full customization. For non-technical teams at established businesses, Zapier's polish and app directory justify the premium. The pricing gap is substantial — a company running 50 complex workflows might pay $500+/month on Zapier vs $20-50/month on n8n.`,
+    winnerSummary: "Choose Zapier for simplicity and the largest integration library; choose n8n for unlimited self-hosted automations at a fraction of the cost with code-level control.",
+    useCaseRecommendations: [
+      "Choose Zapier if your team is non-technical and needs the simplest automation setup",
+      "Choose n8n if you want unlimited workflows and executions via self-hosting at minimal cost",
+      "Choose Zapier if you need 7,000+ pre-built app integrations out of the box",
+      "Choose n8n if you need custom code nodes, complex branching, and developer-level control",
+      "Choose Zapier for quick, simple automations between common SaaS tools",
+      "Choose n8n if data privacy requires self-hosting your automation infrastructure on your own servers",
+    ],
+  },
+  "bolt-vs-lovable": {
+    detailedVerdict: `Bolt (by StackBlitz) and Lovable (formerly GPT Engineer) are the two leading AI app builders that let you create full applications from natural language prompts. Both target non-technical users and designers who want to build functional web apps without writing code, but they differ in execution and strengths.
+
+Bolt excels at speed and framework flexibility. It generates applications in-browser using WebContainers (StackBlitz's technology), supports multiple frameworks (React, Vue, Svelte, Next.js), and lets you iterate rapidly through conversation. Bolt's generated code is generally cleaner and more production-ready. It also handles backend logic and API integrations better. Pricing starts with a free tier, with Pro at $20/month for more generations.
+
+Lovable focuses on design quality. Applications generated by Lovable tend to look more polished out of the box — better typography, spacing, and overall visual coherence. Lovable also offers built-in Supabase integration for backend/database functionality, GitHub sync for code management, and one-click deployment. Its UI for managing generated projects feels more mature. Pricing is similar, with a Pro tier around $25/month.
+
+In practice, Bolt is better for developers and technical users who want to prototype quickly and then customize the code. Lovable is better for non-technical users who care more about the visual result and want a managed deployment pipeline. Both struggle with very complex applications — they're best for landing pages, dashboards, simple CRUD apps, and MVPs. Neither replaces a real development team for production software, but both can save weeks of initial development time. The market is young and both tools are improving rapidly.`,
+    winnerSummary: "Choose Bolt for faster prototyping with cleaner code and framework flexibility; choose Lovable for more polished designs and better managed deployment.",
+    useCaseRecommendations: [
+      "Choose Bolt if you want framework flexibility (React, Vue, Svelte) and cleaner generated code",
+      "Choose Lovable if design quality matters most and you want polished UIs out of the box",
+      "Choose Bolt if you're a developer who wants to quickly prototype and then customize the code",
+      "Choose Lovable if you need built-in Supabase integration and one-click deployment",
+      "Choose Bolt for rapid iteration speed — its WebContainer technology generates apps faster",
+      "Choose Lovable if you're non-technical and want a more guided app-building experience",
+    ],
+  },
+  "bolt-vs-v0": {
+    detailedVerdict: `Bolt and v0 (by Vercel) approach AI-powered building from different angles. Bolt generates complete, functional applications from prompts — full pages with routing, state management, and backend logic. It's an app builder that produces running code. v0 is a UI component generator that creates high-quality React components using shadcn/ui and Tailwind CSS. It's designed to produce individual pieces that developers integrate into larger applications.
+
+v0 produces exceptionally clean, production-ready UI code. Because it's built by Vercel and uses shadcn/ui, the generated components follow best practices for Next.js/React development. v0 is the best tool for creating individual UI components — forms, dashboards, cards, navigation, data tables — that you can copy directly into your codebase. It's free with generous limits, with Pro at $20/month for more generations and features.
+
+Bolt is better when you want a complete working application, not just components. It handles routing, state, data fetching, and backend logic that v0 doesn't attempt. Bolt's in-browser execution via WebContainers lets you see and interact with the full application immediately. However, Bolt's generated code can be less polished at the component level compared to v0's meticulously crafted outputs.
+
+The tools actually complement each other: use v0 to design individual components and UI patterns, then use Bolt to scaffold the full application. For non-developers building complete apps, Bolt is the better choice. For developers who want high-quality UI components to accelerate their existing projects, v0 is superior. Both are best for React/Next.js ecosystems.`,
+    winnerSummary: "Choose Bolt for generating complete working applications; choose v0 for creating high-quality individual UI components with production-ready code.",
+    useCaseRecommendations: [
+      "Choose Bolt if you want to generate a complete working application from a prompt",
+      "Choose v0 if you need individual, production-quality React/shadcn UI components",
+      "Choose Bolt if you're a non-developer building a full web application or MVP",
+      "Choose v0 if you're a developer who wants to accelerate UI development in Next.js projects",
+      "Choose Bolt for prototypes that need routing, state management, and backend logic",
+      "Choose v0 for design system components — forms, dashboards, data tables, and navigation",
+    ],
+  },
+  "crewai-vs-langgraph": {
+    detailedVerdict: `CrewAI and LangGraph are the two most popular frameworks for building multi-agent AI systems, targeting different developer profiles. CrewAI offers a high-level, role-based abstraction: you define agents with roles, goals, and backstories, assign them tasks, and let CrewAI handle the orchestration. It's intuitive — you think in terms of teams and collaboration rather than state machines. Getting a multi-agent system running with CrewAI takes minutes, not hours. CrewAI is open-source and free, with a managed platform (CrewAI Enterprise) for production deployments.
+
+LangGraph (by LangChain) provides lower-level control through a graph-based state machine model. You define nodes (processing steps), edges (transitions), and state — giving you precise control over agent workflows, conditional branching, human-in-the-loop patterns, and error recovery. LangGraph is more verbose to set up but handles production requirements better: persistent state, streaming, checkpointing, and complex branching logic. It integrates naturally with the broader LangChain ecosystem.
+
+The choice is clear-cut. If you want to prototype multi-agent systems quickly, or if your agents fit a team-based metaphor (researcher + writer + reviewer), CrewAI is significantly faster to build with and easier to understand. If you're building a production system that needs precise control flow, error handling, human-in-the-loop steps, and complex state management, LangGraph is more robust. CrewAI is great for getting started and for many production use cases, but teams often hit limitations around error handling and deterministic behavior. LangGraph has a steeper learning curve but provides the control needed for mission-critical agent systems. Many teams prototype in CrewAI and migrate to LangGraph for production.`,
+    winnerSummary: "Choose CrewAI for intuitive multi-agent prototyping with role-based teams; choose LangGraph for production-grade agent systems with precise control flow and state management.",
+    useCaseRecommendations: [
+      "Choose CrewAI if you want the fastest path to a working multi-agent system",
+      "Choose LangGraph if you need precise control over agent state, transitions, and error handling",
+      "Choose CrewAI if your agents fit a team-based metaphor with defined roles and collaboration",
+      "Choose LangGraph if you need human-in-the-loop patterns and persistent checkpointing",
+      "Choose CrewAI for prototyping and simpler multi-agent workflows",
+      "Choose LangGraph for production systems requiring deterministic behavior and complex branching",
+    ],
+  },
+  "crewai-vs-langchain": {
+    detailedVerdict: `CrewAI and LangChain operate at different levels of abstraction. LangChain is a comprehensive toolkit for building any LLM-powered application — RAG pipelines, chatbots, agents, chains, and more. It provides the building blocks (model interfaces, prompt templates, output parsers, vector store integrations) that developers combine to create custom solutions. LangChain is the most widely-used LLM framework with the largest community and ecosystem.
+
+CrewAI is specifically focused on multi-agent orchestration. Built on top of LangChain (it uses LangChain components internally), CrewAI provides a higher-level abstraction for coordinating multiple AI agents working together on complex tasks. You define agents with roles and goals, assign them tools, create tasks with expected outputs, and CrewAI manages the collaboration. It's not a general-purpose LLM framework — it's a specialized multi-agent framework.
+
+The comparison is like comparing React (a full UI framework) to React Query (a specialized data-fetching library that works with React). You don't choose one over the other in all cases. If you need a multi-agent system, CrewAI gets you there faster with better abstractions. If you need a general LLM application (RAG, chatbot, single-agent workflow), LangChain is the right choice. If you need multi-agent AND other LLM features, you'll likely use both — CrewAI for agent orchestration and LangChain components for the underlying infrastructure. Many production systems use CrewAI for the agent layer while leveraging LangChain's document loaders, vector stores, and model integrations underneath.`,
+    winnerSummary: "Choose CrewAI for multi-agent orchestration specifically; choose LangChain as a general-purpose LLM application framework that covers broader use cases.",
+    useCaseRecommendations: [
+      "Choose CrewAI if your primary need is coordinating multiple AI agents on complex tasks",
+      "Choose LangChain if you're building RAG pipelines, chatbots, or general LLM applications",
+      "Choose CrewAI for fast prototyping of agent teams with role-based collaboration",
+      "Choose LangChain if you need the broadest ecosystem of integrations and model support",
+      "Use both together: CrewAI for agent orchestration with LangChain components underneath",
+      "Choose LangChain if you're building a single-agent system that doesn't need multi-agent coordination",
+    ],
+  },
+  "semrush-vs-ahrefs": {
+    detailedVerdict: `Semrush and Ahrefs are the two dominant SEO platforms, and the choice between them has been debated for years. Semrush ($129.95/month Pro, $249.95/month Guru) positions itself as a comprehensive digital marketing toolkit — SEO, PPC, content marketing, social media, and competitive research all in one platform. Its keyword research database is the largest (26B+ keywords), and its competitive analysis features (traffic analytics, market explorer) are more extensive than Ahrefs'.
+
+Ahrefs ($99/month Lite, $199/month Standard) focuses more purely on SEO and does it exceptionally well. Ahrefs has the best backlink index in the industry — its crawler is the most active after Google's, updating backlink data faster than any competitor. Ahrefs' Site Explorer, Content Explorer, and Keywords Explorer are considered best-in-class by many SEO professionals. The interface is cleaner and more intuitive than Semrush's, which can feel overwhelming with its breadth of features.
+
+For pure SEO work — backlink analysis, keyword research, site audits, and rank tracking — Ahrefs is generally preferred by SEO specialists. Its data is often more accurate for backlink analysis, and the workflows are more streamlined. Semrush wins for marketing teams that need SEO + PPC + social + content tools in one subscription, avoiding the need for multiple tools. Semrush's content marketing toolkit (SEO Writing Assistant, Topic Research) and PPC features add significant value for teams doing broader digital marketing. Pricing is close enough that cost isn't the deciding factor. Ahrefs recently introduced a more affordable Starter plan at $29/month, which is excellent for small sites. If SEO is your only concern, start with Ahrefs. If you need a broader marketing platform, Semrush justifies its premium.`,
+    winnerSummary: "Choose Ahrefs for best-in-class backlink analysis and pure SEO workflows; choose Semrush for a broader digital marketing toolkit covering SEO, PPC, content, and social.",
+    useCaseRecommendations: [
+      "Choose Ahrefs if backlink analysis and link building are your primary SEO activities",
+      "Choose Semrush if you need SEO, PPC, content marketing, and social tools in one platform",
+      "Choose Ahrefs for a cleaner, more focused SEO interface with less feature overwhelm",
+      "Choose Semrush for competitive intelligence including traffic analytics and market research",
+      "Choose Ahrefs Starter ($29/month) if you're a small site owner on a budget",
+      "Choose Semrush if your marketing team manages both organic SEO and paid advertising",
+    ],
+  },
+  "chatgpt-vs-copilot": {
+    detailedVerdict: `ChatGPT and Microsoft Copilot are both powered by OpenAI's GPT models, but they serve different purposes and ecosystems. ChatGPT ($20/month Plus) is the standalone AI assistant: flexible, creative, and feature-rich with image generation, custom GPTs, voice mode, and the GPT Store. It's the best general-purpose AI chat for individuals who want a powerful thinking partner.
+
+Microsoft Copilot (free tier + $20/month Copilot Pro, $30/user/month for Microsoft 365 Copilot) is Microsoft's AI layer across its entire product suite. The free version is a capable chatbot with web search built in. Copilot Pro adds GPT-4 Turbo access and AI features in Word, Excel, PowerPoint, and Outlook. The enterprise Microsoft 365 Copilot integrates directly into Teams, SharePoint, and the full Office suite — generating documents, analyzing spreadsheets, summarizing meetings, and drafting emails within the tools you already use.
+
+The comparison depends entirely on your context. For an individual wanting the best AI chat experience, ChatGPT is superior — better conversation quality, more features, and a larger ecosystem. For someone working primarily in Microsoft 365, Copilot's in-app integration is genuinely transformative. Having AI that can draft a PowerPoint from a Word doc, analyze Excel data with natural language, and summarize Teams meetings is worth the premium. ChatGPT requires copy-pasting between apps; Copilot works where you work.
+
+The enterprise decision is clearer: if your organization runs on Microsoft 365, Copilot at $30/user/month provides embedded AI across all productivity tools. For individual knowledge workers, ChatGPT Plus offers better raw AI quality and more flexibility at the same $20/month price.`,
+    winnerSummary: "Choose ChatGPT for the best standalone AI assistant; choose Microsoft Copilot if you live in the Microsoft 365 ecosystem and want AI embedded in your productivity tools.",
+    useCaseRecommendations: [
+      "Choose ChatGPT if you want the best general-purpose AI assistant for chat, coding, and creative work",
+      "Choose Microsoft Copilot if you work primarily in Word, Excel, PowerPoint, and Outlook",
+      "Choose ChatGPT for image generation, custom GPTs, and the richest plugin ecosystem",
+      "Choose Copilot for enterprise Microsoft 365 organizations wanting embedded AI in all Office apps",
+      "Choose ChatGPT if you value conversation quality and creative flexibility",
+      "Choose Copilot if summarizing Teams meetings and generating Office documents from AI is your priority",
+    ],
+  },
+  "claude-vs-copilot": {
+    detailedVerdict: `Claude and Microsoft Copilot serve very different use cases despite both being AI assistants. Claude (Opus 4 / Sonnet 4, $20/month Pro) is the thinking person's AI — it excels at complex reasoning, nuanced analysis, code generation, and processing long documents. With its 200K context window, Claude can analyze entire codebases, research papers, and book-length documents that other AIs simply cannot handle. It's the preferred choice for developers, researchers, and analysts.
+
+Microsoft Copilot works as an AI layer across Microsoft's productivity suite. The free tier is a decent chatbot with Bing search. Copilot Pro ($20/month) adds AI to Office apps. Microsoft 365 Copilot ($30/user/month enterprise) transforms how teams work in Word, Excel, PowerPoint, Teams, and Outlook. It's less about being the smartest AI and more about being the most integrated one.
+
+The comparison reveals a clear division of labor. Claude is the better thinker: it produces more carefully reasoned responses, writes better code, and handles complex analytical tasks with greater sophistication. Microsoft Copilot is the better productivity tool: it's embedded in the apps where work actually happens. Claude requires you to copy information into its interface; Copilot works with your existing documents, spreadsheets, and emails natively.
+
+For individual professionals — especially developers, writers, and analysts — Claude provides more value per dollar. For organizations standardized on Microsoft 365, Copilot delivers more practical productivity gains because the AI meets you where you work. Many professionals use both: Claude for deep thinking and complex tasks, Copilot for day-to-day Office productivity.`,
+    winnerSummary: "Choose Claude for superior reasoning, coding, and analytical tasks; choose Microsoft Copilot for AI integrated into your Microsoft 365 workflow.",
+    useCaseRecommendations: [
+      "Choose Claude for complex reasoning, code generation, and long document analysis",
+      "Choose Microsoft Copilot if your daily work centers on Microsoft 365 apps",
+      "Choose Claude for processing documents over 100K tokens that other AIs cannot handle",
+      "Choose Copilot for generating PowerPoint presentations and analyzing Excel data with natural language",
+      "Choose Claude if you're a developer, researcher, or analyst needing the best thinking AI",
+      "Choose Copilot for enterprise teams wanting embedded AI across their Microsoft productivity stack",
+    ],
+  },
+  "cursor-vs-claude-code": {
+    detailedVerdict: `Cursor and Claude Code represent the GUI vs CLI paradigms of AI-assisted development. Cursor ($20/month Pro) is a visual IDE forked from VS Code with AI deeply integrated: inline completions, Cmd+K editing, multi-file Composer, codebase indexing, and support for multiple AI models. It's familiar to any VS Code user and provides a polished, visual experience for AI-assisted coding.
+
+Claude Code ($20/month with Claude Pro, or API-based) is Anthropic's terminal-native agentic coding tool. It operates entirely in the command line, reading your codebase, making multi-file changes, running commands, and managing git — all through natural language conversation. Claude Code uses Claude Opus and Sonnet's superior reasoning to understand complex codebases and make sweeping changes that would be tedious in a GUI. It excels at large refactors, codebase-wide changes, and tasks that require understanding project-level context.
+
+The tools appeal to different developer profiles. Cursor is better for the visual, interactive coding workflow — you see your code, you see the AI's suggestions, you accept or reject them in-editor. It's more controlled and predictable. Claude Code is better for ambitious, agentic tasks — "refactor all API routes to use the new middleware pattern" or "add comprehensive test coverage to this module." Claude Code's reasoning depth means it handles complex, multi-step tasks better than Cursor's AI.
+
+Many developers use both: Claude Code for large-scale changes and complex reasoning tasks, Cursor for day-to-day coding with inline completions and quick edits. The ideal workflow often starts with Claude Code for architecture and major changes, then switches to Cursor for fine-tuning and incremental development. If you must choose one, Cursor is more versatile for everyday coding; Claude Code is more powerful for complex engineering tasks.`,
+    winnerSummary: "Choose Cursor for visual, everyday AI-assisted coding; choose Claude Code for terminal-based agentic development with superior reasoning on complex tasks.",
+    useCaseRecommendations: [
+      "Choose Cursor if you prefer a visual IDE experience with inline AI completions",
+      "Choose Claude Code for large-scale refactoring and codebase-wide changes",
+      "Choose Cursor for day-to-day coding with quick inline edits and multi-model support",
+      "Choose Claude Code for complex tasks requiring deep reasoning about your entire codebase",
+      "Choose Cursor if you're transitioning from VS Code and want a familiar interface",
+      "Choose Claude Code if you prefer terminal-based workflows and want maximum agentic autonomy",
+    ],
+  },
+  "github-copilot-vs-claude-code": {
+    detailedVerdict: `GitHub Copilot and Claude Code approach AI coding from opposite ends of the spectrum. GitHub Copilot ($10/month individual, $19/month business) is an inline AI assistant that lives inside your IDE. It excels at code completions, suggesting the next line or block as you type. Copilot's strength is its seamless integration with VS Code and GitHub — it feels like a natural extension of your editor, not a separate tool. The newer Copilot Chat and agentic features add conversation and multi-step capabilities, but its core value is still "AI autocomplete on steroids."
+
+Claude Code is a terminal-based agentic coding tool powered by Claude's frontier reasoning models. Rather than suggesting code as you type, you give it high-level instructions — "implement the authentication system using JWT with refresh tokens" — and it reads your codebase, plans the changes, creates/modifies multiple files, runs tests, and commits the work. It understands project-wide context, architectural patterns, and can reason about complex engineering decisions.
+
+These tools solve different problems. Copilot makes you faster at writing code you already know how to write. Claude Code can handle tasks you'd normally break into multiple tickets. Copilot is better for: autocomplete, quick suggestions, boilerplate generation, and keeping you in flow state. Claude Code is better for: multi-file refactoring, implementing new features from scratch, debugging complex issues, and understanding unfamiliar codebases.
+
+Most professional developers benefit from both: Copilot for the constant, low-latency coding acceleration, and Claude Code for the high-leverage, complex tasks that require deeper reasoning. The price difference ($10/month vs API costs) reflects this — Copilot is an everyday utility, Claude Code is a power tool for significant engineering work.`,
+    winnerSummary: "Choose GitHub Copilot for seamless inline code completions in your IDE; choose Claude Code for autonomous, reasoning-heavy engineering tasks across multiple files.",
+    useCaseRecommendations: [
+      "Choose GitHub Copilot for fast inline code completions and autocomplete while you type",
+      "Choose Claude Code for implementing complex features that span multiple files",
+      "Choose GitHub Copilot if you want AI that integrates seamlessly into your existing VS Code/IDE workflow",
+      "Choose Claude Code for large-scale refactoring and codebase-wide architectural changes",
+      "Choose GitHub Copilot for the most affordable AI coding assistant at $10/month",
+      "Choose Claude Code for debugging complex issues and understanding unfamiliar codebases quickly",
+    ],
+  },
+  "anthropic-api-vs-openai-api": {
+    detailedVerdict: `The Anthropic API (Claude models) and OpenAI API (GPT models) are the two most important AI APIs for developers building LLM-powered applications. OpenAI has the larger ecosystem by a significant margin — more documentation, more libraries, more example code, and broader model offerings (GPT-4o, GPT-4 Turbo, DALL-E, Whisper, TTS, embeddings). If you need a one-stop shop for text, image, audio, and embedding models, OpenAI is the more complete platform.
+
+Anthropic's API wins on reasoning quality and developer experience for text-focused applications. Claude Sonnet 4 offers the best quality-to-cost ratio in the market for coding, analysis, and complex reasoning tasks. Claude Opus 4 is the most capable model available for the hardest problems. Anthropic's API design is clean and well-documented, with features like tool use, streaming, and prompt caching that are thoughtfully implemented. The 200K context window is the largest among major providers.
+
+Pricing comparison: Claude Sonnet 4 ($3/$15 per million input/output tokens) vs GPT-4o ($2.50/$10) — GPT-4o is slightly cheaper per token but Claude Sonnet often requires fewer tokens for the same quality output. Claude Opus 4 ($15/$75) vs GPT-4 Turbo ($10/$30) — OpenAI is cheaper at the frontier tier. For high-volume applications, the cost difference matters. Both offer batch processing discounts.
+
+For developers, the practical choice often comes down to the specific task. Claude consistently wins on: coding tasks, instruction following, long-context processing, and nuanced analysis. GPT-4o consistently wins on: multimodal tasks (image understanding/generation), creative writing diversity, and availability of adjacent models (embeddings, speech). Many production applications use both — Claude for reasoning-heavy tasks, OpenAI for multimodal and embeddings.`,
+    winnerSummary: "Choose Anthropic API for superior reasoning and coding quality; choose OpenAI API for the broadest model ecosystem including image, audio, and embedding models.",
+    useCaseRecommendations: [
+      "Choose Anthropic API if your application primarily requires strong reasoning and code generation",
+      "Choose OpenAI API if you need image generation, speech-to-text, or embedding models alongside text",
+      "Choose Anthropic API for applications processing long documents (200K context window)",
+      "Choose OpenAI API for the largest developer ecosystem and most available third-party integrations",
+      "Choose Anthropic API (Claude Sonnet) for the best quality-to-cost ratio on coding and analysis tasks",
+      "Choose OpenAI API if you need multimodal capabilities (vision, audio, images) in a single API",
+    ],
+  },
+  "supabase-vs-firebase": {
+    detailedVerdict: `Supabase and Firebase are the two leading Backend-as-a-Service platforms for modern application development, but they're built on fundamentally different databases and philosophies. Supabase is built on PostgreSQL — a full relational database with SQL, joins, foreign keys, row-level security, and the entire Postgres extension ecosystem (PostGIS, pgvector, etc.). It's open-source, self-hostable, and offers authentication, file storage, edge functions, and real-time subscriptions.
+
+Firebase (by Google) is built on NoSQL: Firestore (document database) and Realtime Database. It offers authentication, hosting, cloud functions, cloud messaging, analytics, Crashlytics, and deep integration with Google Cloud. Firebase's real-time synchronization is still the gold standard for apps that need instant data sync across clients (chat apps, collaborative tools, gaming).
+
+For most new projects in 2026, Supabase is the better default choice. PostgreSQL gives you the full power of SQL, relational data modeling, and the ability to migrate to any Postgres host if you outgrow Supabase. The open-source nature means no vendor lock-in. Supabase's free tier is generous (500MB database, 1GB storage, 50K monthly active users), and pricing is predictable. Firebase's NoSQL model creates significant challenges as applications grow in complexity — denormalization, lack of joins, and data modeling constraints that don't exist with Postgres.
+
+Firebase still wins for: mobile-first apps needing push notifications and crash reporting, apps requiring Google Cloud integration, real-time sync-heavy applications, and teams already invested in the Google ecosystem. Firebase's mobile SDKs are more mature, and its offline-first capabilities are genuinely superior. But the trend is clear — Supabase's developer experience, SQL power, and open-source philosophy are winning new projects at a rapid rate.`,
+    winnerSummary: "Choose Supabase for relational PostgreSQL power with open-source flexibility; choose Firebase for mobile-first apps needing real-time sync and the Google Cloud ecosystem.",
+    useCaseRecommendations: [
+      "Choose Supabase if you want a relational database with full SQL and joins",
+      "Choose Firebase for mobile-first apps needing push notifications, crash reporting, and Google analytics",
+      "Choose Supabase if vendor lock-in is a concern — it's open-source and self-hostable",
+      "Choose Firebase for real-time sync-heavy applications like chat, collaboration, or gaming",
+      "Choose Supabase for predictable pricing and a generous free tier for side projects",
+      "Choose Firebase if your team is already invested in Google Cloud Platform infrastructure",
+    ],
+  },
+  "runway-vs-sora": {
+    detailedVerdict: `Runway and Sora represent the established player vs the hyped newcomer in AI video generation. Runway (Gen-3 Alpha) is the most production-ready AI video platform available. It offers text-to-video, image-to-video, video-to-video transformation, and comprehensive editing tools. Runway's consistency, control features (camera motion, style references), and ecosystem make it the tool that actual creators and studios use daily. Pricing starts at $12/month (Standard) with per-second generation costs.
+
+Sora (by OpenAI) generated massive hype with demos showing cinema-quality video generation from text prompts. When it launched, the results were genuinely impressive — longer clips, better temporal consistency, and more cinematic quality than competitors. However, the reality has been mixed: Sora is expensive (included with ChatGPT Pro at $200/month for limited generations), has slower generation times, and offers less control over the output compared to Runway's mature toolset. Content restrictions are also stricter.
+
+For professional video creators and studios, Runway is the practical choice. It integrates into existing workflows, offers granular control over generation, and has a track record of reliability. The editing tools (Motion Brush, camera controls, style references) give creators the control they need for commercial work. Sora produces more cinematic raw output, but the lack of fine-grained control and high cost limit its practical utility.
+
+For hobbyists and experimenters who already pay for ChatGPT Pro, Sora is an exciting addition. For serious video production, Runway's maturity, tools, and ecosystem make it the better investment. The AI video space is evolving rapidly — Kling AI and Pika are also strong competitors — but Runway's first-mover advantage in professional tooling is substantial.`,
+    winnerSummary: "Choose Runway for production-ready AI video with professional editing tools; choose Sora for the highest raw cinematic quality if you already subscribe to ChatGPT Pro.",
+    useCaseRecommendations: [
+      "Choose Runway for professional video production with fine-grained control and editing tools",
+      "Choose Sora if you want the most cinematic AI video output and already have ChatGPT Pro",
+      "Choose Runway for consistent, reliable video generation integrated into creative workflows",
+      "Choose Sora for experimental and creative projects where raw quality matters more than control",
+      "Choose Runway if budget matters — it's significantly cheaper per generation than Sora",
+      "Choose Runway for commercial work requiring style references, camera controls, and video editing",
+    ],
+  },
+  "eleven-labs-vs-play-ht": {
+    detailedVerdict: `ElevenLabs and Play.ht are the leading AI voice platforms, competing on quality, features, and pricing. ElevenLabs is widely regarded as producing the most realistic AI voices available. Its voice cloning is exceptional — with just a few minutes of audio, it can create a clone that's nearly indistinguishable from the original speaker. ElevenLabs also offers real-time streaming, multilingual voice synthesis (29 languages), and a robust API. Pricing starts at $5/month (Starter, 30K characters) up to $99/month (Scale, 2M characters).
+
+Play.ht offers a broader library of pre-built voices (900+) and excels at podcast-specific workflows. Its voice quality has improved dramatically and is now competitive with ElevenLabs for many use cases. Play.ht's pricing is more generous for high-volume users, with unlimited generation on higher tiers. It also offers a better built-in audio editor and easier integration with podcast hosting platforms. Plans start at $31/month (Creator) up to $99/month (Enterprise).
+
+For voice cloning and the absolute highest quality synthesis, ElevenLabs wins. Creators making audiobooks, dubbing content, or building voice-enabled applications where naturalness is critical should choose ElevenLabs. Its API is also better documented and more developer-friendly for building voice features into applications. For podcast production, content creators needing a wide variety of voices, and teams wanting simpler workflow tools, Play.ht is a strong choice with its larger voice library and better content creation features.
+
+Both platforms have improved their enterprise offerings with custom model training, voice design, and team features. The market is maturing rapidly, and the quality gap continues to narrow, but ElevenLabs retains its edge in raw voice quality and cloning accuracy.`,
+    winnerSummary: "Choose ElevenLabs for the most realistic voice cloning and synthesis quality; choose Play.ht for a larger voice library and better podcast production workflows.",
+    useCaseRecommendations: [
+      "Choose ElevenLabs for voice cloning that requires near-perfect reproduction of a specific voice",
+      "Choose Play.ht for podcast production with access to 900+ pre-built voices",
+      "Choose ElevenLabs for building voice-enabled applications via its developer-friendly API",
+      "Choose Play.ht for content creators who need a built-in audio editor and publishing workflow",
+      "Choose ElevenLabs for audiobook narration and dubbing where naturalness is critical",
+      "Choose Play.ht for high-volume voice generation — its unlimited plans offer better value at scale",
+    ],
+  },
+  "intercom-fin-vs-zendesk-ai": {
+    detailedVerdict: `Intercom Fin and Zendesk AI represent the modern vs legacy approaches to AI-powered customer support. Intercom Fin is an AI-first support agent that can resolve up to 50% of customer queries without human intervention. It's trained on your help center content, previous conversations, and custom data sources, providing accurate answers with source citations. Intercom's platform feels modern, fast, and developer-friendly, with proactive messaging, product tours, and in-app chat that goes beyond traditional ticketing.
+
+Zendesk AI builds on the world's largest customer service platform. Its AI features include intelligent ticket routing, suggested replies for agents, AI-generated summaries, and automated workflows. Zendesk's advantage is depth: sophisticated SLA management, complex ticket workflows, extensive reporting, and integrations with virtually every business tool. For large organizations with complex support operations, Zendesk's maturity is hard to replace.
+
+Pricing is significantly different. Intercom starts at $39/seat/month (Essential) with Fin AI agent costs per resolution ($0.99/resolution). Zendesk starts at $55/agent/month (Suite Team) up to $115/agent/month (Suite Professional). Both add up quickly for large teams, but Intercom's per-resolution pricing for AI can be more predictable.
+
+For startups, SaaS companies, and modern tech businesses, Intercom is the better choice — its AI-first approach, modern UX, and proactive messaging features align with how customers expect to interact with software companies. For large enterprises with complex support operations, Zendesk's depth of features, customization options, and integration ecosystem remain superior. The decision often comes down to team size and complexity: under 50 agents, Intercom's modern approach wins; over 50 agents with complex workflows, Zendesk's enterprise features justify the overhead.`,
+    winnerSummary: "Choose Intercom Fin for modern AI-first customer support in SaaS and tech; choose Zendesk AI for enterprise-scale support with complex ticketing workflows.",
+    useCaseRecommendations: [
+      "Choose Intercom Fin for SaaS companies wanting AI-first support with proactive in-app messaging",
+      "Choose Zendesk AI for large enterprises with complex ticketing workflows and SLA requirements",
+      "Choose Intercom if you want an AI agent that can resolve 50%+ of queries without human intervention",
+      "Choose Zendesk for organizations needing deep reporting, extensive integrations, and compliance features",
+      "Choose Intercom for a modern, fast support platform with better developer experience",
+      "Choose Zendesk if you have 50+ support agents and need enterprise-grade workflow customization",
+    ],
+  },
+  "jasper-vs-copy-ai": {
+    detailedVerdict: `Jasper and Copy.ai are the two largest AI writing platforms for marketing teams, but they've diverged significantly in strategy. Jasper ($49/month Creator, $125/month Pro) has evolved into an enterprise marketing AI platform with brand voice controls, marketing knowledge management, campaign workflows, and team collaboration features. It integrates with Webflow, Google Workspace, and offers an API. Jasper's strength is maintaining brand consistency at scale — enterprise marketing teams can set voice guidelines, knowledge bases, and approval workflows.
+
+Copy.ai ($49/month Pro, custom enterprise pricing) has pivoted toward AI-powered go-to-market workflows. Beyond content generation, Copy.ai now offers AI sales workflows, lead enrichment, prospecting automation, and content generation integrated into revenue operations. It's positioning itself as an AI GTM platform rather than just a writing tool. Its content generation quality is competitive with Jasper for most marketing use cases.
+
+For pure content generation quality, both produce similar output — the underlying LLMs (GPT-4o, Claude) are the same. The difference is in the workflow and specialization. Jasper is better for content-heavy marketing teams that need brand governance, templates for every content type, and a polished content creation experience. Copy.ai is better for sales-marketing alignment, with workflows that extend from content creation into prospecting and lead generation.
+
+Honestly, both face an existential challenge from ChatGPT and Claude, which can do most of what these tools do for $20/month. The value proposition of Jasper and Copy.ai lies in their templates, brand controls, team features, and specialized workflows — not raw AI quality. For individuals, ChatGPT is the better value. For marketing teams needing governance and specialized workflows, Jasper and Copy.ai justify their premium.`,
+    winnerSummary: "Choose Jasper for enterprise marketing content with brand voice governance; choose Copy.ai for AI-powered go-to-market workflows spanning content and sales.",
+    useCaseRecommendations: [
+      "Choose Jasper for enterprise marketing teams needing brand voice consistency at scale",
+      "Choose Copy.ai for sales-marketing alignment with AI-powered prospecting and GTM workflows",
+      "Choose Jasper for teams that need extensive content templates and campaign workflows",
+      "Choose Copy.ai for smaller teams that want content generation plus sales automation",
+      "Choose Jasper if brand governance, approval workflows, and marketing knowledge management matter",
+      "Consider ChatGPT or Claude instead if you're an individual needing AI writing at lower cost",
+    ],
+  },
+  "gpt-5-vs-claude-opus-4": {
+    detailedVerdict: `GPT-5 and Claude Opus 4 represent the latest frontier models from OpenAI and Anthropic respectively, and choosing between them depends on your specific needs. GPT-5 pushes the boundaries of multimodal AI — it handles text, images, audio, and video with improved coherence, features native tool use, and offers enhanced creative writing capabilities. OpenAI's ecosystem advantage means GPT-5 integrates with DALL-E, Whisper, and the massive GPT Store for specialized applications. The model shows significant improvements in logical reasoning and mathematical problem-solving over GPT-4o.
+
+Claude Opus 4 sets the bar for complex reasoning and code generation. On software engineering benchmarks (SWE-bench, HumanEval), Claude Opus 4 leads the field. Its ability to follow intricate multi-step instructions, maintain coherence over 200K token contexts, and produce thoughtful, nuanced responses is unmatched. Anthropic's Constitutional AI training makes Opus 4 more reliable for sensitive applications where safety and consistency matter. Claude Opus 4 is also the backbone of Claude Code, making it the preferred model for agentic coding tasks.
+
+The pricing is comparable at the frontier tier, though GPT-5's exact pricing varies by access tier. Both models are available via API and through their respective consumer products (ChatGPT Plus/Pro and Claude Pro). For developers, the API choice depends on task fit: GPT-5 excels in multimodal applications, creative generation, and tasks requiring tool use across the OpenAI ecosystem. Claude Opus 4 excels in pure reasoning, code generation, long-context analysis, and tasks requiring precise instruction-following.
+
+The rivalry between these models benefits everyone — competition drives rapid improvement. Many developers and companies use both models, routing tasks to whichever model handles them best.`,
+    winnerSummary: "Choose GPT-5 for multimodal capabilities and the broadest AI ecosystem; choose Claude Opus 4 for the deepest reasoning, best code generation, and most reliable instruction-following.",
+    useCaseRecommendations: [
+      "Choose GPT-5 for multimodal applications involving image, audio, and video understanding",
+      "Choose Claude Opus 4 for complex software engineering and code generation tasks",
+      "Choose GPT-5 if you need the OpenAI ecosystem (DALL-E, Whisper, GPT Store)",
+      "Choose Claude Opus 4 for long-context analysis of documents over 100K tokens",
+      "Choose GPT-5 for creative writing, brainstorming, and diverse content generation",
+      "Choose Claude Opus 4 for tasks requiring precise, nuanced instruction-following and reasoning",
+    ],
+  },
+  "linear-vs-jira": {
+    detailedVerdict: `Linear and Jira represent the modern vs enterprise approaches to project management for software teams. Linear ($8/user/month Standard, $14/user/month Plus) is built for speed. Everything about it is fast — the UI responds instantly, keyboard shortcuts work for every action, and workflows are opinionated to keep teams focused. Linear's cycle-based planning (triage, sprints, projects) is designed for how modern software teams actually work. It's beautiful, minimal, and ruthlessly focused on reducing project management overhead.
+
+Jira (free up to 10 users, $8.15/user/month Standard, $16/user/month Premium) is the enterprise standard with 20+ years of maturity. It offers nearly unlimited customization: custom fields, workflow states, automation rules, advanced JQL querying, and integrations with virtually every developer tool. Jira handles complex organizational structures with multi-project planning, portfolio views, cross-team dependencies, and enterprise compliance features.
+
+For engineering teams under 100 people, Linear is almost always the better choice. Developers actually enjoy using it (a rare quality in project management tools), which means better adoption and more accurate tracking. Linear's integrations with GitHub, Slack, and Figma are smooth, and its API is developer-friendly. The opinionated workflow means less time configuring and more time shipping.
+
+For organizations with 500+ engineers, complex compliance requirements, or heavy cross-team dependencies, Jira's depth becomes necessary. Jira's Advanced Roadmaps, portfolio planning, and customization handle organizational complexity that Linear doesn't attempt. Jira is also deeply embedded in the Atlassian ecosystem (Confluence, Bitbucket, Statuspage), which matters for teams already invested in those tools. The honest truth: most teams that use Jira would be happier on Linear but can't switch due to organizational inertia and enterprise requirements.`,
+    winnerSummary: "Choose Linear for fast, modern project management that developers love; choose Jira for enterprise-scale customization and complex organizational workflows.",
+    useCaseRecommendations: [
+      "Choose Linear for engineering teams under 100 people who want speed and simplicity",
+      "Choose Jira for large enterprises with complex workflows, compliance, and cross-team dependencies",
+      "Choose Linear if developer happiness and adoption of project management matters to you",
+      "Choose Jira if you need deep customization, advanced reporting, and JQL querying",
+      "Choose Linear for modern cycle-based planning with minimal configuration overhead",
+      "Choose Jira if your organization is already invested in the Atlassian ecosystem",
+    ],
+  },
+};
+
+// --- Custom features for top 15 comparisons with actual winners ---
+const customFeatures: Record<string, RawFeature[]> = {
+  "chatgpt-vs-claude": [
+    f("Reasoning Quality", "Strong with GPT-4o, excellent creative writing", "Superior analytical reasoning, best-in-class for complex tasks", "b"),
+    f("Code Generation", "Good with broad language coverage", "Exceptional, especially for refactoring and debugging", "b"),
+    f("Plugin Ecosystem", "Massive GPT Store with thousands of plugins", "Limited integrations, growing Artifacts feature", "a"),
+    f("Context Window", "128K tokens with GPT-4o", "200K tokens with extended context", "b"),
+    f("Pricing", "$20/mo for Plus, generous free tier", "$20/mo for Pro, more limited free tier", "a"),
+    f("Multimodal", "Image generation, voice, vision, browsing", "Vision and document analysis, no image generation", "a"),
+  ],
+  "chatgpt-vs-gemini": [
+    f("Conversation Quality", "More natural, polished responses", "Can feel robotic, improving steadily", "a"),
+    f("Ecosystem Integration", "GPT Store plugins and custom GPTs", "Deep Google Workspace and Search integration", "b"),
+    f("Multimodal", "DALL-E image gen, voice, vision", "Native video understanding, Google Lens integration", "tie"),
+    f("Real-time Information", "Web browsing available but secondary", "Native Google Search integration for live data", "b"),
+    f("Pricing Value", "$20/mo for Plus", "$20/mo for Advanced includes 2TB Google storage", "b"),
+    f("Creative Writing", "Stronger creative and narrative output", "More factual, less creative flair", "a"),
+  ],
+  "chatgpt-vs-perplexity": [
+    f("Research Quality", "Good general knowledge, training cutoff limits", "Real-time web search with inline citations", "b"),
+    f("Creative Writing", "Excellent creative and narrative output", "Focused on factual answers, weaker creatively", "a"),
+    f("Source Citations", "No built-in citations for claims", "Every answer includes verifiable source links", "b"),
+    f("Feature Breadth", "Image gen, voice, plugins, custom GPTs", "Focused on search and research", "a"),
+    f("Real-time Data", "Web browsing available but secondary", "Native real-time search as core feature", "b"),
+    f("Pricing", "$20/mo Plus with all features", "$20/mo Pro with 600+ daily Pro searches across models", "tie"),
+  ],
+  "chatgpt-vs-deepseek": [
+    f("Consumer Experience", "Most polished AI chat with plugins and voice", "Basic chat interface, limited features", "a"),
+    f("Reasoning Quality", "Strong with GPT-4o on most tasks", "Competitive reasoning, excels on math and logic", "tie"),
+    f("API Pricing", "Standard frontier pricing ($2.50-10/M tokens)", "90% cheaper than comparable models", "b"),
+    f("Multimodal", "Image generation, voice, vision, browsing", "Text-focused, limited multimodal support", "a"),
+    f("Data Privacy", "US-hosted, clear data handling policies", "Chinese company, subject to PRC data laws", "a"),
+    f("Open Source", "Proprietary models only", "Open-weight models available for self-hosting", "b"),
+  ],
+  "claude-vs-deepseek": [
+    f("Reasoning Consistency", "Consistently strong across all task types", "Excellent on structured tasks, variable on open-ended", "a"),
+    f("Code Generation", "Best-in-class on SWE-bench and real-world coding", "Strong competitive coding, weaker on large codebases", "a"),
+    f("API Pricing", "Standard frontier pricing ($3-15/M tokens)", "10-20x cheaper for comparable quality", "b"),
+    f("Safety & Alignment", "Industry-leading safety via Constitutional AI", "Basic safety, less robust refusal behaviors", "a"),
+    f("Data Governance", "US/EU hosting with clear data policies", "Chinese jurisdiction, PRC data sovereignty laws", "a"),
+    f("Self-Hosting", "API and consumer products only", "Open-weight models for full deployment control", "b"),
+  ],
+  "cursor-vs-devin": [
+    f("Developer Control", "Human in the loop for every decision", "Fully autonomous — you review the output", "a"),
+    f("Code Quality", "High quality with human oversight", "Variable — good for defined tasks, weaker on ambiguous ones", "a"),
+    f("Task Scope", "Best for code-level edits and features", "Handles entire tickets from spec to PR", "b"),
+    f("Pricing", "$20/month Pro plan", "$500/month — 25x more expensive", "a"),
+    f("Complex Architecture", "Developer makes all architectural decisions", "Struggles with novel architectures and ambiguous specs", "a"),
+    f("Autonomous Execution", "Requires active developer participation", "Runs independently, works while you sleep", "b"),
+  ],
+  "midjourney-vs-stable-diffusion": [
+    f("Image Quality", "Consistently stunning with minimal effort", "Excellent with right models and settings", "a"),
+    f("Ease of Use", "Simple prompts yield great results", "Requires learning ComfyUI/A1111 workflows", "a"),
+    f("Cost", "$10-60/month subscription", "Free — run locally or use free cloud services", "b"),
+    f("Customization", "Limited to prompt and style parameters", "Unlimited — fine-tune models, LoRAs, ControlNet", "b"),
+    f("Data Privacy", "Images processed on Midjourney servers", "Full local generation, complete privacy", "b"),
+    f("Community Ecosystem", "Active Discord community", "Massive ecosystem — Civitai, thousands of models", "b"),
+  ],
+  "bolt-vs-v0": [
+    f("Output Scope", "Generates complete working applications", "Generates individual UI components", "a"),
+    f("Component Quality", "Good functional components", "Exceptional shadcn/ui production-ready components", "b"),
+    f("Backend Support", "Handles routing, state, API logic", "Frontend components only, no backend", "a"),
+    f("Design System", "Various styling approaches", "Consistent shadcn/ui + Tailwind best practices", "b"),
+    f("Target User", "Non-developers building full apps", "Developers accelerating UI development", "tie"),
+    f("Framework Integration", "Multiple frameworks supported", "Optimized for Next.js/React ecosystem", "tie"),
+  ],
+  "claude-vs-gemini": [
+    f("Reasoning Depth", "Best-in-class complex reasoning and analysis", "Strong but less consistent on hard problems", "a"),
+    f("Code Generation", "Top performer on SWE-bench, excellent debugging", "Good code output, improving rapidly", "a"),
+    f("Context Window", "200K tokens — largest among major assistants", "1M tokens for Gemini 1.5, competitive", "b"),
+    f("Google Integration", "No Google ecosystem integration", "Native Gmail, Docs, Drive, Search integration", "b"),
+    f("Multimodal", "Text and vision only, no image/video generation", "Image, video, audio understanding and generation", "b"),
+    f("Instruction Following", "Exceptional at following complex multi-step instructions", "Good but less precise on nuanced constraints", "a"),
+  ],
+  "cursor-vs-github-copilot": [
+    f("AI-First Experience", "Purpose-built AI IDE, AI in every interaction", "Extension bolted onto existing IDE", "a"),
+    f("Multi-file Editing", "Composer makes coordinated multi-file changes", "Improving but less mature multi-file support", "a"),
+    f("Model Flexibility", "Choose between GPT-4o, Claude Sonnet, and more", "Locked to OpenAI/GitHub models", "a"),
+    f("GitHub Integration", "Basic git support", "Deep GitHub PR, Actions, and repo integration", "b"),
+    f("Pricing", "$20/month for Pro plan", "$10/month individual, half the price", "b"),
+    f("Enterprise Compliance", "Growing enterprise features", "Mature enterprise policies and audit controls", "b"),
+  ],
+  "cursor-vs-windsurf": [
+    f("Multi-file Editing", "Composer is the most advanced multi-file editor", "Cascade offers step-by-step agentic editing", "a"),
+    f("Code Completion Speed", "Fast completions with codebase context", "Very fast completions via Codeium's optimized inference", "b"),
+    f("Model Selection", "GPT-4o, Claude Sonnet, and more models", "Primarily Codeium models with some options", "a"),
+    f("Pricing", "$20/month Pro plan", "$15/month Pro — $5 cheaper", "b"),
+    f("Community & Resources", "Larger community, more tutorials and tips", "Growing community, less mature ecosystem", "a"),
+    f("Free Tier", "Limited free tier with basic features", "More generous free tier for getting started", "b"),
+  ],
+  "midjourney-vs-dall-e": [
+    f("Image Quality", "Stunning artistic quality, cinematic lighting", "Good quality, improving with DALL-E 3", "a"),
+    f("Prompt Adherence", "Interprets artistically, may deviate from prompt", "Excellent — follows detailed prompts faithfully", "b"),
+    f("Text in Images", "Struggles with text rendering", "Better text rendering in images", "b"),
+    f("Accessibility", "Discord-based (web UI now available)", "Integrated directly into ChatGPT", "b"),
+    f("Pricing", "$10-60/month based on generation volume", "Included with ChatGPT Plus at $20/month", "b"),
+    f("Artistic Versatility", "Best for artistic, photorealistic, and commercial work", "Good for illustrations and specific compositions", "a"),
+  ],
+  "zapier-vs-make": [
+    f("Ease of Use", "Simplest setup — trigger-action model", "Visual flowchart builder, steeper learning curve", "a"),
+    f("Integration Count", "7,000+ app integrations", "2,000+ integrations, growing", "a"),
+    f("Complex Workflows", "Limited branching and logic", "Excellent branching, loops, and error handling", "b"),
+    f("Pricing Value", "Per-task pricing, expensive at scale", "Per-operation pricing, much cheaper for complex workflows", "b"),
+    f("Data Transformation", "Basic data mapping", "Powerful filters, iterators, and data transformation", "b"),
+    f("Target User", "Non-technical users and simple automations", "Power users and agencies building complex flows", "tie"),
+  ],
+  "zapier-vs-n8n": [
+    f("Integration Library", "7,000+ native integrations", "400+ native nodes, HTTP for anything with an API", "a"),
+    f("Self-Hosting", "Cloud-only SaaS", "Full self-hosting on your own infrastructure", "b"),
+    f("Pricing", "$19.99+/month, per-task costs add up", "Free self-hosted with unlimited workflows", "b"),
+    f("Ease of Use", "Simplest automation platform", "Requires some technical knowledge", "a"),
+    f("Code Extensibility", "Limited custom code", "Full JavaScript/Python code nodes for custom logic", "b"),
+    f("Data Privacy", "Data processed on Zapier's servers", "Self-host for complete data sovereignty", "b"),
+  ],
+  "bolt-vs-lovable": [
+    f("Code Quality", "Cleaner, more production-ready output", "Good code with focus on visual polish", "a"),
+    f("Design Quality", "Functional but basic styling", "More polished UI and design out of the box", "b"),
+    f("Framework Support", "React, Vue, Svelte, Next.js", "Primarily React/Next.js focused", "a"),
+    f("Backend Integration", "Handles API and backend logic well", "Built-in Supabase integration for backend", "b"),
+    f("Generation Speed", "Very fast via WebContainers", "Slightly slower but thorough generation", "a"),
+    f("Deployment", "Export code, deploy anywhere", "One-click deployment and GitHub sync", "b"),
+  ],
+  "crewai-vs-langgraph": [
+    f("Ease of Use", "Intuitive role-based agent definition", "Steeper learning curve with graph-based model", "a"),
+    f("Production Readiness", "Good for many use cases, some limitations", "Production-grade with checkpointing and persistence", "b"),
+    f("State Management", "Implicit state through agent collaboration", "Explicit state machine with full control", "b"),
+    f("Prototyping Speed", "Minutes to working multi-agent system", "Hours for initial setup and configuration", "a"),
+    f("Error Handling", "Basic error handling capabilities", "Sophisticated error recovery and human-in-the-loop", "b"),
+    f("Flexibility", "Opinionated team-based patterns", "Maximum flexibility for any agent architecture", "b"),
+  ],
+  "semrush-vs-ahrefs": [
+    f("Backlink Analysis", "Good backlink data and monitoring", "Best backlink index in the industry", "b"),
+    f("Keyword Research", "Largest keyword database (26B+)", "Excellent keyword data with click metrics", "a"),
+    f("Feature Breadth", "SEO, PPC, social, content — all-in-one", "Focused primarily on SEO tooling", "a"),
+    f("Interface Design", "Feature-rich but can feel overwhelming", "Cleaner, more intuitive interface", "b"),
+    f("Content Tools", "SEO Writing Assistant, Topic Research", "Content Explorer for content gap analysis", "tie"),
+    f("Pricing", "$129.95/mo Pro, $249.95/mo Guru", "$99/mo Lite, $199/mo Standard — slightly cheaper", "b"),
+  ],
+  "supabase-vs-firebase": [
+    f("Database", "Full PostgreSQL with SQL, joins, extensions", "NoSQL Firestore — document-based, no joins", "a"),
+    f("Open Source", "Fully open-source, self-hostable", "Proprietary Google service", "a"),
+    f("Real-time Sync", "Real-time subscriptions, good performance", "Gold standard for real-time client sync", "b"),
+    f("Mobile SDKs", "Growing mobile support", "Mature iOS, Android SDKs with offline support", "b"),
+    f("Vendor Lock-in", "Standard Postgres — migrate anywhere", "Proprietary data model, difficult to migrate", "a"),
+    f("Pricing Predictability", "Predictable resource-based pricing", "Usage-based pricing can spike unexpectedly", "a"),
+  ],
+  "cursor-vs-claude-code": [
+    f("Interface", "Visual IDE with familiar VS Code experience", "Terminal-native command-line interface", "a"),
+    f("Reasoning Depth", "Good AI suggestions via multiple models", "Claude Opus reasoning — deepest available", "b"),
+    f("Agentic Capabilities", "Composer for multi-file edits", "Full autonomous coding, testing, and git operations", "b"),
+    f("Daily Coding", "Excellent for everyday inline coding assistance", "Better for large, complex tasks than quick edits", "a"),
+    f("Codebase Understanding", "Indexed codebase for context-aware suggestions", "Reads and reasons about entire project structure", "b"),
+    f("Learning Curve", "Familiar to any VS Code user", "Requires comfort with terminal-based workflows", "a"),
+  ],
+  "linear-vs-jira": [
+    f("Speed & UX", "Lightning fast, keyboard-driven, beautiful design", "Slower UI, complex navigation, functional design", "a"),
+    f("Customization", "Opinionated workflows, limited customization", "Nearly unlimited custom fields, workflows, and rules", "b"),
+    f("Developer Experience", "Developers actively enjoy using it", "Developers tolerate it for organizational needs", "a"),
+    f("Enterprise Scale", "Best for teams under 100 engineers", "Handles 500+ engineer organizations with ease", "b"),
+    f("Integrations", "GitHub, Slack, Figma — focused set", "Massive marketplace with thousands of integrations", "b"),
+    f("Pricing", "$8/user/month Standard", "Free up to 10 users, $8.15/user/month Standard", "tie"),
+  ],
+};
+
 function build(raw: RawComparison, customSlug?: string): Comparison {
   const [slugA, nameA, slugB, nameB, cat, verdict, isVsTraditional] = raw;
+  const slug = customSlug || `${slugA}-vs-${slugB}`;
+
+  const featureSource = customFeatures[slug] || featuresForCategory(cat, isVsTraditional);
+  const rich = richComparisonData[slug];
+
   return {
-    slug: customSlug || `${slugA}-vs-${slugB}`,
+    slug,
     toolA: nameA,
     toolB: nameB,
     toolASlug: slugA,
@@ -123,9 +804,14 @@ function build(raw: RawComparison, customSlug?: string): Comparison {
     category: cat,
     verdict,
     isVsTraditional,
-    features: featuresForCategory(cat, isVsTraditional).map(([feature, toolA, toolB, winner]) => ({
+    features: featureSource.map(([feature, toolA, toolB, winner]) => ({
       feature, toolA, toolB, winner,
     })),
+    ...(rich && {
+      detailedVerdict: rich.detailedVerdict,
+      winnerSummary: rich.winnerSummary,
+      useCaseRecommendations: rich.useCaseRecommendations,
+    }),
   };
 }
 

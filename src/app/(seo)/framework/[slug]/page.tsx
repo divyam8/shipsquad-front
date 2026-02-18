@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { frameworks } from "@/data/frameworks";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,6 +32,7 @@ export default async function FrameworkPage({ params }: Props) {
   if (!framework) notFound();
 
   const relatedFrameworks = frameworks.filter((f) => f.slug !== slug && f.category === framework.category).slice(0, 6).map((f) => ({ title: `${f.name} Guide`, href: `/framework/${f.slug}`, category: f.category }));
+  const learnLinks = getLearnPillarLinks(framework.category);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -55,6 +57,7 @@ export default async function FrameworkPage({ params }: Props) {
         { label: framework.name },
       ]}
       relatedPages={relatedFrameworks}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: "Overview", level: 2 },
         { id: "features", title: "Features", level: 2 },

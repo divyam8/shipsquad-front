@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { missions } from "@/data/missions";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,6 +32,7 @@ export default async function MissionPage({ params }: Props) {
   if (!mission) notFound();
 
   const relatedMissions = missions.filter((m) => m.slug !== slug && m.category === mission.category).slice(0, 6).map((m) => ({ title: m.title, href: `/mission/${m.slug}`, category: m.category }));
+  const learnLinks = getLearnPillarLinks(mission.category);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -50,6 +52,7 @@ export default async function MissionPage({ params }: Props) {
         { label: mission.title },
       ]}
       relatedPages={relatedMissions}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: "Overview", level: 2 },
         { id: "deliverables", title: "Deliverables", level: 2 },
@@ -69,9 +72,16 @@ export default async function MissionPage({ params }: Props) {
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Mission Overview</h2>
-        <p className="text-text-secondary">
+        <p className="text-text-secondary mb-4">
           This mission deploys a specialized AI squad to handle {mission.name.toLowerCase()}. Your squad of {mission.agentRoles.length} specialized agents works in parallel, delivering results in {mission.timeline}.
         </p>
+        {mission.longDescription && (
+          <div className="text-text-secondary leading-relaxed space-y-4 mt-4">
+            {mission.longDescription.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="deliverables" className="mb-10">

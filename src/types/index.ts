@@ -43,6 +43,11 @@ export interface Tool {
   hasReviewPage: boolean;
   rating: number;
   alternatives: string[];
+  longDescription?: string;
+  expertVerdict?: string;
+  detailedPricing?: string;
+  bestFor?: string[];
+  keyDifferentiators?: string[];
 }
 
 export interface Comparison {
@@ -60,6 +65,9 @@ export interface Comparison {
     toolB: string;
     winner: "a" | "b" | "tie";
   }[];
+  detailedVerdict?: string;
+  winnerSummary?: string;
+  useCaseRecommendations?: string[];
 }
 
 export interface UseCase {
@@ -92,6 +100,7 @@ export interface Role {
   tools: string[];
   tasks: string[];
   faq: { question: string; answer: string }[];
+  longDescription?: string;
 }
 
 export interface Workflow {
@@ -103,6 +112,7 @@ export interface Workflow {
   steps: string[];
   tools: string[];
   faq: { question: string; answer: string }[];
+  longDescription?: string;
 }
 
 export interface City {
@@ -113,6 +123,7 @@ export interface City {
   description: string;
   population: string;
   techScene: string;
+  longDescription?: string;
 }
 
 export interface GlossaryTerm {
@@ -122,6 +133,7 @@ export interface GlossaryTerm {
   longDescription: string;
   relatedTerms: string[];
   category: string;
+  longDefinition?: string;
 }
 
 export interface Guide {
@@ -133,6 +145,8 @@ export interface Guide {
   timeToRead: string;
   steps: { title: string; description: string }[];
   faq: { question: string; answer: string }[];
+  introduction?: string;
+  conclusion?: string;
 }
 
 export interface AIModel {
@@ -148,6 +162,9 @@ export interface AIModel {
   rating: number;
   pros: string[];
   cons: string[];
+  longDescription?: string;
+  performanceBenchmarks?: string;
+  bestUseCases?: string[];
 }
 
 export interface Framework {
@@ -174,6 +191,7 @@ export interface Mission {
   timeline: string;
   agentRoles: string[];
   faq: { question: string; answer: string }[];
+  longDescription?: string;
 }
 
 export interface BlogPost {
@@ -187,4 +205,23 @@ export interface BlogPost {
   readTime: string;
   tags: string[];
   content: string;
+}
+
+export interface PillarPage {
+  slug: string;
+  type: "tool" | "learn";
+  name: string;
+  title: string;
+  description: string;
+  heroSubtitle: string;
+  sections: { id: string; title: string; content: string }[];
+  relatedSlugs: {
+    comparisons: string[];
+    alternatives: string[];
+    reviews: string[];
+    pricing: string[];
+    guides: string[];
+    glossary: string[];
+  };
+  faq: { question: string; answer: string }[];
 }

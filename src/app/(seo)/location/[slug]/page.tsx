@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { cities } from "@/data/cities";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,6 +32,7 @@ export default async function LocationPage({ params }: Props) {
   if (!city) notFound();
 
   const relatedCities = cities.filter((c) => c.slug !== slug && c.country === city.country).slice(0, 6).map((c) => ({ title: `AI Services in ${c.name}`, href: `/location/${c.slug}` }));
+  const learnLinks = getLearnPillarLinks("agents");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -55,6 +57,7 @@ export default async function LocationPage({ params }: Props) {
         { label: city.name },
       ]}
       relatedPages={relatedCities}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: `AI in ${city.name}`, level: 2 },
         { id: "services", title: "Services", level: 2 },
@@ -75,7 +78,14 @@ export default async function LocationPage({ params }: Props) {
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">AI Scene in {city.name}</h2>
         <p className="text-text-secondary mb-4">{city.description}</p>
-        <p className="text-text-secondary">{city.techScene}</p>
+        <p className="text-text-secondary mb-4">{city.techScene}</p>
+        {city.longDescription && (
+          <div className="text-text-secondary leading-relaxed space-y-4 mt-4">
+            {city.longDescription.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        )}
         <div className="rounded-xl border border-white/[0.05] bg-white/[0.02] p-4 mt-4 grid sm:grid-cols-3 gap-4">
           <div><span className="text-xs text-text-muted block">City</span><span className="text-sm text-text-primary font-medium">{city.name}</span></div>
           <div><span className="text-xs text-text-muted block">Region</span><span className="text-sm text-text-primary font-medium">{city.region}</span></div>

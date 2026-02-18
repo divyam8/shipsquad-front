@@ -22,6 +22,12 @@ interface TOCItem {
   level: number;
 }
 
+interface FurtherReadingLink {
+  title: string;
+  href: string;
+  description?: string;
+}
+
 interface SEOPageLayoutProps {
   children: React.ReactNode;
   breadcrumbs: BreadcrumbItem[];
@@ -33,6 +39,7 @@ interface SEOPageLayoutProps {
   showTOC?: boolean;
   showRelated?: boolean;
   sidebar?: React.ReactNode;
+  furtherReading?: FurtherReadingLink[];
 }
 
 export function SEOPageLayout({
@@ -46,6 +53,7 @@ export function SEOPageLayout({
   showTOC = true,
   showRelated = true,
   sidebar,
+  furtherReading = [],
 }: SEOPageLayoutProps) {
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
@@ -58,6 +66,27 @@ export function SEOPageLayout({
               <TableOfContents items={tocItems} />
             )}
             <article className="prose-invert max-w-none">{children}</article>
+            {furtherReading.length > 0 && (
+              <section className="mt-12 rounded-xl border border-white/[0.05] bg-white/[0.02] p-6">
+                <h2 className="text-lg font-bold text-text-primary mb-4">Further Reading</h2>
+                <div className="space-y-3">
+                  {furtherReading.map((link, i) => (
+                    <a
+                      key={i}
+                      href={link.href}
+                      className="group block rounded-lg border border-white/[0.03] bg-white/[0.01] p-3 hover:border-accent-blue/20 transition-colors"
+                    >
+                      <span className="text-sm font-medium text-text-primary group-hover:text-accent-blue transition-colors">
+                        {link.title}
+                      </span>
+                      {link.description && (
+                        <p className="text-xs text-text-muted mt-1">{link.description}</p>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </section>
+            )}
             {showCTA && (
               <CTABanner
                 headline={ctaHeadline}

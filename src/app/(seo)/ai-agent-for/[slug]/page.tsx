@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { useCases } from "@/data/use-cases";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -38,6 +39,7 @@ export default async function AIAgentForPage({ params }: Props) {
     .filter((u) => u.slug !== slug && u.category === useCase.category)
     .slice(0, 6)
     .map((u) => ({ title: `AI Agent for ${u.name}`, href: `/ai-agent-for/${u.slug}`, category: u.category }));
+  const learnLinks = getLearnPillarLinks(useCase.category);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -57,6 +59,7 @@ export default async function AIAgentForPage({ params }: Props) {
         { label: `AI Agent for ${useCase.name}` },
       ]}
       relatedPages={relatedUseCases}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: "Overview", level: 2 },
         { id: "benefits", title: "Key Benefits", level: 2 },

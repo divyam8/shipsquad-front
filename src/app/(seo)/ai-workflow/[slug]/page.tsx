@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { workflows } from "@/data/workflows";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,6 +32,7 @@ export default async function AIWorkflowPage({ params }: Props) {
   if (!workflow) notFound();
 
   const relatedWorkflows = workflows.filter((w) => w.slug !== slug && w.category === workflow.category).slice(0, 6).map((w) => ({ title: w.title, href: `/ai-workflow/${w.slug}`, category: w.category }));
+  const learnLinks = getLearnPillarLinks(workflow.category);
 
   return (
     <SEOPageLayout
@@ -40,6 +42,7 @@ export default async function AIWorkflowPage({ params }: Props) {
         { label: workflow.title },
       ]}
       relatedPages={relatedWorkflows}
+      furtherReading={learnLinks}
       tocItems={[
         { id: "overview", title: "Overview", level: 2 },
         { id: "steps", title: "Workflow Steps", level: 2 },
@@ -52,9 +55,16 @@ export default async function AIWorkflowPage({ params }: Props) {
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">How This AI Workflow Works</h2>
-        <p className="text-text-secondary">
+        <p className="text-text-secondary mb-4">
           This workflow automates {workflow.name.toLowerCase()} using AI agents. Each step is handled by a specialized agent, allowing the entire process to run with minimal human intervention. Category: {workflow.category}.
         </p>
+        {workflow.longDescription && (
+          <div className="text-text-secondary leading-relaxed space-y-4 mt-4">
+            {workflow.longDescription.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="steps" className="mb-10">

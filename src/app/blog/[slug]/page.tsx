@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blogPosts } from "@/data/blog-posts";
+import { tools } from "@/data/tools";
+import { pillarPages } from "@/data/pillar-pages";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ArticleSchema } from "@/components/seo/ArticleSchema";
 import { AuthorCard } from "@/components/seo/AuthorCard";
@@ -45,6 +47,23 @@ export default async function BlogPostPage({ params }: Props) {
     .slice(0, 5)
     .map((p) => ({ title: p.title, href: `/blog/${p.slug}`, category: p.category }));
 
+  // Related tools based on tags matching tool slugs or names
+  const relatedTools = tools
+    .filter((t) => post.tags.some((tag) => t.slug.includes(tag.toLowerCase().replace(/\s+/g, "-")) || t.name.toLowerCase().includes(tag.toLowerCase())))
+    .slice(0, 4)
+    .map((t) => ({ title: `${t.name} Review`, href: `/review/${t.slug}`, category: t.category }));
+
+  // Pillar page links for further reading
+  const pillarLinks = pillarPages
+    .filter((p) => post.tags.some((tag) => p.slug.includes(tag.toLowerCase().replace(/\s+/g, "-")) || p.name.toLowerCase().includes(tag.toLowerCase())) || p.type === "learn")
+    .slice(0, 3)
+    .map((p) => ({ title: p.title, href: p.type === "tool" ? `/tools/${p.slug}` : `/learn/${p.slug}`, description: p.description.slice(0, 100) }));
+
+  const furtherReading = [
+    ...pillarLinks,
+    ...relatedTools.slice(0, 2).map((t) => ({ title: t.title, href: t.href, description: `In-depth review and analysis` })),
+  ];
+
   return (
     <SEOPageLayout
       breadcrumbs={[
@@ -52,7 +71,8 @@ export default async function BlogPostPage({ params }: Props) {
         { label: "Blog", href: "/blog" },
         { label: post.title },
       ]}
-      relatedPages={relatedPosts}
+      relatedPages={[...relatedPosts, ...relatedTools]}
+      furtherReading={furtherReading}
       showTOC={false}
     >
       <ArticleSchema
