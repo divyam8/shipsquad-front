@@ -94,7 +94,7 @@ export default async function BlogPostPage({ params }: Props) {
         name={post.author}
         role="ShipSquad Team"
         bio="Building managed AI squads that ship production software. $99/mo for a full AI team."
-        twitterUrl="https://x.com/shipsquad"
+        twitterUrl="https://x.com/shipsquad_ai"
         linkedinUrl="https://linkedin.com/company/shipsquad"
       />
     </SEOPageLayout>

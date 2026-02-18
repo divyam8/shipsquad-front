@@ -198,6 +198,6 @@ export const SOCIAL_PROOF_METRICS = [
 ] as const;
 
 export const SOCIAL_LINKS = {
-  twitter: "https://x.com/shipsquad",
+  twitter: "https://x.com/shipsquad_ai",
   linkedin: "https://linkedin.com/company/shipsquad",
 } as const;

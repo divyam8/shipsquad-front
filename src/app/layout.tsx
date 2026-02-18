@@ -62,7 +62,7 @@ const jsonLd = [
       "Build a team of specialized AI agents working together on ANY goal. Your AI squad, your mission.",
     logo: "https://shipsquad.ai/logo.png",
     sameAs: [
-      "https://x.com/shipsquad",
+      "https://x.com/shipsquad_ai",
       "https://linkedin.com/company/shipsquad",
     ],
   },

@@ -22,7 +22,7 @@ const founders = [
     name: "ShipSquad Team",
     role: "Founders & Operators",
     bio: "We're solo founders and engineers who got tired of the gap between AI prototypes and production software. ShipSquad exists because we believe one expert + AI agents can outperform traditional teams at a fraction of the cost.",
-    twitterUrl: "https://x.com/shipsquad",
+    twitterUrl: "https://x.com/shipsquad_ai",
     linkedinUrl: "https://linkedin.com/company/shipsquad",
   },
 ];
