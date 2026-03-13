@@ -29,6 +29,17 @@
 <p>The most subtle innovation in AutoResearch isn't the automation — it's <strong>program.md</strong>. Karpathy is demonstrating that the future of directing AI agents isn't writing better prompts. It's writing better <em>programs</em> in natural language — structured documents that constrain, guide, and evolve agent behavior over time.</p>
 <p>This is exactly the pattern we're seeing across the industry: the skill that matters isn't coding. It's <strong>commanding agents with precision</strong>. It's the same shift we explore in our analysis of why <a href="/blog/vibe-coded-projects-will-die-agent-saas-will-win">vibe-coded projects die while agent SaaS wins</a>.</p>
 
+<h3>How to Get Started with AutoResearch</h3>
+<p>If you have a single NVIDIA GPU and Python 3.10+, you can start running autonomous ML experiments today. The setup takes under 5 minutes:</p>
+<ol>
+<li><strong>Install uv</strong> — the fast Python package manager that AutoResearch uses.</li>
+<li><strong>Clone the repo</strong> and run <strong>uv sync</strong> to install dependencies.</li>
+<li><strong>Run prepare.py</strong> — downloads training data and trains a BPE tokenizer (~2 minutes).</li>
+<li><strong>Run train.py</strong> — your first 5-minute baseline experiment.</li>
+<li><strong>Point your AI agent at program.md</strong> — and let it iterate autonomously overnight.</li>
+</ol>
+<p>Community forks already support <a href="https://github.com/miolini/autoresearch-macos" target="_blank">macOS with MLX</a> and <a href="https://github.com/jsegov/autoresearch-win-rtx" target="_blank">Windows with RTX GPUs</a>, so you don't need an H100 to participate.</p>
+
 <h2>OpenClaw: The Fastest-Growing Open-Source Project in History</h2>
 <p>While Karpathy was releasing AutoResearch, OpenClaw quietly crossed 280,000 GitHub stars — surpassing React to become the <strong>#1 most-starred project on GitHub</strong>. The lobster-themed AI agent framework has become the default infrastructure layer for autonomous agent deployment worldwide.</p>
 
