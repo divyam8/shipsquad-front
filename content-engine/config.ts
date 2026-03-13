@@ -1,6 +1,9 @@
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-export const ENGINE_ROOT = join(import.meta.dirname, '.');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export const ENGINE_ROOT = join(__dirname, '.');
 export const PROJECT_ROOT = join(ENGINE_ROOT, '..');
 export const OUTPUT_DIR = join(ENGINE_ROOT, 'output');
 export const DATA_DIR = join(ENGINE_ROOT, 'data');

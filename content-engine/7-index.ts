@@ -1,11 +1,13 @@
 import { GoogleAuth } from 'google-auth-library';
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { supabase } from './lib/supabase.js';
 import { CREDENTIALS_DIR, DOMAIN, GOOGLE_DAILY_LIMIT, INDEXNOW_KEY } from './config.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const GOOGLE_API_URL = 'https://indexing.googleapis.com/v3/urlNotifications:publish';
-const QUOTA_FILE = join(import.meta.dirname, '..', '.indexing-quota.json');
+const QUOTA_FILE = join(__dirname, '..', '.indexing-quota.json');
 
 function loadServiceAccounts() {
   if (!existsSync(CREDENTIALS_DIR)) {
