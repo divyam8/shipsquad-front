@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+credentials/
+
+# content engine
+content-engine/output/
+.indexing-quota.json
