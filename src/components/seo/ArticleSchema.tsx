@@ -7,6 +7,7 @@ interface ArticleSchemaProps {
   authorName: string;
   authorUrl?: string;
   imageUrl?: string;
+  basePath?: string;
 }
 
 export function ArticleSchema({
@@ -18,13 +19,14 @@ export function ArticleSchema({
   authorName,
   authorUrl,
   imageUrl,
+  basePath = "blog",
 }: ArticleSchemaProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: title,
     description,
-    url: `https://shipsquad.ai/blog/${slug}`,
+    url: `https://shipsquad.ai/${basePath}/${slug}`,
     datePublished: publishedAt,
     dateModified: updatedAt || publishedAt,
     author: {
@@ -44,7 +46,7 @@ export function ArticleSchema({
     image: imageUrl || "https://shipsquad.ai/og-image.png",
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://shipsquad.ai/blog/${slug}`,
+      "@id": `https://shipsquad.ai/${basePath}/${slug}`,
     },
   };
 
