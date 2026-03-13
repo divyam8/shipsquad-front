@@ -1,0 +1,23 @@
+[
+  { "url": "https://techcrunch.com/category/artificial-intelligence/feed/", "name": "TechCrunch AI" },
+  { "url": "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml", "name": "The Verge AI" },
+  { "url": "https://arstechnica.com/ai/feed/", "name": "Ars Technica AI" },
+  { "url": "https://venturebeat.com/category/ai/feed/", "name": "VentureBeat AI" },
+  { "url": "https://feeds.feedburner.com/mitTechnologyReview", "name": "MIT Tech Review" },
+  { "url": "https://hnrss.org/frontpage?q=AI+OR+LLM+OR+Claude+OR+GPT", "name": "Hacker News AI" },
+  { "url": "https://www.anthropic.com/feed.xml", "name": "Anthropic Blog" },
+  { "url": "https://openai.com/blog/rss.xml", "name": "OpenAI Blog" },
+  { "url": "https://blog.google/technology/ai/rss/", "name": "Google AI Blog" },
+  { "url": "https://ai.meta.com/blog/rss/", "name": "Meta AI Blog" },
+  { "url": "https://huggingface.co/blog/feed.xml", "name": "Hugging Face Blog" },
+  { "url": "https://blog.langchain.dev/rss/", "name": "LangChain Blog" },
+  { "url": "https://github.blog/feed/", "name": "GitHub Blog" },
+  { "url": "https://www.healthcareitnews.com/feed", "name": "Healthcare IT News" },
+  { "url": "https://www.law.com/rss/", "name": "Law.com" },
+  { "url": "https://www.accountingtoday.com/feed", "name": "Accounting Today" },
+  { "url": "https://www.retaildive.com/feeds/news/", "name": "Retail Dive" },
+  { "url": "https://www.manufacturing.net/rss", "name": "Manufacturing.net" },
+  { "url": "https://www.edtechmagazine.com/k12/rss.xml", "name": "EdTech Magazine" },
+  { "url": "https://www.insurancejournal.com/feed/", "name": "Insurance Journal" },
+  { "url": "https://arxiv.org/rss/cs.AI", "name": "ArXiv CS.AI" }
+]

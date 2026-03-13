@@ -1,0 +1,17 @@
+[
+  { "name": "Claude", "slug": "claude", "company": "Anthropic", "keywords": ["claude", "anthropic", "sonnet", "opus", "haiku"] },
+  { "name": "GPT", "slug": "gpt", "company": "OpenAI", "keywords": ["gpt", "openai", "chatgpt", "gpt-4", "gpt-5"] },
+  { "name": "OpenClaw", "slug": "openclaw", "company": "Open Source", "keywords": ["openclaw", "open claw"] },
+  { "name": "AutoResearch", "slug": "autoresearch", "company": "Karpathy", "keywords": ["autoresearch", "karpathy"] },
+  { "name": "Gemini", "slug": "gemini", "company": "Google", "keywords": ["gemini", "google ai"] },
+  { "name": "Cursor", "slug": "cursor", "company": "Anysphere", "keywords": ["cursor", "cursor ai"] },
+  { "name": "Copilot", "slug": "copilot", "company": "GitHub/Microsoft", "keywords": ["copilot", "github copilot"] },
+  { "name": "CrewAI", "slug": "crewai", "company": "CrewAI", "keywords": ["crewai", "crew ai"] },
+  { "name": "Aider", "slug": "aider", "company": "Open Source", "keywords": ["aider"] },
+  { "name": "Devin", "slug": "devin", "company": "Cognition", "keywords": ["devin", "cognition"] },
+  { "name": "LangChain", "slug": "langchain", "company": "LangChain", "keywords": ["langchain"] },
+  { "name": "Midjourney", "slug": "midjourney", "company": "Midjourney", "keywords": ["midjourney"] },
+  { "name": "Stable Diffusion", "slug": "stable-diffusion", "company": "Stability AI", "keywords": ["stable diffusion", "stability"] },
+  { "name": "Perplexity", "slug": "perplexity", "company": "Perplexity AI", "keywords": ["perplexity"] },
+  { "name": "Claude Code", "slug": "claude-code", "company": "Anthropic", "keywords": ["claude code"] }
+]
