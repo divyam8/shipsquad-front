@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { createClient } from "@supabase/supabase-js";
 import { tools } from "@/data/tools";
 import { comparisons } from "@/data/comparisons";
 import { useCases } from "@/data/use-cases";
@@ -15,7 +16,7 @@ import { blogPosts } from "@/data/blog-posts";
 
 const BASE_URL = "https://shipsquad.ai";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -147,6 +148,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // Insights articles from Supabase
+  let insightsPages: MetadataRoute.Sitemap = [];
+  try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    const { data: articles } = await supabase
+      .from("articles")
+      .select("slug, published_at, status")
+      .in("status", ["published", "promoted"])
+      .order("published_at", { ascending: false });
+
+    insightsPages = (articles || []).map((a) => ({
+      url: `${BASE_URL}/insights/${a.slug}`,
+      lastModified: a.published_at,
+      changeFrequency: "weekly" as const,
+      priority: a.status === "promoted" ? 0.8 : 0.6,
+    }));
+  } catch {
+    // Supabase may not be available during build — skip gracefully
+  }
+
   return [
     ...staticPages,
     ...alternativePages,
@@ -165,5 +189,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...missionPages,
     ...vsPages,
     ...blogPages,
+    ...insightsPages,
   ];
 }
