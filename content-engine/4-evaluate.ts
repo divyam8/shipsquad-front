@@ -14,7 +14,7 @@ function evaluateArticle(htmlPath: string, plan: ArticlePlan): EvalResult | null
   const maxWords = plan.content_type === 'news-explainer' ? 800 : 1500;
 
   try {
-    const cmd = `python "${join(ENGINE_ROOT, 'prepare.py')}" "${htmlPath}" --keywords "${keywords}" --min-words ${minWords} --max-words ${maxWords} --json`;
+    const cmd = `python3 "${join(ENGINE_ROOT, 'prepare.py')}" "${htmlPath}" --keywords "${keywords}" --min-words ${minWords} --max-words ${maxWords} --json`;
     const output = execSync(cmd, { encoding: 'utf-8', timeout: 30_000 });
     return JSON.parse(output.trim());
   } catch (err: any) {
