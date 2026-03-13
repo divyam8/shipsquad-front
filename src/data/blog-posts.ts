@@ -2,6 +2,133 @@ import type { BlogPost } from "@/types";
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "autoresearch-openclaw-claude-opus-ai-agents-doing-science",
+    title: "AutoResearch, OpenClaw, Claude Opus 4.6: AI Agents Are Now Doing the Science",
+    description: "Karpathy's AutoResearch runs 100 ML experiments overnight on a single GPU. OpenClaw hit 280K GitHub stars. Claude Opus 4.6 found 22 Firefox zero-days. The age of autonomous AI agents is here — and it changes everything for builders.",
+    category: "News",
+    author: "ShipSquad Team",
+    publishedAt: "2026-03-13T08:00:00Z",
+    readTime: "10 min read",
+    tags: ["AutoResearch", "Karpathy", "OpenClaw", "Claude Opus", "AI agents", "autonomous research", "open source"],
+    content: `<h2>The Week AI Agents Stopped Assisting and Started Discovering</h2>
+<p>What if you could run 100 ML experiments overnight — on a single GPU — without writing a single line of code yourself? That's no longer hypothetical. In March 2026, three breakthroughs landed in the same week and changed what autonomous AI agents can do for you:</p>
+<ol>
+<li><strong>Andrej Karpathy</strong> open-sourced <strong>AutoResearch</strong> — a 630-line Python framework that lets AI agents run hundreds of ML experiments overnight, autonomously, on a single GPU.</li>
+<li><strong>OpenClaw</strong> surpassed 280,000 GitHub stars to become the most-starred open-source project in history, with Chinese tech giants and governments deploying it at staggering scale.</li>
+<li><strong>Anthropic's Claude Opus 4.6</strong> discovered 22 previously unknown Firefox vulnerabilities in two weeks — including 14 high-severity bugs — marking the first time an AI model has conducted meaningful independent security research.</li>
+</ol>
+<p>These aren't incremental upgrades. They represent a fundamental shift: <strong>AI agents are no longer just writing code. They're doing the science.</strong></p>
+
+<h2>AutoResearch: Karpathy's 630-Line Revolution</h2>
+<p>On March 8, Andrej Karpathy — former Tesla AI director, OpenAI founding member, and the person who taught half the internet deep learning — released <a href="https://github.com/karpathy/autoresearch" target="_blank">AutoResearch</a> on GitHub. Within days, it had 29,000+ stars. As <a href="https://venturebeat.com/technology/andrej-karpathys-new-open-source-autoresearch-lets-you-run-hundreds-of-ai" target="_blank">VentureBeat reported</a>, the project immediately became one of the fastest-growing repositories of 2026.</p>
+<p>The premise is deceptively simple: give an AI coding agent a training script and a single GPU, and let it iterate autonomously. The agent modifies code, runs a 5-minute experiment, evaluates results, keeps improvements, discards regressions, and repeats. You go to sleep. You wake up to a better model and a complete experiment log.</p>
+
+<h3>How It Works</h3>
+<p>The architecture is elegant in its constraint:</p>
+<ul>
+<li><strong>prepare.py</strong> — Fixed data preparation and utilities. Human-maintained. The agent cannot touch it.</li>
+<li><strong>train.py</strong> — The single file the agent is allowed to modify. Contains the GPT model definition, optimizer, and training loop.</li>
+<li><strong>program.md</strong> — A Markdown file that serves as instructions for the agent. This is the key insight: instead of editing Python directly, you "program" a Markdown document that guides the agent's behavior.</li>
+</ul>
+<p>The 5-minute time budget per experiment means ~12 experiments per hour, ~100 overnight. Results are platform-independent and comparable. The evaluation metric is <strong>val_bpb</strong> (validation bits per byte) — vocabulary-size-independent, enabling fair comparison even when the agent changes the tokenizer or architecture.</p>
+
+<h3>The Results Speak for Themselves</h3>
+<p>Karpathy left AutoResearch running for roughly two days on a depth-12 transformer model. The agent autonomously discovered <strong>~20 additive improvements</strong> that transferred successfully from depth-12 to depth-24, reducing Time-to-GPT-2 on the public leaderboard from 2.02 hours to 1.80 hours — an <strong>11% improvement found entirely by an AI agent</strong>.</p>
+<p>Perhaps even more striking: Shopify CEO Tobi Lutke reportedly used AutoResearch to train a 0.8B parameter model overnight that outscored his previous 1.6B model. <strong>Half the parameters, better performance — discovered autonomously while he slept.</strong></p>
+<blockquote>The implication is profound: the bottleneck in ML research is no longer compute or ideas. It's the number of experiments you can run. AutoResearch removes that bottleneck for anyone with a single GPU.</blockquote>
+
+<h3>Why "Programming in Markdown" Matters</h3>
+<p>The most subtle innovation in AutoResearch isn't the automation — it's <strong>program.md</strong>. Karpathy is demonstrating that the future of directing AI agents isn't writing better prompts. It's writing better <em>programs</em> in natural language — structured documents that constrain, guide, and evolve agent behavior over time.</p>
+<p>This is exactly the pattern we're seeing across the industry: the skill that matters isn't coding. It's <strong>commanding agents with precision</strong>. It's the same shift we explore in our analysis of why <a href="/blog/vibe-coded-projects-will-die-agent-saas-will-win">vibe-coded projects die while agent SaaS wins</a>.</p>
+
+<h3>How to Get Started with AutoResearch</h3>
+<p>If you have a single NVIDIA GPU and Python 3.10+, you can start running autonomous ML experiments today. The setup takes under 5 minutes:</p>
+<ol>
+<li><strong>Install uv</strong> — the fast Python package manager that AutoResearch uses.</li>
+<li><strong>Clone the repo</strong> and run <strong>uv sync</strong> to install dependencies.</li>
+<li><strong>Run prepare.py</strong> — downloads training data and trains a BPE tokenizer (~2 minutes).</li>
+<li><strong>Run train.py</strong> — your first 5-minute baseline experiment.</li>
+<li><strong>Point your AI agent at program.md</strong> — and let it iterate autonomously overnight.</li>
+</ol>
+<p>Community forks already support <a href="https://github.com/miolini/autoresearch-macos" target="_blank">macOS with MLX</a> and <a href="https://github.com/jsegov/autoresearch-win-rtx" target="_blank">Windows with RTX GPUs</a>, so you don't need an H100 to participate.</p>
+
+<h2>OpenClaw: The Fastest-Growing Open-Source Project in History</h2>
+<p>While Karpathy was releasing his framework, OpenClaw quietly crossed 280,000 GitHub stars — surpassing React to become the <strong>#1 most-starred project on GitHub</strong>. The lobster-themed platform has become the default infrastructure layer for deploying intelligent systems at scale worldwide.</p>
+
+<h3>What's New in OpenClaw</h3>
+<ul>
+<li><strong>Core v2026.3.8</strong> — Added CLI backup commands for local state archives and officially supports GPT-5.4 with memory hot-swapping.</li>
+<li><strong>Foundation governance</strong> — Creator Steinberger announced in February that he'll join OpenAI, and OpenClaw will move to an open-source foundation for long-term stewardship.</li>
+</ul>
+
+<h3>The China Gold Rush</h3>
+<p>The most consequential story here isn't technical — it's geopolitical. Chinese tech companies and local governments are deploying products built on this framework at a pace that has no Western equivalent:</p>
+<ul>
+<li><strong>Tencent</strong> launched a full AI product suite built on OpenClaw called "lobster special forces," integrated directly with WeChat's billion-user ecosystem.</li>
+<li><strong>Shenzhen's Longgang district</strong> announced subsidies of up to 2 million yuan (~$290,000) for OpenClaw-based projects.</li>
+<li><strong>40,000+ OpenClaw instances</strong> were found exposed on the public internet in February — a security concern that led the Chinese government to restrict state agencies from using it.</li>
+</ul>
+<p>The pattern is clear: open-source agent frameworks are becoming <strong>national infrastructure</strong>. Countries and corporations are racing to build on them before the window closes.</p>
+<blockquote>Open-source frameworks like OpenClaw are no longer developer tools — they are strategic assets that nations compete over. The 280,000-star adoption curve proves the infrastructure layer is settled. If you're building with agents, the question is no longer "what platform?" — it's "how fast can you ship?"</blockquote>
+
+<h2>Claude Opus 4.6: An AI That Finds Zero-Days</h2>
+<p>Anthropic's latest model, <strong>Claude Opus 4.6</strong>, made headlines for something no AI model has done before: it discovered <strong>22 previously unknown vulnerabilities in Mozilla Firefox</strong> over a two-week research period. The findings, <a href="https://thehackernews.com/2026/03/anthropic-finds-22-firefox.html" target="_blank">first reported by The Hacker News</a>, sent shockwaves through the security community.</p>
+<p>The breakdown:</p>
+<ul>
+<li><strong>14 high-severity</strong> vulnerabilities</li>
+<li><strong>7 moderate-severity</strong> vulnerabilities</li>
+<li><strong>1 low-severity</strong> vulnerability</li>
+</ul>
+<p>To put this in perspective: the 14 high-severity findings represent nearly <strong>a fifth of all high-severity Firefox vulnerabilities patched in the entirety of 2025</strong>. An AI model matched months of human security research in two weeks.</p>
+<p>Alongside Opus 4.6, Anthropic also released <strong>Claude Sonnet 4.6</strong> — a balanced speed/intelligence model with 1M token context windows (beta), improved agentic search, and lower token consumption.</p>
+
+<h3>The Bigger Picture</h3>
+<p>This isn't just a benchmark flex. It demonstrates that frontier AI models can now conduct <strong>genuine security research</strong> — not just pattern-matching against known CVE databases, but discovering novel vulnerabilities through independent analysis. The implications for both offensive and defensive cybersecurity are enormous.</p>
+
+<h2>The Convergence: Why All Three Happened in the Same Month</h2>
+<p>It's tempting to treat these as separate stories. But the timing isn't coincidental — they share a common cause. The underlying models, infrastructure, and tooling have all crossed critical capability thresholds simultaneously.</p>
+<p>Two years ago, language models could write decent code but couldn't reason about experimental design. Framework ecosystems existed but lacked the reliability for production deployment. Security tools could scan for known patterns but couldn't reason about novel attack surfaces.</p>
+<p>Now, every layer of the stack has matured at once. Models can plan multi-step research protocols. Frameworks handle state management and recovery at enterprise scale. And the cost of running these systems has dropped by an order of magnitude — making it economically viable for a solo founder to deploy capabilities that were previously only accessible to well-funded research labs.</p>
+<p>This convergence is what separates March 2026 from every previous "AI breakthrough" month. It's not one impressive demo. It's the entire stack becoming production-ready simultaneously.</p>
+
+<h2>What This Means for Builders</h2>
+<p>If you zoom out, the pattern across all three developments is identical:</p>
+<p><strong>The ceiling on what small teams and solo builders can accomplish just rose dramatically.</strong></p>
+<ul>
+<li><strong>AutoResearch</strong> proves agents can run scientific experiments and discover improvements humans missed.</li>
+<li><strong>OpenClaw</strong> proves the infrastructure for deploying autonomous agents at scale is mature and globally adopted.</li>
+<li><strong>Claude Opus 4.6</strong> proves frontier models can conduct independent research that produces novel, high-value discoveries.</li>
+</ul>
+<p>For solo founders and small teams, the takeaway is clear: <strong>the ceiling on what a small team can accomplish just got dramatically higher.</strong> You no longer need a 50-person ML team to run hundreds of experiments. You don't need a security consultancy to audit your codebase. You don't need to <a href="/ai-agent-for/software-development">build agent infrastructure from scratch</a>.</p>
+
+<h3>The Agent-First Playbook</h3>
+<ol>
+<li><strong>Stop thinking about AI as autocomplete.</strong> The Copilot era is over. Agents don't suggest code — they run experiments, discover bugs, and ship improvements autonomously.</li>
+<li><strong>Invest in <a href="/ai-agent-for/team-collaboration">agent orchestration</a>, not individual tools.</strong> The value isn't in any single model — it's in <em>squads</em> of specialized agents that coordinate, learn, and improve over time.</li>
+<li><strong>Treat "programming in Markdown" as a core skill.</strong> Karpathy's program.md pattern isn't a hack — it's a preview of how we'll all direct AI agents. The ability to write precise, structured agent instructions will be the defining skill of the next era.</li>
+<li><strong>Move fast — the window is open.</strong> OpenClaw's adoption curve shows how quickly agent infrastructure becomes commodity. The advantage goes to teams that deploy agent squads <em>now</em>, while the knowledge compounds.</li>
+</ol>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>What is Karpathy's AutoResearch?</h3>
+<p>It's an open-source Python framework that lets coding agents run ML experiments without human intervention. You provide a training script and a single GPU. The system modifies code, runs 5-minute experiments, evaluates results, and keeps improvements — approximately 100 iterations overnight while you sleep.</p>
+
+<h3>What is OpenClaw and why does it matter?</h3>
+<p>It's the fastest-growing open-source project in history with over 280,000 GitHub stars. The framework provides infrastructure for deploying intelligent systems at scale. Its significance: deployment infrastructure has matured to mass adoption — Tencent, Chinese government agencies, and thousands of developers build on it worldwide.</p>
+
+<h3>How did Claude find Firefox vulnerabilities?</h3>
+<p>Anthropic's latest model conducted independent security research on Firefox's codebase over two weeks, discovering 22 previously unknown flaws. Unlike traditional scanners that match known patterns, it performed genuine reasoning about code behavior to find novel bugs that human researchers had missed.</p>
+
+<h3>Will intelligent systems replace human researchers?</h3>
+<p>Not replace — but dramatically amplify. The tools discussed here demonstrate that software can run hundreds of experiments a researcher would take weeks to complete. The key shift is from humans doing the work to humans directing it. The future role is designing programs that guide these systems, not running experiments manually.</p>
+
+<h2>The Bottom Line</h2>
+<p>March 2026 will be remembered as the month AI agents stopped being tools and started being <strong>researchers</strong>. Karpathy showed they can do ML science. Anthropic showed they can do security research. OpenClaw showed the world is ready to deploy them at scale.</p>
+<p>The question isn't whether autonomous agent squads will replace traditional development workflows. It's whether you'll be the one deploying them — or the one being disrupted by someone who did.</p>
+<p>At <a href="/">ShipSquad</a>, we've been building for exactly this future: <strong>autonomous agent squads that ship production software</strong>, learn from every mission, and get smarter over time. If you're ready to stop maintaining code and start commanding agents — <a href="/#waitlist">join the waitlist</a>.</p>`,
+  },
+  {
     slug: "vibe-coded-projects-will-die-agent-saas-will-win",
     title: "Vibe-Coded Projects Will Die. Agent SaaS Will Win.",
     description: "10-20 million prototypes were built with AI tools last year. 95% will never reach production. Here's why vibe-coding creates the graveyard — and how autonomous agent squads are the only way out.",
