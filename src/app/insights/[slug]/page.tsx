@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ArticleSchema } from "@/components/seo/ArticleSchema";
 import { AuthorCard } from "@/components/seo/AuthorCard";
+import { buildSpeakableSchema, buildBreadcrumbSchema } from "@/lib/schema-helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -91,6 +92,26 @@ export default async function InsightsArticlePage({ params }: Props) {
         publishedAt={article.published_at}
         authorName={article.author}
         basePath="insights"
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildSpeakableSchema(article.title, article.description)
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", url: "https://shipsquad.ai" },
+              { name: "Insights", url: "https://shipsquad.ai/insights" },
+              { name: article.title },
+            ])
+          ),
+        }}
       />
 
       <header className="mb-10">

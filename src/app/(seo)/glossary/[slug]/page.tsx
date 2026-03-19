@@ -4,6 +4,7 @@ import { glossaryTerms } from "@/data/glossary";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
+import { buildDefinedTermSchema, buildBreadcrumbSchema } from "@/lib/schema-helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -37,12 +38,16 @@ export default async function GlossaryPage({ params }: Props) {
     .map((t) => ({ title: `What is ${t!.term}?`, href: `/glossary/${t!.slug}`, category: t!.category }));
   const learnLinks = getLearnPillarLinks(term.category);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "DefinedTerm",
+  const definedTermJsonLd = buildDefinedTermSchema({
     name: term.term,
     description: term.definition,
-  };
+  });
+
+  const breadcrumbJsonLd = buildBreadcrumbSchema([
+    { name: "Home", url: "https://shipsquad.ai" },
+    { name: "Glossary", url: "https://shipsquad.ai/glossary/ai-agent" },
+    { name: term.term },
+  ]);
 
   return (
     <SEOPageLayout
@@ -55,7 +60,8 @@ export default async function GlossaryPage({ params }: Props) {
       furtherReading={learnLinks}
       showTOC={false}
     >
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
         What is {term.term}?

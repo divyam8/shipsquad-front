@@ -5,6 +5,7 @@ import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
 import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
+import { buildHowToSchema, buildBreadcrumbSchema } from "@/lib/schema-helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,19 +37,18 @@ export default async function HowToPage({ params }: Props) {
   const relatedGuides = guides.filter((g) => g.slug !== slug && g.category === guide.category).slice(0, 6).map((g) => ({ title: g.title, href: `/how-to/${g.slug}`, category: g.category }));
   const learnLinks = getLearnPillarLinks(guide.category);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: guide.title,
+  const howToJsonLd = buildHowToSchema({
+    title: guide.title,
     description: guide.description,
-    totalTime: guide.timeToRead,
-    step: guide.steps.map((s, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      name: s.title,
-      text: s.description,
-    })),
-  };
+    timeToRead: guide.timeToRead,
+    steps: guide.steps,
+  });
+
+  const breadcrumbJsonLd = buildBreadcrumbSchema([
+    { name: "Home", url: "https://shipsquad.ai" },
+    { name: "How-To Guides", url: "https://shipsquad.ai/how-to/build-ai-agent" },
+    { name: guide.title },
+  ]);
 
   return (
     <SEOPageLayout
@@ -66,7 +66,8 @@ export default async function HowToPage({ params }: Props) {
         { id: "faq", title: "FAQ", level: 2 },
       ]}
     >
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">{guide.title}</h1>
       <div className="flex gap-3 mb-8">

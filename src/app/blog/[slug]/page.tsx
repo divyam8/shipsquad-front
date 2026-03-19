@@ -6,6 +6,7 @@ import { pillarPages } from "@/data/pillar-pages";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ArticleSchema } from "@/components/seo/ArticleSchema";
 import { AuthorCard } from "@/components/seo/AuthorCard";
+import { buildSpeakableSchema, buildBreadcrumbSchema } from "@/lib/schema-helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -82,6 +83,26 @@ export default async function BlogPostPage({ params }: Props) {
         publishedAt={post.publishedAt}
         updatedAt={post.updatedAt}
         authorName={post.author}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildSpeakableSchema(post.title, post.description)
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildBreadcrumbSchema([
+              { name: "Home", url: "https://shipsquad.ai" },
+              { name: "Blog", url: "https://shipsquad.ai/blog" },
+              { name: post.title },
+            ])
+          ),
+        }}
       />
 
       <header className="mb-10">

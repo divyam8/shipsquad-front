@@ -1,3 +1,84 @@
+/* ------------------------------------------------------------------ */
+/*  HowTo schema — for /how-to/[slug] pages                          */
+/* ------------------------------------------------------------------ */
+export function buildHowToSchema(guide: {
+  title: string;
+  description: string;
+  timeToRead?: string;
+  steps: { title: string; description: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `How to ${guide.title}`,
+    description: guide.description,
+    ...(guide.timeToRead ? { totalTime: guide.timeToRead } : {}),
+    step: guide.steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.title,
+      text: s.description,
+    })),
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  DefinedTerm schema — for /glossary/[slug] pages                   */
+/* ------------------------------------------------------------------ */
+export function buildDefinedTermSchema(term: {
+  name: string;
+  description: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    name: term.name,
+    description: term.description,
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      name: "AI Glossary",
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Speakable schema — for /insights/ and /blog/ article pages        */
+/* ------------------------------------------------------------------ */
+export function buildSpeakableSchema(title: string, description: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: title,
+    description,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".article-summary", ".key-takeaway"],
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  BreadcrumbList schema — for ALL pages                             */
+/* ------------------------------------------------------------------ */
+export function buildBreadcrumbSchema(
+  items: { name: string; url?: string }[]
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      ...(item.url ? { item: item.url } : {}),
+    })),
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Pricing helpers                                                   */
+/* ------------------------------------------------------------------ */
+
 /**
  * Extracts the lowest numeric price from a pricingDetail string.
  * Examples:
