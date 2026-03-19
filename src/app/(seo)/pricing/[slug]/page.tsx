@@ -6,6 +6,7 @@ import { FAQSchema } from "@/components/seo/FAQSchema";
 import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getToolPillarLink } from "@/lib/pillar-links";
 import { buildSoftwareApplicationSchema, pricingHint } from "@/lib/schema-helpers";
+import { generatePricingFAQs } from "@/lib/faq-generators";
 import { RelatedToolPages } from "@/components/seo/RelatedToolPages";
 
 interface Props {
@@ -51,12 +52,7 @@ export default async function PricingPage({ params }: Props) {
     { title: `${tool.name} Alternatives`, href: `/alternative/${slug}`, description: `Compare top alternatives` },
   ];
 
-  const faq = [
-    { question: `How much does ${tool.name} cost?`, answer: `${tool.name} pricing starts at ${tool.pricingDetail}. Plans vary by features and usage limits.` },
-    { question: `Is there a free plan for ${tool.name}?`, answer: `${tool.pricing === "Freemium" || tool.pricing === "Free" ? `Yes, ${tool.name} offers a free plan with limited features.` : `${tool.name} does not currently offer a free plan, but may offer a free trial.`}` },
-    { question: `Is ${tool.name} worth the price?`, answer: `${tool.name} is a strong choice for ${tool.category.toLowerCase()}. Whether it's worth the price depends on your needs. Consider the features you'll actually use and compare with alternatives.` },
-    { question: `How does ShipSquad pricing compare?`, answer: "ShipSquad is $99/mo + your Claude subscription for an entire AI squad of 10 agents. Instead of paying for individual tools, you get a full team working together." },
-  ];
+  const faq = generatePricingFAQs(tool);
 
   const jsonLd = buildSoftwareApplicationSchema(tool);
 

@@ -7,6 +7,7 @@ import { FAQSchema } from "@/components/seo/FAQSchema";
 import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getToolPillarLink } from "@/lib/pillar-links";
 import { extractLowestPrice } from "@/lib/schema-helpers";
+import { generateReviewFAQs } from "@/lib/faq-generators";
 import { RelatedToolPages } from "@/components/seo/RelatedToolPages";
 
 interface Props {
@@ -64,12 +65,7 @@ export default async function ReviewPage({ params }: Props) {
     ...(tool.hasPricingPage ? [{ title: `${tool.name} Pricing Breakdown`, href: `/pricing/${slug}`, description: `Complete cost analysis` }] : []),
   ];
 
-  const faq = [
-    { question: `Is ${tool.name} good in 2026?`, answer: `${tool.name} scores ${tool.rating}/5 in our analysis. It excels at ${tool.pros[0]?.toLowerCase() || "its core features"} but has limitations around ${tool.cons[0]?.toLowerCase() || "certain edge cases"}.` },
-    { question: `Who is ${tool.name} best for?`, answer: `${tool.name} is best for users who need ${tool.features[0]?.toLowerCase() || "AI capabilities"} and ${tool.features[1]?.toLowerCase() || "automation features"}.` },
-    { question: `What are the main drawbacks of ${tool.name}?`, answer: `The main drawbacks are: ${tool.cons.join(". ")}.` },
-    { question: "How does ShipSquad compare?", answer: "ShipSquad takes a different approach — instead of a single tool, you get 10 specialized AI agents working together for $99/mo." },
-  ];
+  const faq = generateReviewFAQs(tool);
 
   const jsonLd = {
     "@context": "https://schema.org",
