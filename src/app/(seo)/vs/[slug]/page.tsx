@@ -4,6 +4,7 @@ import { comparisons } from "@/data/comparisons";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ComparisonTable } from "@/components/seo/ComparisonTable";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -18,9 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const comparison = comparisons.find((c) => c.slug === slug && c.isVsTraditional);
   if (!comparison) return {};
+  const year = new Date().getFullYear();
   return {
-    title: `${comparison.toolA} vs ${comparison.toolB}: Which Wins in 2026?`,
-    description: `${comparison.toolA} vs ${comparison.toolB} — comprehensive comparison. ${comparison.verdict}`,
+    title: `${comparison.toolA} vs ${comparison.toolB}: ${comparison.winnerSummary || 'Which Wins?'} (${year})`,
+    description: `${comparison.toolA} vs ${comparison.toolB} — real comparison with features, pricing & verdict. ${comparison.verdict.slice(0, 80)}`,
     alternates: { canonical: `/vs/${slug}` },
   };
 }
@@ -63,6 +65,7 @@ export default async function VsPage({ params }: Props) {
       <p className="text-lg text-text-secondary mb-8">
         A comprehensive comparison of {comparison.toolA.toLowerCase()} and {comparison.toolB.toLowerCase()} approaches in 2026.
       </p>
+      <LastUpdated />
 
       <section id="verdict" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Quick Verdict</h2>

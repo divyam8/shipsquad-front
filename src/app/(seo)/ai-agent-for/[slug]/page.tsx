@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { useCases } from "@/data/use-cases";
+import { getIndustryStat } from "@/data/industry-stats";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -17,13 +19,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const useCase = useCases.find((u) => u.slug === slug);
   if (!useCase) return {};
+  const year = new Date().getFullYear();
+  const stat = getIndustryStat(useCase.category || useCase.slug);
+  const description = stat
+    ? `${stat.statShort} — and AI agents make it possible. ${useCase.description}`
+    : useCase.description;
   return {
-    title: `AI Agent for ${useCase.name}: Automate ${useCase.name} in 2026`,
-    description: useCase.description,
+    title: `AI Agent for ${useCase.name}: Automate & Save Hours (${year})`,
+    description,
     alternates: { canonical: `/ai-agent-for/${slug}` },
     openGraph: {
-      title: `AI Agent for ${useCase.name} (2026 Guide)`,
-      description: useCase.description,
+      title: `AI Agent for ${useCase.name}: Automate & Save Hours (${year})`,
+      description,
     },
   };
 }
@@ -77,6 +84,7 @@ export default async function AIAgentForPage({ params }: Props) {
         {useCase.title}
       </h1>
       <p className="text-lg text-text-secondary mb-8">{useCase.description}</p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">

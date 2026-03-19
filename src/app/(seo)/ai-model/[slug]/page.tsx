@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { aiModels } from "@/data/ai-models";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
+import { extractLowestPrice } from "@/lib/schema-helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,9 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const model = aiModels.find((m) => m.slug === slug);
   if (!model) return {};
+  const year = new Date().getFullYear();
   return {
-    title: `${model.name} Review 2026: Capabilities, Pricing & Analysis`,
-    description: `${model.name} by ${model.provider} — complete review for 2026. Capabilities, pricing, context window, and how it compares to competitors.`,
+    title: `${model.name} Review: ${model.rating}/5 — ${model.contextWindow} Context, ${model.pricing}`,
+    description: `${model.name} by ${model.provider} — honest review for ${year}. ${model.contextWindow} context window, ${model.pricing}. See benchmarks, use cases, and alternatives.`,
     alternates: { canonical: `/ai-model/${slug}` },
   };
 }
@@ -40,7 +43,8 @@ export default async function AIModelPage({ params }: Props) {
     name: model.name,
     applicationCategory: model.category,
     operatingSystem: "Cloud",
-    offers: { "@type": "Offer", description: model.pricing },
+    image: "https://shipsquad.ai/og-image.png",
+    offers: { "@type": "Offer", price: extractLowestPrice(model.pricing, model.pricing), priceCurrency: "USD", availability: "https://schema.org/OnlineOnly", description: model.pricing },
     review: { "@type": "Review", reviewRating: { "@type": "Rating", ratingValue: model.rating, bestRating: 5 }, author: { "@type": "Organization", name: "ShipSquad" } },
   };
 
@@ -79,6 +83,7 @@ export default async function AIModelPage({ params }: Props) {
         <span className="text-xs px-2.5 py-1 rounded-full bg-white/[0.05] text-text-muted">{model.releaseDate}</span>
         <span className="text-xs px-2.5 py-1 rounded-full bg-accent-purple/10 text-accent-purple">{model.rating}/5</span>
       </div>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Overview</h2>

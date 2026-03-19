@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { pillarPages } from "@/data/pillar-pages";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,13 +19,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = pillarPages.find((p) => p.slug === slug && p.type === "learn");
   if (!page) return {};
+  const year = new Date().getFullYear();
+  const newTitle = `${page.title}: The Practical Guide (${year})`;
+  const newDescription = `${page.description.slice(0, 120)} A comprehensive guide with tools, examples, and actionable steps.`;
   return {
-    title: `${page.title} | ShipSquad`,
-    description: page.description,
+    title: newTitle,
+    description: newDescription,
     alternates: { canonical: `/learn/${slug}` },
     openGraph: {
-      title: page.title,
-      description: page.description,
+      title: newTitle,
+      description: newDescription,
       url: `/learn/${slug}`,
       type: "article",
       siteName: "ShipSquad",
@@ -143,6 +147,7 @@ export default async function LearnPillarPage({ params }: Props) {
         {page.title}
       </h1>
       <p className="text-lg text-text-secondary mb-8">{page.heroSubtitle}</p>
+      <LastUpdated />
 
       {/* Overview */}
       <section id="overview" className="mb-10">

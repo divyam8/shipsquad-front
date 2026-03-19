@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { tools } from "@/data/tools";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getToolPillarLink } from "@/lib/pillar-links";
+import { buildSoftwareApplicationSchema, pricingHint } from "@/lib/schema-helpers";
+import { RelatedToolPages } from "@/components/seo/RelatedToolPages";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,8 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tool = tools.find((t) => t.slug === slug);
   if (!tool) return {};
   return {
-    title: `${tool.name} Pricing 2026: Plans, Costs & Best Deals`,
-    description: `${tool.name} pricing breakdown for 2026. Compare plans, features, and costs. Find the best ${tool.name} plan for your needs.`,
+    title: `${tool.name} Pricing: ${pricingHint(tool.pricingDetail, tool.pricing)} — Hidden Costs Revealed (${new Date().getFullYear()})`,
+    description: `${tool.name} pricing in ${new Date().getFullYear()}: ${tool.pricingDetail.split(',').slice(0, 2).join(',')}. Hidden costs, free tier limits, and which plan is worth it. Rated ${tool.rating}/5.`,
     alternates: { canonical: `/pricing/${slug}` },
     other: {
       "article:modified_time": new Date().toISOString(),
@@ -55,13 +58,7 @@ export default async function PricingPage({ params }: Props) {
     { question: `How does ShipSquad pricing compare?`, answer: "ShipSquad is $99/mo + your Claude subscription for an entire AI squad of 10 agents. Instead of paying for individual tools, you get a full team working together." },
   ];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: tool.name,
-    description: tool.description,
-    offers: { "@type": "Offer", priceCurrency: "USD", price: tool.pricingDetail, description: `${tool.name} pricing` },
-  };
+  const jsonLd = buildSoftwareApplicationSchema(tool);
 
   return (
     <SEOPageLayout
@@ -88,6 +85,7 @@ export default async function PricingPage({ params }: Props) {
       <p className="text-lg text-text-secondary mb-8">
         Everything you need to know about {tool.name} pricing in 2026 — plans, features, and how it compares.
       </p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Pricing Overview</h2>
@@ -167,6 +165,8 @@ export default async function PricingPage({ params }: Props) {
       </section>
 
       <FAQSchema items={faq} />
+
+      <RelatedToolPages toolSlug={slug} currentPageType="pricing" />
     </SEOPageLayout>
   );
 }

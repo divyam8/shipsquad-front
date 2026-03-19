@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { workflows } from "@/data/workflows";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -17,9 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const workflow = workflows.find((w) => w.slug === slug);
   if (!workflow) return {};
+  const year = new Date().getFullYear();
   return {
-    title: `${workflow.title}: Step-by-Step Guide (2026)`,
-    description: workflow.description,
+    title: `${workflow.title}: Automate This in Minutes (${year} Guide)`,
+    description: `Step-by-step guide to automating ${workflow.title.toLowerCase()}. ${workflow.description.slice(0, 100)}`,
     alternates: { canonical: `/ai-workflow/${slug}` },
   };
 }
@@ -52,6 +54,7 @@ export default async function AIWorkflowPage({ params }: Props) {
     >
       <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">{workflow.title}</h1>
       <p className="text-lg text-text-secondary mb-8">{workflow.description}</p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">How This AI Workflow Works</h2>

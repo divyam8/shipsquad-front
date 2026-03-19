@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { glossaryTerms } from "@/data/glossary";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -17,8 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const term = glossaryTerms.find((g) => g.slug === slug);
   if (!term) return {};
   return {
-    title: `What is ${term.term}? Definition & Guide (2026)`,
-    description: `${term.term}: ${term.definition} Learn everything about ${term.term.toLowerCase()} in this comprehensive guide.`,
+    title: `What Is ${term.term}? Simple Definition + How AI Teams Use It`,
+    description: `${term.term}: ${term.definition.slice(0, 100)} — explained for practitioners, not academics. See real examples and tools.`,
     alternates: { canonical: `/glossary/${slug}` },
   };
 }
@@ -60,6 +61,7 @@ export default async function GlossaryPage({ params }: Props) {
         What is {term.term}?
       </h1>
       <span className="text-xs px-2.5 py-1 rounded-full bg-accent-blue/10 text-accent-blue mb-8 inline-block">{term.category}</span>
+      <LastUpdated />
 
       <div className="rounded-xl border border-white/[0.05] bg-white/[0.02] p-6 mb-8">
         <p className="text-lg text-text-primary font-medium">{term.definition}</p>

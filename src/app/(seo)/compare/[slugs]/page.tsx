@@ -5,7 +5,10 @@ import { tools } from "@/data/tools";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { ComparisonTable } from "@/components/seo/ComparisonTable";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getToolPillarLink } from "@/lib/pillar-links";
+import { buildSoftwareApplicationSchema } from "@/lib/schema-helpers";
+import { generateComparisonFAQs } from "@/lib/faq-generators";
 
 interface Props {
   params: Promise<{ slugs: string }>;
@@ -22,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const comparison = comparisons.find((c) => c.slug === slugs);
   if (!comparison) return {};
   return {
-    title: `${comparison.toolA} vs ${comparison.toolB}: Complete Comparison (2026)`,
-    description: `${comparison.toolA} vs ${comparison.toolB} — detailed comparison of features, pricing, pros and cons. Find which is better for your needs in 2026.`,
+    title: `${comparison.toolA} vs ${comparison.toolB}: We Tested Both — ${comparison.winnerSummary || 'See Who Wins'}`,
+    description: `${comparison.toolA} vs ${comparison.toolB} compared on features, pricing & real use cases. ${comparison.verdict.slice(0, 120)} See the full head-to-head.`,
     alternates: { canonical: `/compare/${slugs}` },
     openGraph: {
       title: `${comparison.toolA} vs ${comparison.toolB} (2026)`,
@@ -70,16 +73,11 @@ export default async function ComparePage({ params }: Props) {
     ...(toolB?.hasPricingPage ? [{ title: `${comparison.toolB} Pricing Breakdown`, href: `/pricing/${comparison.toolBSlug}`, description: `Complete pricing guide` }] : []),
   ].slice(0, 6);
 
-  const faq = [
-    { question: `Is ${comparison.toolA} better than ${comparison.toolB}?`, answer: comparison.verdict },
-    { question: `Which is cheaper, ${comparison.toolA} or ${comparison.toolB}?`, answer: `Pricing varies by plan. Check our detailed pricing pages for ${comparison.toolA} and ${comparison.toolB} to find the best value for your specific needs.` },
-    { question: `Can I use ${comparison.toolA} and ${comparison.toolB} together?`, answer: `Many teams use multiple tools for different aspects of their workflow. ${comparison.toolA} and ${comparison.toolB} can complement each other depending on your use case.` },
-    { question: "What about using ShipSquad instead?", answer: `ShipSquad offers a different approach — a full AI squad of 10 specialized agents working together for $99/mo, rather than individual tools.` },
-  ];
+  const faq = generateComparisonFAQs(comparison.toolA, comparison.toolB, comparison.verdict, comparison.category);
 
   const jsonLd = [
-    { "@context": "https://schema.org", "@type": "Product", name: comparison.toolA, description: `${comparison.toolA} — ${comparison.category} tool` },
-    { "@context": "https://schema.org", "@type": "Product", name: comparison.toolB, description: `${comparison.toolB} — ${comparison.category} tool` },
+    ...(toolA ? [buildSoftwareApplicationSchema(toolA)] : [{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: comparison.toolA, description: `${comparison.toolA} — ${comparison.category} tool` }]),
+    ...(toolB ? [buildSoftwareApplicationSchema(toolB)] : [{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: comparison.toolB, description: `${comparison.toolB} — ${comparison.category} tool` }]),
   ];
 
   const winsA = comparison.features.filter((f) => f.winner === "a").length;
@@ -113,6 +111,7 @@ export default async function ComparePage({ params }: Props) {
       <p className="text-lg text-text-secondary mb-8">
         A detailed comparison of {comparison.toolA} and {comparison.toolB} in the {comparison.category} space. We compare features, pricing, pros, and cons to help you choose.
       </p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Quick Verdict</h2>

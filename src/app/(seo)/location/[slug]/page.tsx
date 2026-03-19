@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { cities } from "@/data/cities";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
+import { getIndustryStat } from "@/data/industry-stats";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,9 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const city = cities.find((c) => c.slug === slug);
   if (!city) return {};
+  const year = new Date().getFullYear();
   return {
-    title: `AI Agents & Services in ${city.name}, ${city.country} (2026)`,
-    description: `Deploy AI agents for businesses in ${city.name}. ShipSquad provides managed AI squads — 10 specialized agents for $99/mo. Serving ${city.name} and ${city.region}.`,
+    title: `AI Adoption in ${city.name}: Tools & Trends (${year})`,
+    description: `AI tools for businesses in ${city.name}, ${city.country}. ${city.techScene ? city.techScene + '.' : ''} See which tools and workflows local teams are adopting.`,
     alternates: { canonical: `/location/${slug}` },
   };
 }
@@ -74,6 +77,7 @@ export default async function LocationPage({ params }: Props) {
       <p className="text-lg text-text-secondary mb-8">
         Deploy managed AI squads for your {city.name}-based business. 10 specialized agents, $99/mo.
       </p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">AI Scene in {city.name}</h2>

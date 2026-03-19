@@ -4,7 +4,11 @@ import { tools } from "@/data/tools";
 import { comparisons } from "@/data/comparisons";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getToolPillarLink } from "@/lib/pillar-links";
+import { buildSoftwareApplicationSchema } from "@/lib/schema-helpers";
+import { generateAlternativeFAQs } from "@/lib/faq-generators";
+import { RelatedToolPages } from "@/components/seo/RelatedToolPages";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,9 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const tool = tools.find((t) => t.slug === slug);
   if (!tool) return {};
+  const altNames = tool.alternatives.slice(0, 3).map(s => tools.find(t => t.slug === s)?.name).filter(Boolean);
   return {
-    title: `Best ${tool.name} Alternatives in 2026 (Top ${tool.alternatives.length}+ Options)`,
-    description: `Looking for a ${tool.name} alternative? Compare the best ${tool.name} alternatives and competitors for 2026. Find the right tool for your needs.`,
+    title: `${tool.name} Not Right? ${tool.alternatives.length} Better Alternatives for ${new Date().getFullYear()}`,
+    description: `Switching from ${tool.name}? We ranked ${tool.alternatives.length} alternatives by features, pricing & real user fit. ${altNames.slice(0, 2).join(", ")} lead the pack.`,
     alternates: { canonical: `/alternative/${slug}` },
     openGraph: {
       title: `Best ${tool.name} Alternatives in 2026`,
@@ -72,21 +77,11 @@ export default async function AlternativePage({ params }: Props) {
     ...toolComparisons,
   ];
 
-  const faq = [
-    { question: `What is the best alternative to ${tool.name}?`, answer: `The best ${tool.name} alternatives include ${alternativeTools.slice(0, 3).map(t => t!.name).join(", ")}. The right choice depends on your specific needs, budget, and use case.` },
-    { question: `Is ${tool.name} worth the price?`, answer: `${tool.name} pricing starts at ${tool.pricingDetail}. Whether it's worth it depends on your needs. ${alternativeTools[0]?.name || "Other tools"} may offer better value for certain use cases.` },
-    { question: `Can I switch from ${tool.name} to an alternative?`, answer: `Yes, most ${tool.name} alternatives offer import tools or migration support. The switch typically takes a few hours to a few days depending on your data and workflow complexity.` },
-    { question: "How does ShipSquad compare?", answer: `ShipSquad takes a different approach — instead of a single tool, you get a full AI squad of 10 specialized agents working together on your mission for $99/mo.` },
-  ];
+  const altNames = alternativeTools.map((t) => t!.name);
+  const faq = generateAlternativeFAQs(tool, altNames);
 
   const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: tool.name,
-      description: tool.description,
-      aggregateRating: { "@type": "AggregateRating", ratingValue: tool.rating, bestRating: 5, ratingCount: Math.floor(tool.rating * 100) + 50 },
-    },
+    buildSoftwareApplicationSchema(tool),
     {
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -96,7 +91,7 @@ export default async function AlternativePage({ params }: Props) {
         "@type": "ListItem",
         position: i + 1,
         item: {
-          "@type": "Product",
+          "@type": "SoftwareApplication",
           name: alt!.name,
           description: alt!.description,
           url: `https://shipsquad.ai/review/${alt!.slug}`,
@@ -135,6 +130,7 @@ export default async function AlternativePage({ params }: Props) {
       <p className="text-lg text-text-secondary mb-8">
         {tool.name} is a popular {tool.category.toLowerCase()} tool, but it&apos;s not the only option. Here are the best alternatives for 2026, compared by features, pricing, and use case.
       </p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">
@@ -288,6 +284,8 @@ export default async function AlternativePage({ params }: Props) {
       </section>
 
       <FAQSchema items={faq} />
+
+      <RelatedToolPages toolSlug={slug} currentPageType="alternative" />
     </SEOPageLayout>
   );
 }

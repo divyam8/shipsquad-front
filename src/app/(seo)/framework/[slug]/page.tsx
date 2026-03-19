@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { frameworks } from "@/data/frameworks";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -17,9 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const framework = frameworks.find((f) => f.slug === slug);
   if (!framework) return {};
+  const year = new Date().getFullYear();
   return {
-    title: `${framework.name} Guide 2026: Features, Setup & Review`,
-    description: framework.description,
+    title: `${framework.name} + AI: Ship Faster in ${year} (Guide & Review)`,
+    description: `${framework.description.slice(0, 100)} See how teams combine ${framework.name} with AI tools for faster development.`,
     alternates: { canonical: `/framework/${slug}` },
   };
 }
@@ -74,6 +76,7 @@ export default async function FrameworkPage({ params }: Props) {
         <span className="text-xs px-2.5 py-1 rounded-full bg-white/[0.05] text-text-muted">{framework.category}</span>
         <span className="text-xs px-2.5 py-1 rounded-full bg-white/[0.05] text-text-muted">{framework.stars} stars</span>
       </div>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Overview</h2>

@@ -4,7 +4,10 @@ import { tools } from "@/data/tools";
 import { comparisons } from "@/data/comparisons";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getToolPillarLink } from "@/lib/pillar-links";
+import { extractLowestPrice } from "@/lib/schema-helpers";
+import { RelatedToolPages } from "@/components/seo/RelatedToolPages";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -19,8 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tool = tools.find((t) => t.slug === slug);
   if (!tool) return {};
   return {
-    title: `${tool.name} Review 2026: Features, Pricing & Honest Analysis`,
-    description: `In-depth ${tool.name} review for 2026. We cover features, pricing, pros, cons, and who it's best for. Is ${tool.name} worth it?`,
+    title: `${tool.name} Review: ${tool.rating}/5 — ${tool.expertVerdict?.slice(0, 50) || tool.pros[0]}`,
+    description: `${tool.name} honest review for ${new Date().getFullYear()}. ${tool.pros[0]}, but ${tool.cons[0]?.toLowerCase()}. Features, pricing, who it's best for — and who should avoid it.`,
     alternates: { canonical: `/review/${slug}` },
     other: {
       "article:modified_time": new Date().toISOString(),
@@ -71,7 +74,20 @@ export default async function ReviewPage({ params }: Props) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Review",
-    itemReviewed: { "@type": "Product", name: tool.name, description: tool.description },
+    itemReviewed: {
+      "@type": "SoftwareApplication",
+      name: tool.name,
+      description: tool.description,
+      applicationCategory: tool.category,
+      operatingSystem: "Web",
+      image: "https://shipsquad.ai/og-image.png",
+      offers: {
+        "@type": "Offer",
+        price: extractLowestPrice(tool.pricingDetail, tool.pricing),
+        priceCurrency: "USD",
+        availability: "https://schema.org/OnlineOnly",
+      },
+    },
     reviewRating: { "@type": "Rating", ratingValue: tool.rating, bestRating: 5 },
     author: { "@type": "Organization", name: "ShipSquad" },
     publisher: { "@type": "Organization", name: "ShipSquad" },
@@ -107,6 +123,7 @@ export default async function ReviewPage({ params }: Props) {
       <p className="text-lg text-text-secondary mb-8">
         An honest, in-depth review of {tool.name} — one of the most popular {tool.category.toLowerCase()} tools in 2026.
       </p>
+      <LastUpdated />
 
       <section id="verdict" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Quick Verdict</h2>
@@ -235,6 +252,8 @@ export default async function ReviewPage({ params }: Props) {
       </section>
 
       <FAQSchema items={faq} />
+
+      <RelatedToolPages toolSlug={slug} currentPageType="review" />
     </SEOPageLayout>
   );
 }

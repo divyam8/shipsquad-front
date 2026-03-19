@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { missions } from "@/data/missions";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -17,9 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const mission = missions.find((m) => m.slug === slug);
   if (!mission) return {};
+  const year = new Date().getFullYear();
   return {
-    title: `${mission.title} — Deploy AI Agents (2026 Guide)`,
-    description: mission.description,
+    title: `${mission.title}: AI Tools That Actually Deliver (${year})`,
+    description: `${mission.description.slice(0, 120)} See the AI agent workflows and tools that get this done.`,
     alternates: { canonical: `/mission/${slug}` },
   };
 }
@@ -69,6 +71,7 @@ export default async function MissionPage({ params }: Props) {
         <span className="text-xs px-2.5 py-1 rounded-full bg-white/[0.05] text-text-muted">{mission.timeline}</span>
       </div>
       <p className="text-lg text-text-secondary mb-8">{mission.description}</p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Mission Overview</h2>

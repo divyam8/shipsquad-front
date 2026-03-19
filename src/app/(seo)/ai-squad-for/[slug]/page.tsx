@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { industries } from "@/data/industries";
+import { getIndustryStat } from "@/data/industry-stats";
 import { SEOPageLayout } from "@/components/layout/SEOPageLayout";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { LastUpdated } from "@/components/seo/LastUpdated";
 import { getLearnPillarLinks } from "@/lib/pillar-links";
 
 interface Props {
@@ -17,11 +19,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const industry = industries.find((i) => i.slug === slug);
   if (!industry) return {};
+  const year = new Date().getFullYear();
+  const stat = getIndustryStat(industry.slug);
+  const title = `AI Squad for ${industry.name}: ${stat?.statShort || "Deploy AI Agents"} (${year})`;
+  const description = `${stat?.stat || industry.description} See the AI tools and workflows leading ${industry.name} teams use.`;
   return {
-    title: `${industry.title}: Deploy AI Agents for ${industry.name} (2026)`,
-    description: industry.description,
+    title,
+    description,
     alternates: { canonical: `/ai-squad-for/${slug}` },
-    openGraph: { title: industry.title, description: industry.description },
+    openGraph: { title, description },
   };
 }
 
@@ -71,6 +77,7 @@ export default async function AISquadForPage({ params }: Props) {
 
       <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">{industry.title}</h1>
       <p className="text-lg text-text-secondary mb-8">{industry.description}</p>
+      <LastUpdated />
 
       <section id="overview" className="mb-10">
         <h2 className="text-2xl font-bold text-text-primary mb-4">AI Agents for {industry.name} in 2026</h2>
