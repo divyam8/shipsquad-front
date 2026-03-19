@@ -59,11 +59,13 @@ ${html}
 Rewrite to improve ${weakest.name} while maintaining other scores. Output ONLY the improved HTML. Keep the same topic, title angle, and CTA style. Target keywords: ${plan.keywords?.join(', ')}`;
 
   try {
-    const response = await client.messages.create({
+    const stream = client.messages.stream({
       model: GENERATION_MODEL,
       max_tokens: 4096,
       messages: [{ role: 'user', content: prompt }],
     });
+
+    const response = await stream.finalMessage();
 
     const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
     return text.replace(/^```html?\n?/i, '').replace(/\n?```$/i, '').trim();

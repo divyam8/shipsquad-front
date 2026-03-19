@@ -69,12 +69,14 @@ async function generateArticle(plan: ArticlePlan): Promise<string | null> {
 Write the article as clean HTML. Output ONLY the HTML content (no markdown, no code fences). Start with the first <h2> tag — do NOT include <h1> (the title is rendered separately).`;
 
   try {
-    const response = await client.messages.create({
+    const stream = client.messages.stream({
       model: GENERATION_MODEL,
       max_tokens: 4096,
       system: systemPrompt,
       messages: [{ role: 'user', content: userPrompt }],
-    }, { timeout: ARTICLE_TIMEOUT_MS });
+    });
+
+    const response = await stream.finalMessage();
 
     const html = response.content
       .filter(b => b.type === 'text')
