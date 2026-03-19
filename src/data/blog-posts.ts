@@ -5037,10 +5037,10 @@ export const blogPosts: BlogPost[] = [
     slug: "ai-adoption-san-francisco-bay-area-startups",
     title: "AI Adoption in San Francisco: How Bay Area Startups Lead the Pack",
     description: "San Francisco accounts for over 35% of global AI venture funding and is home to OpenAI, Anthropic, and hundreds of AI-native startups. Here is how the Bay Area AI ecosystem works, what industries are moving fastest, and what it means for your business.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T11:00:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "San Francisco", "Bay Area", "AI startups", "venture capital", "AI ecosystem", "geo-adoption"],
     content: `<h2>AI Adoption in San Francisco: The Numbers Behind the Hype</h2>
 <p><strong>San Francisco is the global capital of AI adoption.</strong> The city and surrounding Bay Area attract more than <strong>35% of all global AI venture capital</strong>, according to PitchBook data, and are home to the companies building the foundation models that power the entire industry — OpenAI, Anthropic, Meta AI, and Google DeepMind. The global AI market is projected to grow from <strong>$375.93 billion in 2026 to $2.48 trillion by 2034</strong> (Fortune Business Insights), and San Francisco sits at the center of that expansion.</p>
@@ -5079,13 +5079,13 @@ export const blogPosts: BlogPost[] = [
 <p>Explore the full <a href="/location/san-francisco">San Francisco AI ecosystem</a> to see which tools and companies are leading the charge.</p>`,
   },
   {
-    slug: "ai-tools-london-businesses-uk-ai-boom",
+    slug: "ai-tools-london-businesses-uk-boom",
     title: "AI Tools for London Businesses: The UK's AI Boom Explained",
     description: "London is Europe's largest AI hub, home to Google DeepMind and a fintech sector where AI adoption has surged from 45% to 85%. Here is how London businesses are deploying AI tools across finance, healthcare, and enterprise — and how to get started.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T11:10:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "London", "UK", "AI tools", "fintech", "DeepMind", "geo-adoption"],
     content: `<h2>AI Tools for London Businesses: Europe's AI Capital in Numbers</h2>
 <p><strong>London is Europe's largest and most mature AI ecosystem.</strong> The city is home to <strong>Google DeepMind</strong>, one of the world's most influential AI research labs, alongside major AI offices for OpenAI, Meta, Microsoft, and Amazon. The UK AI market is valued at over <strong>$21 billion in 2026</strong>, with London capturing the majority of that activity. Globally, the AI market is projected to reach <strong>$2.48 trillion by 2034</strong> (Fortune Business Insights), and London is positioning itself to capture a disproportionate share of European growth.</p>
@@ -5134,10 +5134,10 @@ export const blogPosts: BlogPost[] = [
     slug: "singapore-ai-strategy-southeast-asia",
     title: "Singapore's AI Strategy: Why Southeast Asia Is Betting Big on AI",
     description: "Singapore's Smart Nation initiative and AI Singapore program have positioned the city-state as Asia's premier AI hub. With government-backed AI adoption across finance, healthcare, and logistics, here is why Southeast Asia's AI opportunity runs through Singapore.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T11:20:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "Singapore", "Southeast Asia", "Smart Nation", "ASEAN", "AI strategy", "geo-adoption"],
     content: `<h2>Singapore's AI Strategy: Asia's Most Deliberate AI Play</h2>
 <p><strong>Singapore has executed the most deliberate government-led AI strategy in Asia.</strong> The city-state's Smart Nation initiative, AI Singapore (AISG) national program, and National AI Strategy 2.0 have attracted <strong>Google, Amazon, Microsoft, and ByteDance</strong> to establish Asia-Pacific headquarters here. With the global AI market projected to grow from <strong>$375.93 billion in 2026 to $2.48 trillion by 2034</strong> (Fortune Business Insights), Singapore is positioning itself as the gateway through which AI flows into the <strong>ASEAN market of 700 million people</strong>.</p>
@@ -5184,10 +5184,10 @@ export const blogPosts: BlogPost[] = [
     slug: "ai-india-bangalore-tech-scene-opportunity",
     title: "AI in India: Bangalore's Tech Scene and the $375B Opportunity",
     description: "India's AI market is growing at 25-30% annually, with Bangalore at its center. Home to Google Brain India, Microsoft Research, and unicorns like Razorpay and Swiggy, here is how India's Silicon Valley is capturing its share of the $375B global AI market.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T11:30:00Z",
-    readTime: "9 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "India", "Bangalore", "Bengaluru", "AI startups", "Indian tech", "geo-adoption"],
     content: `<h2>AI in India: Bangalore and the $375 Billion Opportunity</h2>
 <p><strong>India's AI market is growing at 25-30% annually, and Bangalore is its undisputed capital.</strong> The city — officially Bengaluru — hosts dedicated AI research labs for Google Brain, Microsoft Research India, Samsung AI, and Amazon, alongside homegrown unicorns like <strong>Razorpay, Swiggy, and Cred</strong>. With the global AI market projected to reach <strong>$375.93 billion in 2026</strong> and expand to <strong>$2.48 trillion by 2034</strong> (Fortune Business Insights), India's massive engineering talent pool positions the country to capture a significant share of that growth.</p>
@@ -5234,10 +5234,10 @@ export const blogPosts: BlogPost[] = [
     slug: "dubai-ai-capital-middle-east",
     title: "How Dubai Is Becoming the AI Capital of the Middle East",
     description: "Dubai appointed the world's first Minister of AI, launched the UAE National AI Strategy 2031, and hosts GITEX Global with 200,000+ attendees. Here is how Dubai is building the Middle East's most ambitious AI ecosystem and what it means for businesses in the region.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T11:40:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "Dubai", "UAE", "Middle East", "AI strategy", "GITEX", "geo-adoption"],
     content: `<h2>How Dubai Is Becoming the AI Capital of the Middle East</h2>
 <p><strong>Dubai has made the most ambitious government bet on AI of any city in the Middle East.</strong> The UAE appointed the <strong>world's first Minister of State for Artificial Intelligence</strong> in 2017, launched the <strong>National AI Strategy 2031</strong> targeting a 50% boost to GDP through AI, and established AREA 2071 and the Museum of the Future as innovation incubators. With the global AI market projected to reach <strong>$375.93 billion in 2026</strong> (Fortune Business Insights), Dubai is positioning itself as the AI gateway between Europe, Africa, and Asia — a $2.48 trillion opportunity by 2034.</p>
@@ -5283,10 +5283,10 @@ export const blogPosts: BlogPost[] = [
     slug: "ai-adoption-new-york-wall-street-madison-avenue",
     title: "AI Adoption in New York: Wall Street to Madison Avenue",
     description: "New York is the largest US tech employer and the epicenter of AI adoption in finance, media, and healthcare. From Wall Street's AI-powered trading to Madison Avenue's automated ad campaigns, here is how NYC is deploying AI at scale across every industry.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T11:50:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "New York", "NYC", "Wall Street", "fintech", "AI tools", "geo-adoption"],
     content: `<h2>AI Adoption in New York: Where Finance Meets Media Meets AI</h2>
 <p><strong>New York City is the largest technology employer in the United States and the most diverse AI adoption market in the world.</strong> While San Francisco builds AI, New York deploys it — across <strong>Wall Street trading floors, Madison Avenue ad agencies, Midtown healthcare systems, and Brooklyn startups</strong>. AI adoption in financial services has surged from <strong>45% to 85% in three years</strong> (Software Oasis), and New York's finance sector leads that charge. The city's media and advertising industry — a $500+ billion global market — is simultaneously going AI-first, creating an adoption density that no other city matches.</p>
@@ -5339,13 +5339,13 @@ export const blogPosts: BlogPost[] = [
 <p>Explore the full <a href="/location/new-york">New York AI ecosystem</a> to see which tools and companies are shaping the city's AI future.</p>`,
   },
   {
-    slug: "tel-aviv-ai-startup-ecosystem-tools-trends-2026",
+    slug: "tel-aviv-ai-startup-ecosystem-2026",
     title: "Tel Aviv's AI Startup Ecosystem: Tools and Trends for 2026",
     description: "Tel Aviv produces more startups per capita than any city on earth, with AI companies like Mobileye, Wiz, and Check Point defining entire categories. Here is how Israel's Startup Nation is shaping AI tools and trends in 2026.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T12:00:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "Tel Aviv", "Israel", "AI startups", "cybersecurity", "Startup Nation", "geo-adoption"],
     content: `<h2>Tel Aviv's AI Startup Ecosystem: The Startup Nation Leads Again</h2>
 <p><strong>Tel Aviv produces more startups per capita than any other city in the world, and AI is its fastest-growing category.</strong> Israel attracted over <strong>$7.6 billion in venture capital in 2025</strong>, with AI and cybersecurity companies capturing the largest share. Companies born in Tel Aviv — <strong>Mobileye</strong> (acquired by Intel for $15.3B), <strong>Wiz</strong> (valued at $12B+), and <strong>Check Point Software</strong> — have defined entire technology categories. With the global AI market projected to reach <strong>$375.93 billion in 2026</strong> (Fortune Business Insights), Tel Aviv's AI ecosystem punches dramatically above its weight.</p>
@@ -5390,13 +5390,13 @@ export const blogPosts: BlogPost[] = [
 <p>Explore the full <a href="/location/tel-aviv">Tel Aviv AI ecosystem</a> to discover the tools and companies driving Israel's AI innovation.</p>`,
   },
   {
-    slug: "ai-germany-manufacturing-giants-adopting-ai",
+    slug: "ai-germany-manufacturing-giants-adopting",
     title: "AI in Germany: How Manufacturing Giants Are Adopting AI",
     description: "Germany's manufacturing sector is deploying AI for predictive maintenance (10:1 to 30:1 ROI), quality control, and Industry 4.0 automation. From Siemens and BMW to Berlin's startup scene, here is how Europe's largest economy is going AI-first.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T12:10:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "Germany", "manufacturing", "Industry 4.0", "Berlin", "AI tools", "geo-adoption"],
     content: `<h2>AI in Germany: Manufacturing Meets Machine Learning</h2>
 <p><strong>Germany's manufacturing sector — the backbone of Europe's largest economy — is deploying AI at scale, and the returns are enormous.</strong> Predictive maintenance powered by AI delivers <strong>10:1 to 30:1 ROI</strong> in manufacturing environments (f7i.ai). Companies like <strong>Siemens, BMW, Bosch, and BASF</strong> are embedding AI into production lines, supply chains, and quality control systems. With the global AI market projected to reach <strong>$375.93 billion in 2026</strong> (Fortune Business Insights), Germany's manufacturing expertise gives it a unique position to capture value from industrial AI — a sector expected to see <strong>15x market growth from $1.6 billion to $24.7 billion by 2035</strong> (Precedence Research).</p>
@@ -5444,10 +5444,10 @@ export const blogPosts: BlogPost[] = [
     slug: "toronto-ai-corridor-canada-tech-hub",
     title: "Toronto's AI Corridor: Canada's Growing Tech Hub",
     description: "Toronto is the birthplace of modern deep learning, home to the Vector Institute and Geoffrey Hinton's research that powers today's AI revolution. With Cohere, Ada, and Google's AI lab, here is how Canada's AI corridor is shaping the global market.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T12:20:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "Toronto", "Canada", "Vector Institute", "deep learning", "AI corridor", "geo-adoption"],
     content: `<h2>Toronto's AI Corridor: Where Modern Deep Learning Was Born</h2>
 <p><strong>Toronto is the birthplace of modern deep learning — and the city's AI ecosystem has only accelerated since.</strong> <strong>Geoffrey Hinton</strong>, the "godfather of deep learning" and 2024 Nobel Prize laureate, conducted his foundational research at the University of Toronto. The <strong>Vector Institute for Artificial Intelligence</strong>, founded in 2017 with $135 million in government and industry funding, anchors an AI corridor that now includes <strong>Google, NVIDIA, Samsung, and LG</strong> research labs. With the global AI market at <strong>$375.93 billion in 2026</strong> (Fortune Business Insights), Toronto's research advantage translates directly into commercial AI products — including <strong>Cohere</strong>, the enterprise LLM company valued at $5.5 billion+, built by former Google Brain Toronto researchers.</p>
@@ -5500,13 +5500,13 @@ export const blogPosts: BlogPost[] = [
 <p>Explore the full <a href="/location/toronto">Toronto AI ecosystem</a> to see which companies and tools are leading Canada's AI future.</p>`,
   },
   {
-    slug: "ai-adoption-sydney-australia-path-ai-first",
+    slug: "ai-adoption-sydney-australia-ai-first",
     title: "AI Adoption in Sydney: Australia's Path to AI-First Business",
     description: "Sydney is Australia's tech capital, home to Atlassian, Canva, and a financial sector where AI adoption has surged to 85%. Here is how Australia's largest city is deploying AI across fintech, mining tech, and enterprise — and how your business can follow.",
-    category: "Insights",
-    author: "ShipSquad Team",
-    publishedAt: "2026-03-19T12:30:00Z",
-    readTime: "8 min read",
+    category: "Geo-Adoption",
+    author: "ShipSquad",
+    publishedAt: "2026-03-19",
+    readTime: "6 min read",
     tags: ["AI adoption", "Sydney", "Australia", "Atlassian", "Canva", "fintech", "geo-adoption"],
     content: `<h2>AI Adoption in Sydney: Australia's Tech Capital Goes AI-First</h2>
 <p><strong>Sydney is Australia's technology capital and the gateway to the Asia-Pacific AI market.</strong> The city is home to <strong>Atlassian</strong> (valued at $40B+), <strong>Canva</strong> (valued at $26B+), and <strong>Afterpay</strong> (acquired by Block for $29B) — three of Australia's most successful tech companies, all increasingly AI-powered. AI adoption in financial services has surged from <strong>45% to 85% globally</strong> (Software Oasis), and Sydney's banking sector — led by <strong>Commonwealth Bank, Westpac, ANZ, and Macquarie Group</strong> — is leading Australia's adoption. With the global AI market at <strong>$375.93 billion in 2026</strong> (Fortune Business Insights), Sydney businesses are racing to capture their share.</p>
