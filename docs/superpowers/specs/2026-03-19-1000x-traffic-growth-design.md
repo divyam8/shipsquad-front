@@ -32,6 +32,22 @@
 | Avg position | 31.6 | 10-15 | boosts CTR further |
 | **Combined** | **18 clicks** | **~18,000+** | **~1000x** |
 
+**Important:** These multipliers are NOT fully independent — they overlap. Higher CTR from meta tag improvements only compounds with higher CTR from better rankings at the margins. The 1000x figure is the **aspirational ceiling** assuming all levers deliver simultaneously. Conservative projections:
+
+| Scenario | Month 6 Clicks | Multiplier |
+|---|---|---|
+| **Base case** (CTR fix + content engine only) | 1,800-3,600 | 100-200x |
+| **Strong case** (all levers, moderate success) | 5,000-10,000 | 280-560x |
+| **Stretch case** (all levers, full compounding) | 15,000-20,000+ | 830-1100x |
+
+## Estimated API Costs
+
+At 10-15 articles/day using Claude Sonnet 4.6:
+- ~$5-10/day for content generation
+- ~$2-3/day for enrichment batches
+- **Total: ~$200-400/month** in Anthropic API costs
+- This is the only non-zero cost in the plan
+
 ---
 
 ## Section 1: CTR Fix — Meta Title/Description Rewrite + Live Data
@@ -132,9 +148,11 @@ CTR 0.08% → 2-4% = 450-900 clicks/month from existing impressions.
 
 New content-engine stage (`enrich-pages.ts`) that:
 1. Reads all tools, comparisons, reviews from `src/data/`
-2. For entries lacking an `enrichedContent` field, calls Claude Sonnet with tool-specific context
-3. Writes enriched content back to data files
-4. One-time batch for existing pages, then runs on new entries
+2. For entries lacking enrichment, calls Claude Sonnet with tool-specific context
+3. **Writes enriched content to sidecar JSON files** (`src/data/enrichments/*.json`) — NOT back into `.ts` data files, to avoid bloating static imports and build times
+4. Page components dynamically import the relevant enrichment JSON at build time via `import()` with ISR
+5. One-time batch for existing pages, then runs on new entries
+6. Enrichment JSON schema: `{ slug: string, sections: { title: string, content: string }[], generatedAt: string }`
 
 Per comparison page, generates:
 - "When to pick [A] over [B]" — 150 words, specific use cases
@@ -233,6 +251,23 @@ Add to `content-engine/prompts/system.md`:
 ### Sitemap Growth
 1,729 → 3,500+ URLs → each targeting unique long-tail keywords.
 
+### Population Pipeline
+
+New script: `content-engine/populate-tools.ts`
+1. Scrapes tool names, categories, pricing tiers, and feature lists from public directories (Product Hunt, AlternativeTo)
+2. Generates remaining fields (description, pros/cons, expertVerdict, bestFor, keyDifferentiators) via Claude Sonnet with the scraped data as context
+3. Outputs to `src/data/tools-new.json` for human review before merging into `tools.ts`
+4. For comparisons: auto-generates permutations within categories (top 10 tools per category = 45 comparisons each)
+5. Human review gate: new tool entries require manual spot-check before deploy (at least 10% sample)
+
+### Cannibalization Prevention
+
+With 5,000+ pages and daily content engine output, keyword overlap is inevitable:
+- **Detection:** Weekly GSC query analysis — flag queries where 2+ URLs appear for the same keyword
+- **Resolution:** Merge thin pages targeting the same intent, add canonical tags to the winner
+- **Prevention:** Content engine dedup check (existing in stage 2) expanded to also check against programmatic page target queries, not just Supabase articles
+- **Monitoring:** GSC alert for sudden impression drops across multiple pages (HCU signal)
+
 ### Proven Reference
 - Zapier: 50K+ pages → 5.8M monthly visits
 - Canva: 190K pages → 108M monthly visits
@@ -243,18 +278,33 @@ Add to `content-engine/prompts/system.md`:
 
 ## Section 5: Schema Markup + Rich Snippets Overhaul
 
+### CRITICAL: Fix Fabricated ratingCount FIRST
+
+The existing `schema-helpers.ts` (line 59) generates fake review counts:
+```typescript
+ratingCount: Math.floor(tool.rating * 100) + 50
+```
+This violates Google's structured data guidelines and risks a **manual action penalty**. Before ANY schema expansion:
+1. Remove `ratingCount` from `aggregateRating` entirely, OR
+2. Replace with real review counts from a legitimate source (G2, Capterra APIs)
+3. Until real data exists, only include `ratingValue` without `ratingCount`
+
+This is a **blocking prerequisite** for Section 5 work.
+
 ### Schema Expansion
 
-| Page Type | Current Schema | Add |
+NOTE: Review/alternative pages already have SoftwareApplication with aggregateRating via `buildSoftwareApplicationSchema`. The "Add" column below lists what is MISSING, not what exists.
+
+| Page Type | Already Has | Add |
 |---|---|---|
-| `/review/[slug]` | SoftwareApplication | Review + AggregateRating (star ratings in SERPs — 454% CTR boost) |
+| `/review/[slug]` | SoftwareApplication + AggregateRating | FAQPage (for PAA), fix ratingCount (see above) |
 | `/compare/[slugs]` | 2x SoftwareApplication | FAQPage (60% more likely to appear in AI Overviews) |
-| `/alternative/[slug]` | ItemList | FAQPage + Review snippets per alternative |
+| `/alternative/[slug]` | ItemList + SoftwareApplication | FAQPage + per-alternative review snippets |
 | `/pricing/[slug]` | SoftwareApplication | Offer + priceRange (price shown in SERPs) |
 | `/how-to/[slug]` | None | HowTo schema (step-by-step rich snippets) |
 | `/glossary/[slug]` | None | DefinedTerm (definition rich snippets) |
-| `/insights/[slug]` | Article | Article + speakable (voice search + AI citability) |
-| `/blog/[slug]` | Article | Article + FAQPage + speakable |
+| `/insights/[slug]` | Article | speakable (voice search + AI citability) |
+| `/blog/[slug]` | Article | FAQPage + speakable |
 | All pages | Breadcrumb (partial) | BreadcrumbList (consistent SERP breadcrumbs) |
 
 ### PAA-Optimized FAQ for Every Tool Page
@@ -379,15 +429,97 @@ Rationale: Rankomedia: 100+ backlinks from single statistics page. Semrush: 4,00
 
 ---
 
-## Section 8: GA4 Setup + Conversion Tracking
+## Section 8: Internal Linking Strategy
 
-### 8A. GA4 Implementation
+### Problem
+With 5,000+ planned pages, internal linking determines how PageRank flows and how Google understands content relationships. Without deliberate linking, new pages will be orphaned. Proven: IFTTT achieved 33% YoY organic growth primarily from internal linking optimization.
+
+### Hub-and-Spoke Architecture
+
+**Hub pages** (category-level pillar pages linking to all tools in that category):
+- `/tools` → links to all tool reviews, pricing, alternatives in that category
+- Each `/ai-squad-for/[industry]` page → hub for that industry's tools, workflows, use cases
+- Each `/ai-tools-for/[role]` page → hub for that role's recommended tools and guides
+
+**Spoke pages** (individual tool/comparison pages linking back to hubs and cross-linking):
+- Every `/review/[slug]` links to: its alternatives page, pricing page, top 3 comparison pages, parent category hub
+- Every `/compare/[slugs]` links to: both tools' review pages, both tools' pricing pages, alternatives for both
+- Every `/pricing/[slug]` links to: review page, alternatives, competitors' pricing pages
+
+### Automated Linking Rules
+
+Add to each page template's render logic:
+1. **Contextual links in enriched content:** `enrich-pages.ts` output includes internal links to related pages (2-5 per 1,000 words)
+2. **"Related" sidebar/footer:** Auto-generated from tool category + pillar-pages.ts mapping
+3. **Breadcrumbs:** Home → Category → Page (consistent across all 16 page types)
+4. **Cross-type links:** Every tool page links to all its page types (review ↔ pricing ↔ alternatives ↔ comparisons)
+
+### Content Engine Article Linking
+
+All `/insights/[slug]` articles must link to relevant programmatic pages:
+- Tool mentions link to `/review/[tool-slug]`
+- Industry mentions link to `/ai-squad-for/[industry]`
+- Comparison mentions link to `/compare/[slugs]`
+- Add to `system.md` prompt: "Include 3-5 internal links to shipsquad.ai pages where relevant"
+
+### Orphan Page Detection
+
+Monthly audit script (`content-engine/audit-links.ts`):
+1. Crawl all sitemap URLs
+2. Check each page has 3+ incoming internal links
+3. Flag orphans for manual linking or noindex
+4. Report pages with 0-1 internal links as critical
+
+### Proven Reference
+- IFTTT: 33% YoY organic growth from internal linking alone
+- Study: pages with exact-match anchors have 5x more traffic
+- Benchmark: keep all pages within 3 clicks of homepage
+
+---
+
+## Section 9: Core Web Vitals + Performance
+
+### Why This Matters
+At 5,000+ pages with enriched content, schema expansion, GA4, and live data injection, performance regression is a real risk. Google uses CWV as a ranking signal. Pages with FCP under 0.4 seconds get 3.2x more AI citations.
+
+### Baseline Measurement
+Before any changes, record:
+- LCP, CLS, INP for each page type (use PageSpeed Insights API or `web-vitals` npm package)
+- Store as baseline in `docs/performance-baseline.json`
+
+### Performance Budget
+
+| Metric | Target | Red Line |
+|---|---|---|
+| LCP | < 2.0s | > 2.5s |
+| CLS | < 0.05 | > 0.1 |
+| INP | < 150ms | > 200ms |
+| FCP | < 0.4s | > 1.0s |
+| Total page weight | < 300KB | > 500KB |
+
+### Monitoring
+- Add `web-vitals` package with GA4 reporting (sends CWV to custom GA4 events)
+- Weekly CWV check via PageSpeed Insights on 5 sample pages per type
+- Alert if any metric crosses red line after a deploy
+
+### Optimization Levers
+- Schema JSON-LD is non-blocking (already good — injected as `<script type="application/ld+json">`)
+- GA4 via `next/script` with `strategy="afterInteractive"` to avoid blocking
+- Industry stats: pre-computed at build time, not fetched client-side
+- Enrichment content: statically imported JSON, not dynamic API calls
+- Images: use Next.js `<Image>` with automatic optimization (already in place)
+
+---
+
+## Section 10: GA4 Setup + Conversion Tracking
+
+### 10A. GA4 Implementation
 
 - Add GA4 tag via `next/script` in `layout.tsx`
 - Configure data stream for shipsquad.ai
 - Enable enhanced measurement (scroll, outbound clicks, site search, file downloads)
 
-### 8B. Custom Events
+### 10B. Custom Events
 
 | Event | Trigger | Purpose |
 |---|---|---|
@@ -398,20 +530,27 @@ Rationale: Rankomedia: 100+ backlinks from single statistics page. Semrush: 4,00
 | `newsletter_signup` | Email submitted | Lead gen |
 | `scroll_depth_75` | 75% page scroll | Content engagement |
 
-### 8C. Conversions
+### 10C. Conversions
 
 - Primary: `tool_click` (affiliate revenue proxy)
 - Secondary: `newsletter_signup` (lead gen)
 - Tertiary: `cta_click` (product interest)
 
-### 8D. Integrations
+### 10D. Integrations
 
 - Link GA4 ↔ Google Search Console for combined search + behavior data
 - Set up GA4 ↔ BigQuery export (free tier) for advanced analysis
 
+### 10E. Consent Management
+
+If serving EU traffic (likely given global AI tools audience):
+- Add a lightweight cookie consent banner (use `cookie-consent` npm package or a free tier service)
+- GA4 consent mode v2: initialize with `analytics_storage: 'denied'`, upgrade to `'granted'` on consent
+- This is legally required under GDPR and avoids potential fines
+
 ---
 
-## Section 9: Distribution Flywheel (Zero-Cost)
+## Section 11: Distribution Flywheel (Zero-Cost)
 
 ### Weekly Cadence
 
@@ -440,65 +579,89 @@ Rationale: Rankomedia: 100+ backlinks from single statistics page. Semrush: 4,00
 
 | Event | When | Expected Impact |
 |---|---|---|
-| Product Hunt launch | Month 1 | DR91 backlink + 1,000-5,000 visitors |
-| Hacker News "Show HN" | Month 1-2 | 5,000-30,000 visitors if front page |
 | "AI Tool Statistics 2026" publish | Week 2 | Passive backlink magnet |
+| Product Hunt launch | Month 2-3 | DR91 backlink + 1,000-5,000 visitors (site must be polished first) |
+| Hacker News "Show HN" | Month 2-3 | 5,000-30,000 visitors if front page |
 
 ---
 
 ## Implementation Priority
 
 ### Phase 1: Immediate (Week 1-2) — Fix What's Broken
-1. GA4 setup + conversion tracking
-2. Rewrite all 16 meta title/description templates
-3. Create `industry-stats.ts` with live data
-4. Update `robots.txt` for AI crawlers
-5. Add FAQ schema to comparison/alternative pages
-6. Add Review/AggregateRating schema to review pages
-7. Add answer-first blocks (50-70 words) to top 50 pages by impressions
+1. **Fix fabricated `ratingCount`** in schema-helpers.ts (BLOCKING — must be fixed before any schema expansion)
+2. GA4 setup + conversion tracking + consent management
+3. Baseline Core Web Vitals measurement for all page types
+4. Rewrite all 16 meta title/description templates
+5. Create `industry-stats.ts` with live data
+6. Update `robots.txt` for AI crawlers
+7. Add FAQ schema to comparison/alternative pages (after ratingCount fix)
 
 ### Phase 2: Activate (Week 2-4) — Turn On the Engine
 8. Activate content engine: 5-10 articles/day
-9. Run `enrich-pages.ts` batch on all existing programmatic pages
+9. Run `enrich-pages.ts` batch on all existing programmatic pages (includes answer-first blocks)
 10. Add "Last updated" timestamps to all pages
-11. Enhance content engine prompts with stats + Featured Snippet structure
-12. Publish "AI Tool Statistics 2026" cornerstone page
-13. Product Hunt launch
+11. Enhance content engine prompts with stats + Featured Snippet structure + internal linking
+12. Implement internal linking automation (cross-type links, breadcrumbs, related pages)
+13. Publish "AI Tool Statistics 2026" cornerstone page
 14. Start Reddit/Quora daily engagement
 
 ### Phase 3: Scale (Month 2-3) — Expand the Moat
-15. Expand `tools.ts` from 50 to 200+
+15. Expand `tools.ts` from 50 to 200+ (via populate-tools.ts with human review gate)
 16. Expand `comparisons.ts` from 200 to 1,000+
 17. Expand `cities.ts`, `glossary.ts`, `guides.ts`, `use-cases.ts`
-18. Build AI Tool Finder free tool
-19. Build AI Readiness Assessment tool
+18. Build AI Tool Finder free tool (client-side React, no backend needed)
+19. Build AI Readiness Assessment tool (client-side quiz with email capture)
 20. Add HowTo, DefinedTerm, speakable schema to remaining page types
 21. Start HARO/guest posting/outreach
 22. Publish "AI Tool Pricing Index 2026"
-23. Hacker News launch
+23. Product Hunt launch (moved here — site must be polished first)
+24. Hacker News "Show HN"
+25. Run first cannibalization audit
 
 ### Phase 4: Compound (Month 3-6) — Ride the Growth Curve
-24. Ramp content engine to 15/day
-25. Add `comparison-deep-dive` and `ai-statistics-roundup` content types
-26. Build embeddable Pricing Comparison Widget
-27. Quarterly statistics/report updates
-28. Continue weekly distribution cadence
-29. Analyze GA4 data, double down on what converts
+26. Ramp content engine to 15/day
+27. Add `comparison-deep-dive` and `ai-statistics-roundup` content types
+28. Build embeddable Pricing Comparison Widget (iframe + script tag embed code)
+29. Quarterly statistics/report updates
+30. Continue weekly distribution cadence
+31. Analyze GA4 data, double down on what converts
+32. Monthly orphan page audit + internal linking refresh
+33. CWV monitoring — flag regressions after each major deploy
 
 ---
 
 ## Success Metrics
 
+### Base Case (Conservative)
+
+| Metric | Month 1 | Month 3 | Month 6 |
+|---|---|---|---|
+| Monthly clicks | 200-500 | 2,000-4,000 | 5,000-10,000 |
+| Monthly impressions | 35,000 | 100,000 | 300,000+ |
+| CTR | 0.5-1% | 2-3% | 3-4% |
+| Avg position | 25-30 | 15-20 | 10-15 |
+| Indexed pages | 2,000 | 3,500 | 5,000+ |
+| Backlinks (new/month) | 5-10 | 15-25 | 25-40 |
+
+### Stretch Case (All Levers Compounding)
+
 | Metric | Month 1 | Month 3 | Month 6 |
 |---|---|---|---|
 | Monthly clicks | 500-1,000 | 5,000-8,000 | 15,000-20,000+ |
-| Monthly impressions | 50,000 | 150,000 | 500,000+ |
+| Monthly impressions | 50,000 | 200,000 | 500,000+ |
 | CTR | 1-2% | 3-4% | 4-5% |
 | Avg position | 20-25 | 12-18 | 8-15 |
-| Indexed pages | 2,000 | 3,500 | 5,000+ |
-| Backlinks (new/month) | 10-15 | 20-30 | 30-50 |
-| AI referral traffic | 50-100 | 500-1,000 | 2,000-5,000 |
-| Newsletter subscribers | 100 | 500 | 2,000 |
+| Indexed pages | 2,500 | 4,000 | 6,000+ |
+| Backlinks (new/month) | 10-15 | 25-35 | 35-50 |
+
+### AI Referral Traffic (Unmeasured Territory)
+
+No current baseline exists for AI referral traffic. GA4 setup will establish the baseline.
+
+| Metric | Month 1 | Month 3 | Month 6 |
+|---|---|---|---|
+| AI referral sessions | Establish baseline | 100-500 | 500-2,000 |
+| Newsletter subscribers | 50-100 | 300-500 | 1,000-2,000 |
 
 ---
 
@@ -506,11 +669,15 @@ Rationale: Rankomedia: 100+ backlinks from single statistics page. Semrush: 4,00
 
 | Risk | Likelihood | Mitigation |
 |---|---|---|
-| Google penalizes mass AI content | Medium | Quality gates (80+ threshold), evolution loop, inject unique data/stats |
-| Content engine API costs spike | Low | Batch size limits, Claude Sonnet (not Opus), BATCH_DELAY_MS throttle |
-| Thin programmatic pages flagged | Medium | Layer 1-3 enrichment brings each page to 1,200+ unique words |
-| Brand mentions backfire on Reddit | Low | 90/10 rule: 90% value, 10% subtle mentions. Never promotional. |
-| Competitor copies approach | Low | Speed advantage: execute all 9 sections simultaneously |
+| **Google Helpful Content site-wide penalty** | Medium-High | Google's HCU applies site-wide — if a large portion of pages are deemed unhelpful, ALL pages get demoted. Mitigations: (1) Cap AI-only pages at 60% of total site, rest must have human review. (2) Apply `noindex, follow` to pages scoring below 85 in evaluator. (3) Monitor GSC for sudden impression drops across all pages simultaneously — this is the HCU signal. (4) Every programmatic page must have 1,200+ words of unique content (not just template fill). |
+| Content engine API costs | Low | At 10-15 articles/day = ~$200-400/month. Batch size limits, Claude Sonnet (not Opus), BATCH_DELAY_MS throttle. |
+| Thin programmatic pages flagged | Medium | Layer 1-3 enrichment brings each page to 1,200-2,000 unique words. Human spot-check 10% of enriched pages before deploy. |
+| Reddit account shadow-ban | Medium | Reddit's anti-spam is aggressive. Mitigations: (1) Never link directly to shipsquad.ai — mention brand name only. (2) Warm up account for 2+ weeks before any brand mentions. (3) Maintain genuine 90/10 value ratio. (4) Use personal account, not a brand account. |
+| Fabricated schema data (ratingCount) | High | Fix immediately in Phase 1. Remove fabricated ratingCount before any schema expansion. Google manual actions for fake structured data affect entire domain. |
+| Industry stats become stale/inaccurate | Medium | Add `fetchedAt` timestamp to each stat. Auto-fallback to generic text if stat is >6 months old. Human review before stats go into meta titles. |
+| Keyword cannibalization at scale | Medium | Weekly GSC audit, content engine dedup expanded to check programmatic page queries, merge thin overlapping pages. |
+| CWV regression from content/schema bloat | Low-Medium | Performance budgets per page type. CWV monitoring via GA4 + PageSpeed Insights. Alert on red-line crossings. |
+| Competitor copies approach | Low | Speed advantage: execute all sections simultaneously. First-mover data advantage (proprietary pricing index). |
 
 ---
 
