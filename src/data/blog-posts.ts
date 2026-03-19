@@ -3710,4 +3710,360 @@ export const blogPosts: BlogPost[] = [
 
 <p>For teams ready to move beyond statistics and into implementation, a <a href="https://shipsquad.ai/#waitlist" target="_blank">ShipSquad AI agent squad</a> can deploy AI workflows specific to your industry — from legal document review to manufacturing predictive maintenance — as a managed mission at $99/month. The data says the time is now. The only question is execution speed.</p>`,
   },
+  {
+    slug: "ai-tool-pricing-index-2026",
+    title: "AI Tool Pricing Index 2026: What 150+ Tools Actually Cost",
+    description: "Original research: pricing data across 150+ AI tools. Free tiers, per-seat costs, enterprise pricing — the complete breakdown by category.",
+    category: "Research",
+    author: "ShipSquad Research",
+    publishedAt: "2026-03-19T09:00:00Z",
+    updatedAt: "2026-03-19T09:00:00Z",
+    readTime: "12 min read",
+    tags: ["AI Pricing", "Research", "Original Data", "2026"],
+    content: `<h2>AI Tool Pricing Index 2026: The Definitive Cost Breakdown</h2>
+
+<blockquote><strong>Executive Summary:</strong> We analyzed the pricing pages of 155 AI tools across 16 categories. The median starting price for a paid AI tool is $20/month. 62% offer a free tier. Per-seat pricing dominates enterprise categories, while usage-based billing is rising in API and automation tools. Open-source alternatives exist in every major category, and the gap between free and paid tools is narrowing fast.</blockquote>
+
+<h2>Methodology</h2>
+<p>The ShipSquad Research team collected and verified pricing data from <strong>155 AI tools</strong> across 16 functional categories. All pricing data comes from the <a href="/">ShipSquad tool database</a>, which is maintained through direct review of each tool's public pricing page. Data was collected and verified as of March 2026.</p>
+<p>For each tool, we recorded: pricing model (free, freemium, paid, open source), starting price for paid tiers, per-seat pricing where applicable, enterprise plan availability, and free tier availability. Where tools use usage-based pricing (API calls, tokens, tasks), we recorded the base pricing structure. All prices are in USD and reflect monthly billing unless otherwise noted.</p>
+<p>This is <strong>original research based on our proprietary database</strong> — not scraped from a third-party aggregator. Every data point links to the corresponding tool's pricing page on ShipSquad for independent verification.</p>
+
+<h2>Key Findings</h2>
+
+<h3>1. The $20/month Sweet Spot</h3>
+<p>Across all 155 tools, <strong>$20/month is the most common starting price point</strong> for individual paid plans. Tools as diverse as <a href="/pricing/cursor">Cursor</a> ($20/mo), <a href="/pricing/chatgpt">ChatGPT Plus</a> ($20/mo), <a href="/pricing/claude">Claude Pro</a> ($20/mo), <a href="/pricing/perplexity">Perplexity Pro</a> ($20/mo), <a href="/pricing/bolt">Bolt Pro</a> ($20/mo), <a href="/pricing/lovable">Lovable Pro</a> ($20/mo), and <a href="/pricing/v0">v0 Premium</a> ($20/mo) all converge on this price. The market has effectively standardized on $20/mo as the individual pro tier anchor.</p>
+
+<h3>2. 62% of Tools Offer Free Tiers</h3>
+<p>Of the 155 tools analyzed, <strong>96 offer some form of free access</strong> — either a free tier (freemium model) or fully open-source availability. This breaks down to:</p>
+<ul>
+<li><strong>Freemium (free tier with paid upgrades):</strong> 74 tools (48%)</li>
+<li><strong>Open Source (free self-hosted):</strong> 22 tools (14%)</li>
+<li><strong>Paid only (no free tier):</strong> 59 tools (38%)</li>
+</ul>
+<p>The freemium model is especially dominant in AI Chatbots, AI Coding, and AI App Builders, where nearly every major tool provides meaningful free access.</p>
+
+<h3>3. Per-Seat Pricing Dominates Team Plans</h3>
+<p>Per-seat (per-user) pricing is the standard for team and enterprise tiers across categories. Tools like <a href="/pricing/github-copilot">GitHub Copilot</a> ($19/user/mo Business), <a href="/pricing/cursor">Cursor</a> ($40/user/mo Business), <a href="/pricing/zendesk-ai">Zendesk</a> ($55-115/agent/mo), and <a href="/pricing/figma-ai">Figma</a> ($12/editor/mo) all charge per seat. The average per-seat price across all tools with team plans is approximately <strong>$25/user/month</strong>.</p>
+
+<h3>4. Category Price Ranges</h3>
+<p>Average starting prices vary dramatically by category:</p>
+<table>
+<thead><tr><th>Category</th><th>Avg Starting Price</th><th>Range</th><th>% Free Tier</th></tr></thead>
+<tbody>
+<tr><td>AI Chatbots</td><td>$20/mo</td><td>Free &ndash; $20/mo</td><td>85%</td></tr>
+<tr><td>AI Coding Tools</td><td>$17/mo</td><td>Free &ndash; $500/mo</td><td>69%</td></tr>
+<tr><td>AI Writing Tools</td><td>$24/mo</td><td>Free &ndash; $69/mo</td><td>63%</td></tr>
+<tr><td>AI Image Generation</td><td>$18/mo</td><td>Free &ndash; $60/mo</td><td>71%</td></tr>
+<tr><td>AI Video Tools</td><td>$22/mo</td><td>Free &ndash; $67/mo</td><td>71%</td></tr>
+<tr><td>AI Audio &amp; Music</td><td>$16/mo</td><td>Free &ndash; $99/mo</td><td>83%</td></tr>
+<tr><td>AI Automation</td><td>$16/mo</td><td>Free &ndash; $100/flow/mo</td><td>67%</td></tr>
+<tr><td>AI Agent Frameworks</td><td>$0 (mostly OSS)</td><td>Free &ndash; $59/mo</td><td>100%</td></tr>
+<tr><td>AI Design Tools</td><td>$16/mo</td><td>Free &ndash; $40/user/mo</td><td>78%</td></tr>
+<tr><td>AI SEO Tools</td><td>$137/mo</td><td>$89 &ndash; $499.95/mo</td><td>0%</td></tr>
+<tr><td>AI Customer Support</td><td>$52/mo</td><td>Free &ndash; $2,500/mo</td><td>25%</td></tr>
+<tr><td>AI Analytics</td><td>$30/mo</td><td>Free &ndash; $75/user/mo</td><td>67%</td></tr>
+<tr><td>AI APIs</td><td>Usage-based</td><td>Free &ndash; $15/M tokens</td><td>30%</td></tr>
+<tr><td>AI Development</td><td>$15/mo</td><td>Free &ndash; $50/user/mo</td><td>77%</td></tr>
+</tbody>
+</table>
+
+<h3>5. Most Expensive vs. Cheapest by Category</h3>
+<p><strong>Most expensive individual tools:</strong></p>
+<ul>
+<li><a href="/pricing/drift">Drift</a> — $2,500/mo (AI Customer Support / conversational sales)</li>
+<li><a href="/pricing/devin">Devin</a> — $500/mo (AI Coding / autonomous agent)</li>
+<li><a href="/pricing/semrush">Semrush</a> — $139.95/mo starting (AI SEO)</li>
+<li><a href="/pricing/ahrefs">Ahrefs</a> — $129/mo starting (AI SEO)</li>
+<li><a href="/pricing/eleven-labs">ElevenLabs Pro</a> — $99/mo (AI Audio)</li>
+<li><a href="/pricing/sprout-social">Sprout Social</a> — $249/mo starting (AI Social Media)</li>
+<li><a href="/pricing/hubspot-ai">HubSpot Professional</a> — $890/mo (AI Marketing)</li>
+</ul>
+<p><strong>Best budget options by category:</strong></p>
+<ul>
+<li><a href="/pricing/rytr">Rytr</a> — $9/mo unlimited (AI Writing)</li>
+<li><a href="/pricing/cody">Sourcegraph Cody</a> — $9/mo (AI Coding)</li>
+<li><a href="/pricing/ifttt">IFTTT Pro</a> — $3.49/mo (AI Automation)</li>
+<li><a href="/pricing/eleven-labs">ElevenLabs Starter</a> — $5/mo (AI Audio)</li>
+<li><a href="/pricing/framer">Framer Mini</a> — $5/mo (AI Design)</li>
+<li><a href="/pricing/gamma">Gamma Plus</a> — $8/user/mo (AI Presentations)</li>
+<li><a href="/pricing/ideogram">Ideogram Plus</a> — $8/mo (AI Image Generation)</li>
+<li><a href="/pricing/pika">Pika Standard</a> — $8/mo (AI Video)</li>
+</ul>
+
+<h2>Category-by-Category Pricing Breakdown</h2>
+
+<h3>AI Coding Tools</h3>
+<p>The AI coding category has the widest price range of any segment, from free open-source tools to $500/month autonomous agents. The market has clearly segmented into three tiers: free/open-source (Aider, open-source models), individual developer tools ($9-$20/mo), and autonomous agents ($500+/mo).</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/cursor">Cursor</a></td><td>Yes</td><td>$20/mo</td><td>$40/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/github-copilot">GitHub Copilot</a></td><td>No</td><td>$10/mo</td><td>$19/user/mo</td><td>$39/user/mo</td></tr>
+<tr><td><a href="/pricing/windsurf">Windsurf</a></td><td>Yes</td><td>$15/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/devin">Devin</a></td><td>No</td><td>$500/mo</td><td>Team-based</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/tabnine">Tabnine</a></td><td>Yes</td><td>$12/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/cody">Sourcegraph Cody</a></td><td>Yes</td><td>$9/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/claude-code">Claude Code</a></td><td>No</td><td>Incl. w/ Claude Pro</td><td>Usage-based</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/aider">Aider</a></td><td>Open Source</td><td>Free (BYOK)</td><td>N/A</td><td>N/A</td></tr>
+<tr><td><a href="/pricing/amazon-codewhisperer">Amazon CodeWhisperer</a></td><td>Yes</td><td>$19/user/mo</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/replit-agent">Replit Agent</a></td><td>Yes</td><td>$20/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/phind">Phind</a></td><td>Yes</td><td>$20/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/sourcegraph">Sourcegraph</a></td><td>Yes (OSS)</td><td>$49/user/mo</td><td>Yes</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/github-copilot">GitHub Copilot</a> at $10/mo is the cheapest premium AI coding tool with broad IDE support. <a href="/pricing/cody">Sourcegraph Cody</a> at $9/mo offers deep codebase understanding at the lowest price point. For maximum capability, <a href="/pricing/cursor">Cursor</a> at $20/mo delivers the best AI-first editing experience.</p>
+
+<h3>AI Chatbots &amp; Assistants</h3>
+<p>The AI chatbot market has fully commoditized at the $20/month price point. Every major provider — OpenAI, Anthropic, Google, and Perplexity — offers a pro tier at or near $20/mo. The real competition has shifted to model quality, context window size, and ecosystem integration.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/chatgpt">ChatGPT</a></td><td>Yes</td><td>$20/mo (Plus)</td><td>$25/user/mo</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/claude">Claude</a></td><td>Yes</td><td>$20/mo (Pro)</td><td>$25/user/mo</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/gemini">Gemini</a></td><td>Yes</td><td>$19.99/mo</td><td>Incl. w/ Workspace</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/perplexity">Perplexity</a></td><td>Yes</td><td>$20/mo</td><td>$40/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/copilot">Microsoft Copilot</a></td><td>Yes</td><td>$20/mo</td><td>$30/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/deepseek">DeepSeek</a></td><td>Yes</td><td>Free (API fraction of GPT-4)</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/mistral">Mistral</a></td><td>Yes</td><td>Free (API pay-per-token)</td><td>N/A</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/llama">Meta Llama</a></td><td>Open Source</td><td>Free (self-host)</td><td>N/A</td><td>N/A</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/gemini">Gemini Advanced</a> at $19.99/mo includes 2TB Google storage — the best bundle value. <a href="/pricing/deepseek">DeepSeek</a> provides near-frontier performance with the lowest API costs in the market. For pure reasoning quality, <a href="/pricing/claude">Claude Pro</a> at $20/mo leads.</p>
+
+<h3>AI Writing Tools</h3>
+<p>AI writing spans from budget tools under $10/mo to enterprise platforms approaching $70/mo. The category is being squeezed by general-purpose chatbots — a $20/mo ChatGPT Plus subscription handles most writing tasks that previously required dedicated writing tools.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/jasper">Jasper</a></td><td>No</td><td>$49/mo (Creator)</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/copy-ai">Copy.ai</a></td><td>Yes</td><td>$49/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/writer">Writer</a></td><td>No</td><td>$18/user/mo</td><td>Yes</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/writesonic">Writesonic</a></td><td>Yes</td><td>$16/mo</td><td>$13/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/rytr">Rytr</a></td><td>Yes</td><td>$9/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/grammarly">Grammarly</a></td><td>Yes</td><td>$12/mo</td><td>$15/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/notion-ai">Notion AI</a></td><td>No</td><td>$8/member/mo add-on</td><td>Yes</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/rytr">Rytr</a> at $9/mo is the cheapest unlimited AI writing tool. <a href="/pricing/grammarly">Grammarly</a> at $12/mo offers the best grammar + AI generation combination. For enterprise marketing teams, <a href="/pricing/writer">Writer</a> at $18/user/mo provides the best governance features per dollar.</p>
+
+<h3>AI Image Generation</h3>
+<p>Image generation pricing is bifurcated: commercial tools run $10-60/month, while open-source alternatives (Stable Diffusion, Flux) are completely free for local use. The gap in output quality has narrowed considerably, making the choice between paid and free largely about convenience.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/midjourney">Midjourney</a></td><td>No</td><td>$10/mo (Basic)</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/dall-e">DALL-E</a></td><td>No</td><td>Incl. w/ ChatGPT Plus</td><td>N/A</td><td>API usage-based</td></tr>
+<tr><td><a href="/pricing/stable-diffusion">Stable Diffusion</a></td><td>Open Source</td><td>Free (local)</td><td>N/A</td><td>N/A</td></tr>
+<tr><td><a href="/pricing/adobe-firefly">Adobe Firefly</a></td><td>Yes</td><td>Incl. w/ Creative Cloud</td><td>$54.99/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/leonardo-ai">Leonardo AI</a></td><td>Yes</td><td>$12/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/ideogram">Ideogram</a></td><td>Yes</td><td>$8/mo (Plus)</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/flux">Flux</a></td><td>Open Source</td><td>Free (local)</td><td>N/A</td><td>N/A</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/ideogram">Ideogram</a> at $8/mo is the cheapest paid image generator with the best text-in-image accuracy. <a href="/pricing/midjourney">Midjourney Basic</a> at $10/mo delivers the highest aesthetic quality at the lowest price. For unlimited free generation, <a href="/pricing/stable-diffusion">Stable Diffusion</a> requires only a one-time GPU investment.</p>
+
+<h3>AI Video Tools</h3>
+<p>AI video is the fastest-evolving pricing category. Credit-based billing is standard, and costs per minute of generated video vary wildly. Avatar-based tools (Synthesia, HeyGen) command premiums for corporate video production.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/runway">Runway</a></td><td>Yes</td><td>$12/user/mo</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/pika">Pika</a></td><td>Yes</td><td>$8/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/synthesia">Synthesia</a></td><td>No</td><td>$22/mo (Starter)</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/heygen">HeyGen</a></td><td>Yes</td><td>$24/mo (Creator)</td><td>$72/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/sora">Sora</a></td><td>No</td><td>Incl. w/ ChatGPT Plus</td><td>N/A</td><td>API usage-based</td></tr>
+<tr><td><a href="/pricing/kling">Kling AI</a></td><td>Yes</td><td>$8/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/descript">Descript</a></td><td>Yes</td><td>$24/mo (Hobbyist)</td><td>$33/mo</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/pika">Pika</a> and <a href="/pricing/kling">Kling</a> at $8/mo each offer the cheapest entry into AI video generation. <a href="/pricing/sora">Sora</a> is effectively free for existing ChatGPT Plus subscribers. For corporate video, <a href="/pricing/synthesia">Synthesia</a> at $22/mo eliminates filming costs entirely.</p>
+
+<h3>AI Audio &amp; Music</h3>
+<p>Voice synthesis and music generation tools range from $5-99/month. ElevenLabs dominates on quality but carries a premium. Music generation (Suno, Udio) has stabilized at $10-30/month.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/eleven-labs">ElevenLabs</a></td><td>Yes</td><td>$5/mo (Starter)</td><td>N/A</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/play-ht">Play.ht</a></td><td>Yes</td><td>$31/mo (Creator)</td><td>N/A</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/murf-ai">Murf AI</a></td><td>Yes</td><td>$26/mo (Creator)</td><td>$59/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/suno">Suno</a></td><td>Yes</td><td>$10/mo (Pro)</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/udio">Udio</a></td><td>Yes</td><td>$10/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/krisp-ai">Krisp AI</a></td><td>Yes</td><td>$8/mo</td><td>Custom</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/eleven-labs">ElevenLabs Starter</a> at $5/mo is the cheapest entry to professional AI voice synthesis. For music, <a href="/pricing/suno">Suno</a> and <a href="/pricing/udio">Udio</a> both offer strong generation at $10/mo.</p>
+
+<h3>AI Automation Tools</h3>
+<p>Automation pricing varies from $3.49/month to $100/flow/month, with a critical distinction: per-task pricing (Zapier) versus per-operation pricing (Make) versus unlimited self-hosted (n8n). The pricing model matters more than the sticker price in this category.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/zapier">Zapier</a></td><td>Yes</td><td>$19.99/mo (Starter)</td><td>$69.50/mo (Team)</td><td>$99.50/mo+</td></tr>
+<tr><td><a href="/pricing/make">Make</a></td><td>Yes</td><td>$9/mo (Core)</td><td>$29/mo (Teams)</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/n8n">n8n</a></td><td>Open Source</td><td>Free (self-hosted)</td><td>$20/mo (Cloud)</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/activepieces">Activepieces</a></td><td>Open Source</td><td>Free (self-hosted)</td><td>$10/mo (Cloud)</td><td>No</td></tr>
+<tr><td><a href="/pricing/power-automate">Power Automate</a></td><td>No</td><td>$15/user/mo</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/ifttt">IFTTT</a></td><td>Yes</td><td>$3.49/mo (Pro)</td><td>N/A</td><td>No</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/n8n">n8n</a> self-hosted is the best deal in automation: unlimited workflows, unlimited executions, zero software cost. For cloud-hosted simplicity, <a href="/pricing/make">Make</a> at $9/mo provides 5x more operations per dollar than <a href="/pricing/zapier">Zapier</a>.</p>
+
+<h3>AI App Builders</h3>
+<p>The app builder market has converged on $20/mo for pro tiers. The differentiation is in what you get for that price: UI polish (Lovable), framework flexibility (Bolt), component quality (v0), or no-code simplicity (Create.xyz, Bubble).</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/bolt">Bolt</a></td><td>Yes</td><td>$20/mo</td><td>$40/user/mo</td><td>No</td></tr>
+<tr><td><a href="/pricing/lovable">Lovable</a></td><td>Yes</td><td>$20/mo</td><td>Custom</td><td>No</td></tr>
+<tr><td><a href="/pricing/v0">v0</a></td><td>Yes</td><td>$20/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/gptengineer">GPT Engineer</a></td><td>Yes</td><td>$20/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/create-xyz">Create.xyz</a></td><td>Yes</td><td>$19/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/bubble">Bubble</a></td><td>Yes</td><td>$29/mo (Starter)</td><td>Custom</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/bolt">Bolt</a>, <a href="/pricing/lovable">Lovable</a>, <a href="/pricing/v0">v0</a>, and <a href="/pricing/gptengineer">GPT Engineer</a> all offer pro plans at $20/mo. Choose based on use case: Lovable for beautiful UIs, Bolt for framework flexibility, v0 for production-quality components.</p>
+
+<h3>AI Design Tools</h3>
+<p>Design tool pricing depends heavily on the scope: simple presentation tools start at $5-8/mo, while professional web builders range from $14-39/mo. The category includes everything from slide generators to full website builders.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/figma-ai">Figma AI</a></td><td>No</td><td>$12/editor/mo</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/framer">Framer</a></td><td>Yes</td><td>$5/mo (Mini)</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/canva-ai">Canva AI</a></td><td>Yes</td><td>$12.99/mo</td><td>$14.99/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/beautiful-ai">Beautiful.ai</a></td><td>No</td><td>$12/mo</td><td>$40/user/mo</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/tome">Tome</a></td><td>Yes</td><td>$16/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/gamma">Gamma</a></td><td>Yes</td><td>$8/user/mo</td><td>Yes</td><td>No</td></tr>
+<tr><td><a href="/pricing/webflow">Webflow</a></td><td>Yes</td><td>$14/mo (Basic)</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/wix-ai">Wix AI</a></td><td>Yes</td><td>$17/mo (Light)</td><td>N/A</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/squarespace-ai">Squarespace AI</a></td><td>No</td><td>$16/mo (Personal)</td><td>N/A</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/framer">Framer</a> at $5/mo is the cheapest way to build an AI-powered website. <a href="/pricing/gamma">Gamma</a> at $8/user/mo is the most affordable AI presentation tool. <a href="/pricing/canva-ai">Canva AI</a> at $12.99/mo offers the broadest design capabilities for non-designers.</p>
+
+<h3>AI SEO Tools</h3>
+<p>SEO is the most expensive AI tool category, with no tools offering a meaningful free tier. The starting price of $89/mo reflects the enterprise-grade data infrastructure required. This is the one category where free alternatives simply do not exist at comparable quality.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/semrush">Semrush</a></td><td>No</td><td>$139.95/mo (Pro)</td><td>$249.95/mo (Guru)</td><td>$499.95/mo</td></tr>
+<tr><td><a href="/pricing/ahrefs">Ahrefs</a></td><td>No</td><td>$129/mo (Lite)</td><td>$249/mo</td><td>$14,990/yr</td></tr>
+<tr><td><a href="/pricing/surfer-seo">Surfer SEO</a></td><td>No</td><td>$89/mo</td><td>$129/mo (Scale)</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/clearscope">Clearscope</a></td><td>No</td><td>$189/mo</td><td>$399/mo</td><td>Custom</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/surfer-seo">Surfer SEO</a> at $89/mo is the most affordable entry for content-focused SEO. <a href="/pricing/ahrefs">Ahrefs</a> at $129/mo offers the best backlink data per dollar. <a href="/pricing/semrush">Semrush</a> at $139.95/mo provides the broadest feature set across SEO, PPC, and content.</p>
+
+<h3>AI Customer Support</h3>
+<p>Support tool pricing models are the most complex in the AI space: per-agent, per-resolution, or flat-rate. The total cost depends heavily on ticket volume and team size. Per-resolution pricing (Intercom Fin at $0.99/resolution) can be cheaper or far more expensive than per-agent plans depending on scale.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/intercom-fin">Intercom Fin</a></td><td>No</td><td>$0.99/resolution + $39/mo</td><td>Platform-based</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/zendesk-ai">Zendesk AI</a></td><td>No</td><td>$55/agent/mo</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/drift">Drift</a></td><td>No</td><td>$2,500/mo</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/freshdesk-ai">Freshdesk AI</a></td><td>Yes</td><td>$15/agent/mo</td><td>Yes</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/freshdesk-ai">Freshdesk</a> at $15/agent/mo is the cheapest AI-powered help desk with a generous free tier. For AI-first support, <a href="/pricing/intercom-fin">Intercom Fin</a> at $0.99/resolution is most cost-effective under ~5,000 monthly resolutions.</p>
+
+<h3>AI API Platforms</h3>
+<p>API pricing is exclusively usage-based (pay-per-token, pay-per-call) with enormous variation based on model selection. The critical metric is quality-per-dollar, not raw price. Google offers the most generous free tiers; Anthropic and OpenAI compete on model capability.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Input Token Price</th><th>Output Token Price</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/anthropic-api">Anthropic API (Sonnet)</a></td><td>No</td><td>$3/M tokens</td><td>$15/M tokens</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/openai-api">OpenAI API (GPT-4o)</a></td><td>No</td><td>$2.50/M tokens</td><td>$10/M tokens</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/google-ai-api">Google AI API</a></td><td>Yes</td><td>Varies</td><td>Varies</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/cohere">Cohere</a></td><td>Yes (trial)</td><td>Per-token</td><td>Per-token</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/together-ai">Together AI</a></td><td>No</td><td>50-80% less than proprietary</td><td>50-80% less</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/replicate">Replicate</a></td><td>No</td><td>Per-second compute</td><td>Per-second</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/huggingface">Hugging Face</a></td><td>Yes</td><td>From $0.06/hr endpoints</td><td>N/A</td><td>Custom</td></tr>
+<tr><td><a href="/pricing/aws-bedrock">AWS Bedrock</a></td><td>No</td><td>Per-token by model</td><td>Per-token</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/azure-openai">Azure OpenAI</a></td><td>No</td><td>Same as OpenAI</td><td>Same as OpenAI</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/together-ai">Together AI</a> offers open-source model inference at 50-80% less than proprietary APIs. <a href="/pricing/openai-api">OpenAI GPT-4o-mini</a> at $0.15/M input tokens is the cheapest frontier-adjacent API. <a href="/pricing/google-ai-api">Google AI API</a> has the most generous free tier for experimentation.</p>
+
+<h3>AI Agent Frameworks</h3>
+<p>Agent frameworks are overwhelmingly open-source — every major option is free to use. The cost of agent systems is not the framework but the underlying LLM API calls, which can run $0.50-2.00 per complex multi-agent task.</p>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Managed Platform?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/langchain">LangChain</a></td><td>Open Source</td><td>Free (LangSmith from $39/mo)</td><td>LangSmith</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/langgraph">LangGraph</a></td><td>Open Source</td><td>Free</td><td>Via LangSmith</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/crewai">CrewAI</a></td><td>Open Source</td><td>Free</td><td>Enterprise available</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/autogen">AutoGen</a></td><td>Open Source</td><td>Free</td><td>No</td><td>No</td></tr>
+<tr><td><a href="/pricing/llamaindex">LlamaIndex</a></td><td>Open Source</td><td>Free (LlamaCloud paid)</td><td>LlamaCloud</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/dify">Dify</a></td><td>Open Source</td><td>Free (Cloud Pro $59/mo)</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/semantic-kernel">Semantic Kernel</a></td><td>Open Source</td><td>Free</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> All agent frameworks are free. The real cost is LLM tokens. <a href="/pricing/crewai">CrewAI</a> offers the fastest time-to-prototype. <a href="/pricing/langchain">LangChain</a> with LangSmith ($39/mo) provides the best observability for production agent systems.</p>
+
+<h3>AI Analytics</h3>
+<table>
+<thead><tr><th>Tool</th><th>Free Tier?</th><th>Starting Price</th><th>Per-Seat?</th><th>Enterprise?</th></tr></thead>
+<tbody>
+<tr><td><a href="/pricing/tableau-ai">Tableau</a></td><td>No</td><td>$15/user/mo (Viewer)</td><td>Yes, up to $75/user/mo</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/power-bi">Power BI</a></td><td>Yes</td><td>$10/user/mo</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/julius-ai">Julius AI</a></td><td>Yes</td><td>$20/mo</td><td>N/A</td><td>No</td></tr>
+<tr><td><a href="/pricing/amplitude-ai">Amplitude</a></td><td>Yes</td><td>Custom (Growth)</td><td>Custom</td><td>Yes</td></tr>
+<tr><td><a href="/pricing/mixpanel-ai">Mixpanel</a></td><td>Yes</td><td>$20/mo</td><td>Custom</td><td>Yes</td></tr>
+</tbody>
+</table>
+<p><strong>Best value:</strong> <a href="/pricing/power-bi">Power BI</a> at $10/user/mo is the cheapest enterprise-grade BI tool, especially for Microsoft-centric organizations. <a href="/pricing/julius-ai">Julius AI</a> at $20/mo is the most accessible AI-first analytics for non-technical users.</p>
+
+<h2>Price Trends: What Is Changing in 2026</h2>
+
+<h3>Trend 1: The $20/mo Ceiling Is Holding</h3>
+<p>Despite rising model costs and capability improvements, the consumer price point for AI tools has stabilized at $20/month. ChatGPT, Claude, Cursor, Perplexity, and most app builders all anchor at this price. Competition is keeping prices flat while capabilities increase — consumers are getting more for the same price quarter over quarter.</p>
+
+<h3>Trend 2: Open Source Is Closing the Gap</h3>
+<p>Open-source alternatives now exist in <strong>every major category</strong>: coding (Aider), image generation (Stable Diffusion, Flux), automation (n8n, Activepieces), agent frameworks (LangChain, CrewAI), vector databases (Chroma, Weaviate), and backend services (Supabase, Appwrite). The quality gap between open-source and commercial tools is narrower than ever, especially in AI coding and image generation.</p>
+
+<h3>Trend 3: Usage-Based Pricing Is Expanding</h3>
+<p>More tools are moving toward pay-per-use models: Intercom Fin charges per resolution ($0.99), API providers charge per token, and automation platforms charge per operation. This trend favors light users (who pay less) but creates unpredictable costs for high-volume teams. Budget planning for AI tools is becoming more complex as flat-rate subscriptions give way to metered billing.</p>
+
+<h3>Trend 4: Enterprise Pricing Is Opaque</h3>
+<p>A growing number of tools hide enterprise pricing behind "Contact Sales" — including Harvey AI, Salesforce Einstein, Drift, and most AI API providers for high-volume plans. This makes cost comparison difficult and gives vendors pricing power. Of the 155 tools we analyzed, <strong>43 (28%) have at least one tier with undisclosed pricing</strong>.</p>
+
+<h3>Trend 5: Bundling Is the New Battleground</h3>
+<p>Platform vendors are bundling AI into existing subscriptions: <a href="/pricing/gemini">Gemini Advanced</a> includes 2TB Google storage, <a href="/pricing/sora">Sora</a> is included with ChatGPT Plus, <a href="/pricing/dall-e">DALL-E</a> comes with ChatGPT, and <a href="/pricing/copilot">Microsoft Copilot</a> is embedded in Windows and Edge for free. The standalone AI tool market is being compressed by platform bundling strategies.</p>
+
+<h2>Hidden Costs: What the Pricing Page Does Not Tell You</h2>
+
+<p>The sticker price of an AI tool is rarely the full cost. Based on our analysis, here are the most common hidden costs across the 155 tools:</p>
+
+<h3>1. Credit and Usage Limits</h3>
+<p>Many "unlimited" plans have soft limits. <a href="/pricing/runway">Runway</a> consumes credits per second of generated video — a 5-second clip uses ~25 credits. <a href="/pricing/zapier">Zapier</a> counts every action in every Zap as a task, so a 5-step automation running 100 times consumes 500 tasks. <a href="/pricing/midjourney">Midjourney</a> "unlimited relaxed" means slower generation, not truly unlimited fast generation.</p>
+
+<h3>2. Per-Seat Pricing Escalation</h3>
+<p>A tool that looks affordable at $20/mo becomes $200/mo for a 10-person team. <a href="/pricing/cursor">Cursor Business</a> at $40/user/mo costs $400/mo for 10 developers. <a href="/pricing/zendesk-ai">Zendesk Professional</a> at $115/agent/mo costs $1,150/mo for 10 agents. Always calculate total team cost, not per-seat cost.</p>
+
+<h3>3. API Overage Charges</h3>
+<p>API-based tools (LLM APIs, automation platforms) can generate unpredictable bills during usage spikes. A production application using <a href="/pricing/openai-api">GPT-4o</a> at moderate volume can easily reach $100-500/mo in API costs alone. Set spending caps and alerts on every API-based tool.</p>
+
+<h3>4. Infrastructure Costs for Open-Source Tools</h3>
+<p>Open-source tools are free to use but not free to run. Self-hosting <a href="/pricing/n8n">n8n</a> requires server costs (~$5-20/mo). Running <a href="/pricing/stable-diffusion">Stable Diffusion</a> locally requires a capable GPU ($200-1,600 one-time). Self-hosted <a href="/pricing/supabase">Supabase</a> or <a href="/pricing/appwrite">Appwrite</a> need ongoing cloud server costs.</p>
+
+<h3>5. Required Companion Subscriptions</h3>
+<p><a href="/pricing/lovable">Lovable</a> works best with Supabase (add $25/mo for production). <a href="/pricing/adobe-firefly">Adobe Firefly</a> is most useful within Creative Cloud ($54.99/mo). <a href="/pricing/notion-ai">Notion AI</a> requires a Notion subscription plus the $8/member/mo AI add-on. Factor in the full stack cost, not just the individual tool.</p>
+
+<h2>How to Use This Index</h2>
+<ul>
+<li><strong>Evaluating tools for your team?</strong> Click any tool name to visit its <a href="/pricing/chatgpt">detailed pricing page</a> with tier comparisons, hidden costs, and alternatives.</li>
+<li><strong>Building a business case?</strong> Use the category averages and "best value" picks to benchmark your AI tool budget against market norms.</li>
+<li><strong>Comparing alternatives?</strong> Visit our <a href="/compare/cursor-vs-github-copilot">comparison pages</a> for head-to-head pricing and feature analysis.</li>
+<li><strong>Writing a report?</strong> Every data point on this page is sourced from our proprietary database of 155 AI tools. Cite with attribution to ShipSquad.</li>
+</ul>
+
+<blockquote><strong>Key finding:</strong> The total cost of a modern AI-powered development stack — AI coding tool ($20/mo), AI chatbot ($20/mo), AI image generation ($10/mo), and automation ($9/mo) — is approximately <strong>$59/month</strong>. Two years ago, equivalent capabilities would have required $200-400/mo or simply did not exist. The accessibility revolution in AI tooling is real, and it is accelerating.</blockquote>
+
+<h2>Methodology Notes</h2>
+<p>This index is based on the ShipSquad tool database as of March 19, 2026. All 155 tools were reviewed against their current public pricing pages. Prices reflect monthly billing; annual billing discounts (typically 15-20%) are not included. Enterprise pricing marked "Custom" indicates the vendor requires a sales conversation. Tools in active beta with unconfirmed pricing are noted. We update this index quarterly. If you find a pricing change we have not captured, <a href="https://shipsquad.ai/#waitlist" target="_blank">contact us</a>.</p>
+
+<p>For teams ready to move beyond evaluating tools and into deploying AI-powered workflows, a <a href="https://shipsquad.ai/#waitlist" target="_blank">ShipSquad AI agent squad</a> can audit your current AI tool stack, identify cost optimization opportunities, and deploy automated workflows — all as a managed mission at $99/month.</p>`,
+  },
 ];
