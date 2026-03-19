@@ -76,13 +76,15 @@ ${Array.from(existingSlugs).slice(0, 100).join(', ')}
 
 Generate 500-700 article plans as a JSON array. Mix content types as specified.`;
 
-  console.log('Calling Claude for article planning...');
-  const response = await client.messages.create({
+  console.log('Calling Claude for article planning (streaming)...');
+  const stream = client.messages.stream({
     model: PLANNING_MODEL,
     max_tokens: 64000,
     messages: [{ role: 'user', content: userPrompt }],
     system: systemPrompt,
   });
+
+  const response = await stream.finalMessage();
 
   const text = response.content
     .filter(b => b.type === 'text')

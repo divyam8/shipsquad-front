@@ -1,7 +1,22 @@
 import { join, dirname } from 'path';
+import { readFileSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Self-load .env.local so scripts work without pre-sourcing
+const _envPath = join(__dirname, '..', '.env.local');
+if (existsSync(_envPath)) {
+  for (const line of readFileSync(_envPath, 'utf-8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eqIdx = trimmed.indexOf('=');
+    if (eqIdx === -1) continue;
+    const key = trimmed.slice(0, eqIdx).trim();
+    const val = trimmed.slice(eqIdx + 1).trim();
+    if (!process.env[key]) process.env[key] = val;
+  }
+}
 
 export const ENGINE_ROOT = join(__dirname, '.');
 export const PROJECT_ROOT = join(ENGINE_ROOT, '..');
