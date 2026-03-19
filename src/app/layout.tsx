@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 const inter = Inter({
@@ -103,6 +104,7 @@ export default function RootLayout({
       <body
         className={`${GeistSans.variable} ${inter.variable} antialiased`}
       >
+        <GoogleAnalytics />
         {children}
       </body>
     </html>
