@@ -10,11 +10,11 @@ export const SITE = {
 } as const;
 
 export const HERO = {
-  headline: "Your AI squad, ready to ship.",
-  cycleWords: ["plan", "build", "test", "ship"],
+  headline: "Your AI Squad, Your Mission",
   subhead:
-    "8 specialized agents. One mission. Production-ready in days.",
-  socialProof: "Describe your mission. Squad builds. Squad Lead reviews. Stay in sync. Ship.",
+    "Describe your mission. Our AI-powered squad ships production software in 1-2 weeks — at a fraction of agency cost.",
+  socialProof: "Join 50+ founders on the waitlist",
+  urgency: "Only 12 spots left this month",
 } as const;
 
 export const SQUAD_LEAD = {
@@ -143,61 +143,30 @@ export const DOMAIN_VERTICALS: DomainVertical[] = [
 ];
 
 export const CTA = {
-  headline: "Ready to assemble your squad?",
-  badge: "Early access pricing — lock in $99/mo before launch",
-  subtext: "Your squad builds, tests, and deploys — you review every step",
+  headline: "Ready to Launch Your Mission?",
+  badge: "Limited: First 50 missions get priority access + 20% off",
+  subtext:
+    "Your competitors are shipping while you're still searching for the right team.",
 } as const;
 
 export const PRICING = {
   price: "$99",
-  period: "/month",
+  period: "/mo",
   planName: "Mission Plan",
   features: [
     "Full AI squad on your mission",
     "Dedicated Squad Lead (domain expert)",
     "Production-ready code in 1-2 weeks",
+    "Shared Slack channel for direct comms",
     "2 rounds of revisions included",
     "Full source code ownership",
     "30 days post-delivery support",
+    "NDA protected",
   ],
-  cta: "Start Your Mission",
+  cta: "Join the Waitlist",
 } as const;
 
-export function getHowItWorksSteps(domain: string) {
-  const agents = DOMAIN_SQUADS[domain] ?? DOMAIN_SQUADS.Engineering;
-  const agentNames = agents.slice(0, 4).map((a) => a.name);
-  const agentList = agentNames.join(", ");
-
-  return [
-    {
-      number: "01",
-      title: "Describe your mission",
-      description:
-        "Tell us what you want to build. We'll scope it, break it down, and assign the right squad for your domain.",
-    },
-    {
-      number: "02",
-      title: "Your squad builds in parallel",
-      description:
-        `8 specialized agents work simultaneously — ${agentList} — all coordinated by your Squad Lead.`,
-    },
-    {
-      number: "03",
-      title: "Ship to production",
-      description:
-        "Production-ready code, fully tested and deployed. You own 100% of the IP. We stick around for 30 days of support.",
-    },
-  ];
-}
-
-export const SOCIAL_PROOF_METRICS = [
-  { value: 2, prefix: "< ", suffix: " weeks", label: "Average delivery" },
-  { value: 8, label: "Agents per squad" },
-  { value: 99, prefix: "$", suffix: "/mo", label: "Full squad access" },
-  { value: 100, suffix: "%", label: "IP ownership" },
-] as const;
-
 export const SOCIAL_LINKS = {
-  twitter: "https://x.com/shipsquad_ai",
+  twitter: "https://x.com/shipsquad",
   linkedin: "https://linkedin.com/company/shipsquad",
 } as const;

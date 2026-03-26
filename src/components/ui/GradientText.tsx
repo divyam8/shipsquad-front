@@ -13,7 +13,7 @@ export function GradientText({
 }: GradientTextProps) {
   return (
     <Tag
-      className={`bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent ${className}`}
+      className={`bg-gradient-to-r from-accent-blue via-accent-cyan to-accent-purple bg-clip-text text-transparent ${className}`}
     >
       {children}
     </Tag>

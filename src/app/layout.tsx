@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { GeistSans } from "geist/font/sans";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,12 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "ShipSquad — Your AI Squad, Your Mission",
-    template: "%s | ShipSquad",
-  },
+  title: "ShipSquad — Your AI Squad, Your Mission",
   description:
-    "Build a team of specialized AI agents working together on ANY goal. 10 pre-built specialists + custom agents. $99/mo. Your AI squad, your mission.",
+    "An AI-powered squad builds production software for you in 1-2 weeks. $99/mo. Join the mission.",
   metadataBase: new URL("https://shipsquad.ai"),
   alternates: {
     canonical: "/",
@@ -24,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ShipSquad — Your AI Squad, Your Mission",
     description:
-      "Build a team of specialized AI agents working together on ANY goal. 10 pre-built specialists + custom agents. $99/mo.",
+      "An AI-powered squad builds production software for you in 1-2 weeks. $99/mo. Join the mission.",
     url: "https://shipsquad.ai",
     siteName: "ShipSquad",
     images: [
@@ -41,52 +36,24 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ShipSquad — Your AI Squad, Your Mission",
     description:
-      "Build a team of specialized AI agents working together on ANY goal. 10 pre-built specialists + custom agents. $99/mo.",
+      "An AI-powered squad builds production software for you in 1-2 weeks. $99/mo. Join the mission.",
     images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
-    "max-image-preview": "large" as const,
-    "max-snippet": -1,
-    "max-video-preview": -1,
-  },
-  verification: {
-    other: {
-      "msvalidate.01": "1023BEB2A3E7768DC098C1FF356FBFB6",
-    },
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "ShipSquad",
-    url: "https://shipsquad.ai",
-    description:
-      "Build a team of specialized AI agents working together on ANY goal. Your AI squad, your mission.",
-    logo: "https://shipsquad.ai/logo.png",
-    sameAs: [
-      "https://x.com/shipsquad_ai",
-      "https://linkedin.com/company/shipsquad",
-    ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "ShipSquad",
-    url: "https://shipsquad.ai",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://shipsquad.ai/search?q={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
-  },
-];
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ShipSquad",
+  url: "https://shipsquad.ai",
+  description:
+    "AI-powered squad that builds production software in 1-2 weeks. Your AI squad, your mission.",
+  logo: "https://shipsquad.ai/logo.png",
+};
 
 export default function RootLayout({
   children,
@@ -101,12 +68,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body
-        className={`${GeistSans.variable} ${inter.variable} antialiased`}
-      >
-        <GoogleAnalytics />
-        {children}
-      </body>
+      <body className={`${inter.variable} antialiased`}>{children}</body>
     </html>
   );
 }

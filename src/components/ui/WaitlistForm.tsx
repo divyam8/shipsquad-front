@@ -5,11 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { GlowButton } from "./GlowButton";
 import { waitlistSchema } from "@/lib/validations";
 
-interface WaitlistFormProps {
-  variant?: "inline" | "full";
-}
-
-export function WaitlistForm({ variant = "full" }: WaitlistFormProps) {
+export function WaitlistForm() {
   const [email, setEmail] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [status, setStatus] = useState<
@@ -94,76 +90,6 @@ export function WaitlistForm({ variant = "full" }: WaitlistFormProps) {
     );
   }
 
-  if (variant === "inline") {
-    return (
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <div className="flex items-center gap-0 rounded-full border border-white/[0.08] bg-white/[0.03] p-1.5">
-          <input
-            type="email"
-            placeholder="you@company.com"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (status === "error") setStatus("idle");
-            }}
-            className="min-h-[40px] flex-1 rounded-full bg-transparent px-4 text-sm text-text-primary placeholder-text-muted outline-none"
-            required
-          />
-          <GlowButton type="submit" disabled={status === "loading"} size="sm">
-            {status === "loading" ? (
-              <span className="flex items-center gap-2">
-                <svg
-                  className="h-4 w-4 animate-spin"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
-                Joining...
-              </span>
-            ) : (
-              "Join the Squad"
-            )}
-          </GlowButton>
-        </div>
-        <AnimatePresence>
-          {status === "error" && errorMessage && (
-            <motion.p
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              className="mt-2 text-center text-sm text-error"
-            >
-              {errorMessage}
-            </motion.p>
-          )}
-          {status === "duplicate" && (
-            <motion.p
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              className="mt-2 text-center text-sm text-accent-cyan"
-            >
-              You&apos;re already on the list! We&apos;ll be in touch soon.
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </form>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-3">
       <input
@@ -174,7 +100,7 @@ export function WaitlistForm({ variant = "full" }: WaitlistFormProps) {
           setEmail(e.target.value);
           if (status === "error") setStatus("idle");
         }}
-        className="min-h-[44px] rounded-full border border-white/[0.08] bg-white/[0.03] px-5 py-3 text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent-blue/60 focus:ring-1 focus:ring-accent-blue/20"
+        className="min-h-[44px] rounded-xl border border-white/[0.12] bg-bg-elevated/80 px-4 py-3 text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent-blue/60 focus:ring-1 focus:ring-accent-blue/20"
         required
       />
       <textarea
@@ -183,7 +109,7 @@ export function WaitlistForm({ variant = "full" }: WaitlistFormProps) {
         onChange={(e) => setProjectDescription(e.target.value)}
         rows={2}
         maxLength={500}
-        className="resize-none rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 py-3 text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent-blue/60 focus:ring-1 focus:ring-accent-blue/20"
+        className="resize-none rounded-xl border border-white/[0.12] bg-bg-elevated/80 px-4 py-3 text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent-blue/60 focus:ring-1 focus:ring-accent-blue/20"
       />
       {projectDescription.length > 0 && (
         <p className="text-right text-xs text-text-muted">
