@@ -1,6 +1,8 @@
 import type { BlogPost } from "@/types";
+import { codexSitesBlogPosts } from "./codex-sites-blog-posts";
 
 export const blogPosts: BlogPost[] = [
+  ...codexSitesBlogPosts,
   {
     slug: "sde-to-ai-deployment-engineer-openai-career-transition",
     title: "SDE to AI Deployment Engineer: How to Land OpenAI's India Role (Step-by-Step)",
