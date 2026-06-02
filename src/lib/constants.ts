@@ -149,6 +149,13 @@ export const CTA = {
     "Your competitors are shipping while you're still searching for the right team.",
 } as const;
 
+export const SOCIAL_PROOF_METRICS = [
+  { value: 50, suffix: "+", label: "Founders waiting" },
+  { value: 8, label: "Agents per squad" },
+  { value: 2, suffix: "wk", label: "Typical delivery" },
+  { value: 99, prefix: "$", label: "Monthly access" },
+] as const;
+
 export const PRICING = {
   price: "$99",
   period: "/mo",
